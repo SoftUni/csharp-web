@@ -110,17 +110,26 @@ namespace SIS.HTTP.Requests
             }
         }
 
-        private void ParseRequestFormDataParameters(string requestBody)
+       private void ParseRequestFormDataParameters(string requestBody)
         {
-            if (!string.IsNullOrEmpty(requestBody))
+            if (string.IsNullOrEmpty(requestBody) == false)
             {
                 //TODO: Parse Multiple Parameters By Name
-                requestBody
-                    .Split('&')
-                    .Select(plainQueryParameter => plainQueryParameter.Split('='))
-                    .ToList()
-                    .ForEach(queryParameterKeyValuePair =>
-                        this.FormData.Add(queryParameterKeyValuePair[0], queryParameterKeyValuePair[1]));
+                var paramsPairs = requestBody
+                   .Split('&')
+                   .Select(plainQueryParameter => plainQueryParameter.Split('='))
+                   .ToList();
+
+                foreach (var paramPair in paramsPairs)
+                {
+                    string key = paramPair[0];
+                    string value = paramPair[1];
+                    if (FormData.ContainsKey(key) == false)
+                    {
+                        FormData.Add(key, new HashSet<string>());
+                    }
+                    FormData[key].Add(value);
+                }
             }
         }
 
