@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using SIS.HTTP.Common;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Exceptions;
@@ -27,7 +28,7 @@ namespace SIS.WebServer
             this.serverRoutingTable = serverRoutingTable;
         }
 
-        private IHttpRequest ReadRequest()
+        private async Task<IHttpRequest> ReadRequestAsync()
         {
             // PARSE REQUEST FROM BYTE DATA
             var result = new StringBuilder();
@@ -35,7 +36,7 @@ namespace SIS.WebServer
 
             while (true)
             {
-                int numberOfBytesToRead = this.client.Receive(data.Array, SocketFlags.None);
+                int numberOfBytesToRead = await this.client.ReceiveAsync(data, SocketFlags.None);
 
                 if (numberOfBytesToRead == 0)
                 {
@@ -78,19 +79,19 @@ namespace SIS.WebServer
             this.client.Send(byteSegments, SocketFlags.None);
         }
 
-        public void ProcessRequest()
+        public async Task ProcessRequestAsync()
         {
             IHttpResponse httpResponse = null;
-
             try
             {
-                IHttpRequest httpRequest = this.ReadRequest();
+                IHttpRequest httpRequest = await this.ReadRequestAsync();
 
                 if (httpRequest != null)
                 {
                     Console.WriteLine($"Processing: {httpRequest.RequestMethod} {httpRequest.Path}...");
 
                     httpResponse = this.HandleRequest(httpRequest);
+
                 }
             }
             catch (BadRequestException e)
@@ -101,8 +102,8 @@ namespace SIS.WebServer
             {
                 httpResponse = new TextResult(e.Message, HttpResponseStatusCode.InternalServerError);
             }
-
             this.PrepareResponse(httpResponse);
+
             this.client.Shutdown(SocketShutdown.Both);
         }
     }
