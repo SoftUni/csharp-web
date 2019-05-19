@@ -11,7 +11,12 @@
 
         public IHttpResponse About(IHttpRequest httpRequest)
         {
-            
+            foreach (var item in httpRequest.Headers)
+            {
+                System.Console.WriteLine(item);
+            }
+
+            System.Console.WriteLine(httpRequest.Headers["Host"]);
             return this.View();
         }
     }

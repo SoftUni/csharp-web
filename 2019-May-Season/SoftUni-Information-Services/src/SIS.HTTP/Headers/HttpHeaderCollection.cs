@@ -21,6 +21,17 @@
             this.httpHeaders.Add(header);
         }
 
+        public string this[string key]
+        {
+            get
+            {
+                return this.httpHeaders.FirstOrDefault(h => h.Key == key).Value;
+            }
+            set
+            {
+                this[key] = value;
+            }
+        }
 
         public bool ContainsHeader(string key)
         {
