@@ -128,7 +128,7 @@ namespace SIS.HTTP.Requests
                     {
                         FormData.Add(key, new HashSet<string>());
                     }
-                    FormData[key].Add(value);
+                    ((ISet<string>)FormData[key]).Add(value);
                 }
             }
         }
