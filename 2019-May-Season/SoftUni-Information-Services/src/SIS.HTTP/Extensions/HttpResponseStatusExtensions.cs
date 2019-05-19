@@ -1,7 +1,6 @@
-﻿using SIS.HTTP.Enums;
-
-namespace SIS.HTTP.Extensions
+﻿namespace SIS.HTTP.Extensions
 {
+    using SIS.HTTP.Enums;
     public static class HttpResponseStatusExtensions
     {
         public static string GetStatusLine(this HttpResponseStatusCode statusCode)
@@ -17,9 +16,10 @@ namespace SIS.HTTP.Extensions
                 case HttpResponseStatusCode.Forbidden: return "403 Forbidden";
                 case HttpResponseStatusCode.NotFound: return "404 Not Found";
                 case HttpResponseStatusCode.InternalServerError: return "500 Internal Server Error";
-            }
 
-            return null;
+                default:
+                    return null;
+            }
         }
     }
 }

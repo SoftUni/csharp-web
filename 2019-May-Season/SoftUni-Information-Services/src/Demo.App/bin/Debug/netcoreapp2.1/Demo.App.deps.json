@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "Demo.App/1.0.0": {
+        "dependencies": {
+          "SIS.HTTP": "1.0.0",
+          "SIS.WebServer": "1.0.0"
+        },
+        "runtime": {
+          "Demo.App.dll": {}
+        }
+      },
+      "SIS.HTTP/1.0.0": {
+        "runtime": {
+          "SIS.HTTP.dll": {}
+        }
+      },
+      "SIS.WebServer/1.0.0": {
+        "dependencies": {
+          "SIS.HTTP": "1.0.0"
+        },
+        "runtime": {
+          "SIS.WebServer.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Demo.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SIS.HTTP/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SIS.WebServer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

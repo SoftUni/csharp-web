@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using SIS.HTTP.Common;
-using SIS.HTTP.Enums;
-using SIS.HTTP.Requests.Contracts;
-using SIS.HTTP.Responses.Contracts;
-using SIS.WebServer.Routing.Contracts;
-
-namespace SIS.WebServer.Routing
+﻿namespace SIS.WebServer.Routing
 {
+    using System;
+    using System.Collections.Generic;
+
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Enums;
+    using SIS.HTTP.Requests.Contracts;
+    using SIS.HTTP.Responses.Contracts;
+    using SIS.WebServer.Routing.Contracts;
     public class ServerRoutingTable : IServerRoutingTable
     {
-        private Dictionary<HttpRequestMethod, Dictionary<string, Func<IHttpRequest, IHttpResponse>>> routingTable;
+        private IDictionary<HttpRequestMethod, IDictionary<string, Func<IHttpRequest, IHttpResponse>>> routingTable;
         public ServerRoutingTable()
         {
-            this.routingTable = new Dictionary<HttpRequestMethod, Dictionary<string, Func<IHttpRequest, IHttpResponse>>>
+            this.routingTable = new Dictionary<HttpRequestMethod, IDictionary<string, Func<IHttpRequest, IHttpResponse>>>
             {
                 [HttpRequestMethod.Get] = new Dictionary<string, Func<IHttpRequest, IHttpResponse>>(),
                 [HttpRequestMethod.Post] = new Dictionary<string, Func<IHttpRequest, IHttpResponse>>(),

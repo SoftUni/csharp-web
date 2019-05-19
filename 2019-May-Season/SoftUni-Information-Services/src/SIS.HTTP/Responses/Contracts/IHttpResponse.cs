@@ -1,9 +1,7 @@
-﻿using SIS.HTTP.Enums;
-using SIS.HTTP.Headers;
-using SIS.HTTP.Headers.Contracts;
-
-namespace SIS.HTTP.Responses.Contracts
+﻿namespace SIS.HTTP.Responses.Contracts
 {
+    using SIS.HTTP.Enums;
+    using SIS.HTTP.Headers.Contracts;
     public interface IHttpResponse
     {
         HttpResponseStatusCode StatusCode { get; set; }
@@ -12,7 +10,7 @@ namespace SIS.HTTP.Responses.Contracts
 
         byte[] Content { get; set; }
 
-        void AddHeader(HttpHeader header);
+        void AddHeader(IHttpHeader header);
 
         byte[] GetBytes();
     }

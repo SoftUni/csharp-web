@@ -1,22 +1,18 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using SIS.HTTP.Common;
-using SIS.WebServer.Routing.Contracts;
-
-namespace SIS.WebServer
+﻿namespace SIS.WebServer
 {
+    using System;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Threading.Tasks;
+
+    using SIS.HTTP.Common;
+    using SIS.WebServer.Routing.Contracts;
     public class Server
     {
         private const string LocalHostIpAddress = "127.0.0.1";
-
         private readonly int port;
-
         private readonly TcpListener tcpListener;
-
-        private IServerRoutingTable serverRoutingTable;
-
+        private readonly IServerRoutingTable serverRoutingTable;
         private bool isRunning;
 
         public Server(int port, IServerRoutingTable serverRoutingTable)
@@ -29,10 +25,10 @@ namespace SIS.WebServer
             this.tcpListener = new TcpListener(IPAddress.Parse(LocalHostIpAddress), port);
         }
 
-        private void Listen(Socket client)
+        private async Task Listen(Socket client)
         {
             var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
-            connectionHandler.ProcessRequest();
+            await connectionHandler.ProcessRequestAsync();
         }
 
         public void Run()
@@ -47,8 +43,8 @@ namespace SIS.WebServer
                 Console.WriteLine("Waiting for client...");
 
                 var client = this.tcpListener.AcceptSocket();
-
-                this.Listen(client);
+                
+                Task.Run(() => this.Listen(client));
             }
         }
     }

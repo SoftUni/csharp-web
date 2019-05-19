@@ -1,39 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SIS.HTTP.Common;
-using SIS.HTTP.Headers.Contracts;
-
-namespace SIS.HTTP.Headers
+﻿namespace SIS.HTTP.Headers
 {
-    public class HttpHeaderCollection : IHttpHeaderCollection
+    using System.Linq;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Headers.Contracts;
+    public class HttpHeaderCollection : IHttpHeaderCollection, IEnumerable<IHttpHeader>
     {
-        private Dictionary<string, HttpHeader> httpHeaders;
+        private readonly IList<IHttpHeader> httpHeaders;
 
         public HttpHeaderCollection()
         {
-            this.httpHeaders = new Dictionary<string, HttpHeader>();
+            this.httpHeaders = new List<IHttpHeader>();
         }
 
-        public void AddHeader(HttpHeader header)
+        public void AddHeader(IHttpHeader header)
         {
             CoreValidator.ThrowIfNull(header, nameof(header));
-            this.httpHeaders.Add(header.Key, header);
+            this.httpHeaders.Add(header);
         }
+
 
         public bool ContainsHeader(string key)
         {
             CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
-            return this.httpHeaders.ContainsKey(key);
+            return this.httpHeaders.Any(h => h.Key == key);
         }
 
-        public HttpHeader GetHeader(string key)
+        public IEnumerator<IHttpHeader> GetEnumerator()
+        {
+            return this.httpHeaders.GetEnumerator();
+        }
+
+        public IHttpHeader GetHeader(string key)
         {
             CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
-            return this.httpHeaders[key];
+            return this.httpHeaders.FirstOrDefault(h => h.Key == key);
         }
 
         public override string ToString() => string.Join("\r\n",
-            this.httpHeaders.Values.Select(header => header.ToString()));
+            this.httpHeaders.ToString());
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 }

@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SIS.HTTP.Common;
-using SIS.HTTP.Enums;
-using SIS.HTTP.Exceptions;
-using SIS.HTTP.Headers;
-using SIS.HTTP.Headers.Contracts;
-using SIS.HTTP.Requests.Contracts;
-
-namespace SIS.HTTP.Requests
+﻿namespace SIS.HTTP.Requests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Enums;
+    using SIS.HTTP.Exceptions;
+    using SIS.HTTP.Headers;
+    using SIS.HTTP.Headers.Contracts;
+    using SIS.HTTP.Requests.Contracts;
     public class HttpRequest : IHttpRequest
     {
         public HttpRequest(string requestString)
         {
             CoreValidator.ThrowIfNullOrEmpty(requestString, nameof(requestString));
 
-            this.FormData = new Dictionary<string, object>();
-            this.QueryData = new Dictionary<string, object>();
+            this.FormData = new Dictionary<string, string>();
+            this.QueryData = new Dictionary<string, string>();
             this.Headers = new HttpHeaderCollection();
 
             this.ParseRequest(requestString);
@@ -25,8 +25,8 @@ namespace SIS.HTTP.Requests
 
         public string Path { get; private set; }
         public string Url { get; private set; }
-        public Dictionary<string, object> FormData { get; }
-        public Dictionary<string, object> QueryData { get; }
+        public IDictionary<string, string> FormData { get; }
+        public IDictionary<string, string> QueryData { get; }
         public IHttpHeaderCollection Headers { get; }
         public HttpRequestMethod RequestMethod { get; private set; }
 
@@ -91,8 +91,7 @@ namespace SIS.HTTP.Requests
 
         private void ParseRequestHeaders(string[] plainHeaders)
         {
-            plainHeaders.Select(plainHeader => plainHeader.Split(new[] { ':', ' ' }
-                , StringSplitOptions.RemoveEmptyEntries))
+            plainHeaders.Select(plainHeader => plainHeader.Split(new[] { ':', ' ' }, StringSplitOptions.RemoveEmptyEntries))
                 .ToList()
                 .ForEach(headerKeyValuePair => this.Headers.AddHeader(new HttpHeader(headerKeyValuePair[0], headerKeyValuePair[1])));
         }
@@ -124,11 +123,11 @@ namespace SIS.HTTP.Requests
                 {
                     string key = paramPair[0];
                     string value = paramPair[1];
+
                     if (FormData.ContainsKey(key) == false)
                     {
-                        FormData.Add(key, new HashSet<string>());
+                        FormData.Add(key, value);
                     }
-                    FormData[key].Add(value);
                 }
             }
         }

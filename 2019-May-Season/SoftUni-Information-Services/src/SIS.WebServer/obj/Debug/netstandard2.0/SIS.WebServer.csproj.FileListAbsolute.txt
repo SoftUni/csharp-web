@@ -1,0 +1,12 @@
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.csprojAssemblyReference.cache
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.csproj.CoreCompileInputs.cache
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.AssemblyInfoInputs.cache
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.AssemblyInfo.cs
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\bin\Debug\netstandard2.0\SIS.WebServer.deps.json
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\bin\Debug\netstandard2.0\SIS.WebServer.dll
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\bin\Debug\netstandard2.0\SIS.WebServer.pdb
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\bin\Debug\netstandard2.0\SIS.HTTP.dll
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\bin\Debug\netstandard2.0\SIS.HTTP.pdb
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.csproj.CopyComplete
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.dll
+d:\Desktop\csharp-web\2019-May-Season\SoftUni-Information-Services\src\SIS.WebServer\obj\Debug\netstandard2.0\SIS.WebServer.pdb

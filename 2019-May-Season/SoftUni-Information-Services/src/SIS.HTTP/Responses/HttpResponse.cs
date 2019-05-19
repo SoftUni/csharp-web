@@ -1,15 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using SIS.HTTP.Common;
-using SIS.HTTP.Enums;
-using SIS.HTTP.Extensions;
-using SIS.HTTP.Headers;
-using SIS.HTTP.Headers.Contracts;
-using SIS.HTTP.Responses.Contracts;
-
-namespace SIS.HTTP.Responses
+﻿namespace SIS.HTTP.Responses
 {
+    using System.Text;
+
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Enums;
+    using SIS.HTTP.Extensions;
+    using SIS.HTTP.Headers;
+    using SIS.HTTP.Headers.Contracts;
+    using SIS.HTTP.Responses.Contracts;
     public class HttpResponse : IHttpResponse
     {
         public HttpResponse()
@@ -18,19 +16,18 @@ namespace SIS.HTTP.Responses
             this.Content = new byte[0];
         }
 
-        public HttpResponse(HttpResponseStatusCode statusCode) : this()
+        public HttpResponse(HttpResponseStatusCode responseStatusCode) 
+            : this()
         {
-            CoreValidator.ThrowIfNull(statusCode, nameof(statusCode));
-            this.StatusCode = statusCode;
+            CoreValidator.ThrowIfNull(responseStatusCode, nameof(responseStatusCode));
+            this.StatusCode = responseStatusCode;
         }
 
         public HttpResponseStatusCode StatusCode { get; set; }
-
         public IHttpHeaderCollection Headers { get; }
-
         public byte[] Content { get; set; }
 
-        public void AddHeader(HttpHeader header)
+        public void AddHeader(IHttpHeader header)
         {
             this.Headers.AddHeader(header);
         }
@@ -38,7 +35,7 @@ namespace SIS.HTTP.Responses
         public byte[] GetBytes()
         {
             byte[] httpResponseBytesWithoutBody = Encoding.UTF8.GetBytes(this.ToString());
-            
+
             byte[] httpResponseBytesWithBody = new byte[httpResponseBytesWithoutBody.Length + this.Content.Length];
 
             for (int i = 0; i < httpResponseBytesWithoutBody.Length; i++)
@@ -56,7 +53,7 @@ namespace SIS.HTTP.Responses
 
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             result
                 .Append($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetStatusLine()}")

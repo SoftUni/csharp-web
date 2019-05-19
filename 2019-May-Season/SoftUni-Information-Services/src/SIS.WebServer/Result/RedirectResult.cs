@@ -1,14 +1,16 @@
-﻿using SIS.HTTP.Enums;
-using SIS.HTTP.Headers;
-using SIS.HTTP.Responses;
-
-namespace SIS.WebServer.Result
+﻿namespace SIS.WebServer.Result
 {
-    public class RedirectResult : HttpResponse
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Enums;
+    using SIS.HTTP.Headers;
+    using SIS.HTTP.Responses;
+    using SIS.HTTP.Responses.Contracts;
+    public class RedirectResult : HttpResponse, IHttpResponse
     {
-        public RedirectResult(string location) : base(HttpResponseStatusCode.SeeOther)
+        public RedirectResult(string location) 
+            : base(HttpResponseStatusCode.SeeOther)
         {
-            this.Headers.AddHeader(new HttpHeader("Location", location));
+            this.Headers.AddHeader(new HttpHeader(GlobalConstants.LocationHeaderKey, location));
         }
     }
 }

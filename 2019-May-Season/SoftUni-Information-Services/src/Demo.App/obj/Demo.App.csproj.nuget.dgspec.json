@@ -1,0 +1,174 @@
+{
+  "format": 1,
+  "restore": {
+    "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\Demo.App\\Demo.App.csproj": {}
+  },
+  "projects": {
+    "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\Demo.App\\Demo.App.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\Demo.App\\Demo.App.csproj",
+        "projectName": "Demo.App",
+        "projectPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\Demo.App\\Demo.App.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\Demo.App\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj": {
+                "projectPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj"
+              },
+              "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.WebServer\\SIS.WebServer.csproj": {
+                "projectPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.WebServer\\SIS.WebServer.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj",
+        "projectName": "SIS.HTTP",
+        "projectPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.WebServer\\SIS.WebServer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.WebServer\\SIS.WebServer.csproj",
+        "projectName": "SIS.WebServer",
+        "projectPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.WebServer\\SIS.WebServer.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.WebServer\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {
+              "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj": {
+                "projectPath": "d:\\Desktop\\csharp-web\\2019-May-Season\\SoftUni-Information-Services\\src\\SIS.HTTP\\SIS.HTTP.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

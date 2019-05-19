@@ -4,6 +4,10 @@
     {
         public const string HttpOneProtocolFragment = "HTTP/1.1";
 
+        public const string ContentTypeHeaderKey = "Content-Type";
+
+        public const string LocationHeaderKey = "Location";
+
         public const string HostHeaderKey = "Host";
 
         public const string HttpNewLine = "\r\n";

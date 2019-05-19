@@ -1,13 +1,14 @@
-﻿using SIS.HTTP.Common;
-
-namespace SIS.HTTP.Headers
+﻿namespace SIS.HTTP.Headers
 {
-    public class HttpHeader
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Headers.Contracts;
+    public class HttpHeader : IHttpHeader
     {
         public HttpHeader(string key, string value)
         {
             CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
             CoreValidator.ThrowIfNullOrEmpty(value, nameof(value));
+
             this.Key = key;
             this.Value = value;
         }

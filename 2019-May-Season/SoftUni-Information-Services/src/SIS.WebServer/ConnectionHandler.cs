@@ -1,17 +1,19 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Text;
-using SIS.HTTP.Common;
-using SIS.HTTP.Enums;
-using SIS.HTTP.Exceptions;
-using SIS.HTTP.Requests;
-using SIS.HTTP.Requests.Contracts;
-using SIS.HTTP.Responses.Contracts;
-using SIS.WebServer.Result;
-using SIS.WebServer.Routing.Contracts;
-
-namespace SIS.WebServer
+﻿namespace SIS.WebServer
 {
+    using System;
+    using System.Net.Sockets;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using SIS.HTTP.Common;
+    using SIS.HTTP.Enums;
+    using SIS.HTTP.Exceptions;
+    using SIS.HTTP.Requests;
+    using SIS.HTTP.Requests.Contracts;
+    using SIS.HTTP.Responses.Contracts;
+    using SIS.WebServer.Result;
+    using SIS.WebServer.Routing.Contracts;
+
     public class ConnectionHandler
     {
         private readonly Socket client;
@@ -27,15 +29,14 @@ namespace SIS.WebServer
             this.serverRoutingTable = serverRoutingTable;
         }
 
-        private IHttpRequest ReadRequest()
+        private async Task<IHttpRequest> ReadRequestAsync()
         {
-            // PARSE REQUEST FROM BYTE DATA
             var result = new StringBuilder();
             var data = new ArraySegment<byte>(new byte[1024]);
 
             while (true)
             {
-                int numberOfBytesToRead = this.client.Receive(data.Array, SocketFlags.None);
+                int numberOfBytesToRead = await this.client.ReceiveAsync(data, SocketFlags.None);
 
                 if (numberOfBytesToRead == 0)
                 {
@@ -61,7 +62,6 @@ namespace SIS.WebServer
 
         private IHttpResponse HandleRequest(IHttpRequest httpRequest)
         {
-            // EXECUTE FUNCTION FOR CURRENT REQUEST -> RETURNS RESPONSE
             if (!this.serverRoutingTable.Contains(httpRequest.RequestMethod, httpRequest.Path))
             {
                 return new TextResult($"Route with method {httpRequest.RequestMethod} and path \"{httpRequest.Path}\" not found.", HttpResponseStatusCode.NotFound);
@@ -78,13 +78,13 @@ namespace SIS.WebServer
             this.client.Send(byteSegments, SocketFlags.None);
         }
 
-        public void ProcessRequest()
+        public async Task ProcessRequestAsync()
         {
             IHttpResponse httpResponse = null;
 
             try
             {
-                IHttpRequest httpRequest = this.ReadRequest();
+                IHttpRequest httpRequest = await this.ReadRequestAsync();
 
                 if (httpRequest != null)
                 {
