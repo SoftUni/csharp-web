@@ -16,7 +16,7 @@ namespace SIS.HTTP.Requests
         {
             CoreValidator.ThrowIfNullOrEmpty(requestString, nameof(requestString));
 
-            this.FormData = new Dictionary<string, ISet<string>>();
+            this.FormData = new Dictionary<string,object>();
             this.QueryData = new Dictionary<string, object>();
             this.Headers = new HttpHeaderCollection();
 
@@ -25,7 +25,7 @@ namespace SIS.HTTP.Requests
 
         public string Path { get; private set; }
         public string Url { get; private set; }
-        public Dictionary<string, ISet<string>> FormData { get; }
+        public Dictionary<string, object> FormData { get; }
         public Dictionary<string, object> QueryData { get; }
         public IHttpHeaderCollection Headers { get; }
         public HttpRequestMethod RequestMethod { get; private set; }
@@ -128,7 +128,7 @@ namespace SIS.HTTP.Requests
                     {
                         FormData.Add(key, new HashSet<string>());
                     }
-                    FormData[key].Add(value);
+                   ((ISet<string>) FormData[key]).Add(value);
                 }
             }
         }
