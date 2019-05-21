@@ -124,12 +124,14 @@ namespace SIS.HTTP.Requests
                 {
                     string key = paramPair[0];
                     string value = paramPair[1];
-                    if (FormData.ContainsKey(key) == false)
+
+                    if (this.FormData.ContainsKey(key) == false)
                     {
-                        FormData.Add(key, new HashSet<string>());
+                        this.FormData.Add(key, new HashSet<string>());
                     }
-                   ((ISet<string>) FormData[key]).Add(value);
-                }
+
+                    ((ISet<string>)this.FormData[key]).Add(value);
+                }                
             }
         }
 
