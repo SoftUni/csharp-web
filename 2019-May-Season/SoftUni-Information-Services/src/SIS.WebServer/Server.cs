@@ -29,10 +29,10 @@ namespace SIS.WebServer
             this.tcpListener = new TcpListener(IPAddress.Parse(LocalHostIpAddress), port);
         }
 
-        private void Listen(Socket client)
+        private async Task ListenAsync(Socket client)
         {
             var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
-            connectionHandler.ProcessRequest();
+            await connectionHandler.ProcessRequestAsync();
         }
 
         public void Run()
@@ -46,9 +46,9 @@ namespace SIS.WebServer
             {
                 Console.WriteLine("Waiting for client...");
 
-                var client = this.tcpListener.AcceptSocket();
+                var client = this.tcpListener.AcceptSocketAsync().GetAwaiter().GetResult();
 
-                this.Listen(client);
+                Task.Run(() => this.ListenAsync(client));
             }
         }
     }

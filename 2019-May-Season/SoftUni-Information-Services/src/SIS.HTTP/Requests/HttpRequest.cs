@@ -16,7 +16,7 @@ namespace SIS.HTTP.Requests
         {
             CoreValidator.ThrowIfNullOrEmpty(requestString, nameof(requestString));
 
-            this.FormData = new Dictionary<string, object>();
+            this.FormData = new Dictionary<string,object>();
             this.QueryData = new Dictionary<string, object>();
             this.Headers = new HttpHeaderCollection();
 
@@ -110,7 +110,7 @@ namespace SIS.HTTP.Requests
             }
         }
 
-       private void ParseRequestFormDataParameters(string requestBody)
+        private void ParseRequestFormDataParameters(string requestBody)
         {
             if (string.IsNullOrEmpty(requestBody) == false)
             {
