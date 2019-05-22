@@ -27,7 +27,7 @@ namespace Demo.App.Controllers
 
                 if (userFromDb == null)
                 {
-                    return this.Redirect("/login");
+                    return this.Redirect("/user/login");
                 }
 
                 httpRequest.Session.AddParameter("username"
@@ -52,7 +52,7 @@ namespace Demo.App.Controllers
 
                 if (password != confirmPassword)
                 {
-                    return this.Redirect("/register");
+                    return this.Redirect("/user/register");
                 }
 
                 User user = new User
@@ -65,7 +65,7 @@ namespace Demo.App.Controllers
                 context.SaveChanges();
             }
 
-            return this.Redirect("/login");
+            return this.Redirect("/user/login");
         }
 
         public IHttpResponse Logout(IHttpRequest httpRequest)
