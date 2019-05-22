@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,12 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Demo.Data\Demo.Data.csproj" />
     <ProjectReference Include="..\SIS.HTTP\SIS.HTTP.csproj" />
     <ProjectReference Include="..\SIS.WebServer\SIS.WebServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\Home\Index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Home\Home.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Users\Register.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Users\Login.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
