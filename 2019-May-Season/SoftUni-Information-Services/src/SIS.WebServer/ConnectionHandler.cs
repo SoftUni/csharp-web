@@ -9,6 +9,7 @@ using SIS.HTTP.Exceptions;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Requests.Contracts;
 using SIS.HTTP.Responses.Contracts;
+using SIS.HTTP.Sessions.Contracts;
 using SIS.WebServer.Result;
 using SIS.WebServer.Routing.Contracts;
 using SIS.WebServer.Sessions;
@@ -75,29 +76,34 @@ namespace SIS.WebServer
 
         private string SetRequestSession(IHttpRequest httpRequest)
         {
-            string sessionId = null;
-
             if (httpRequest.Cookies.ContainsCookie(HttpSessionStorage.SessionCookieKey))
             {
-                var cookie = httpRequest.Cookies.GetCookie(HttpSessionStorage.SessionCookieKey);
-                sessionId = cookie.Value;
-            }
-            else
-            {
-                sessionId = Guid.NewGuid().ToString();
+                var cookie = httpRequest
+                    .Cookies
+                    .GetCookie(HttpSessionStorage.SessionCookieKey);
+
+                string sessionId = cookie.Value;
+
+                if (HttpSessionStorage.ContainsSession(sessionId))
+                {
+                    httpRequest.Session = HttpSessionStorage.GetSession(sessionId);
+                }
             }
 
-            httpRequest.Session = HttpSessionStorage.GetSession(sessionId);
-            return httpRequest.Session.Id;
+            return httpRequest.Session?.Id;
         }
 
         private void SetResponseSession(IHttpResponse httpResponse, string sessionId)
         {
-            if (sessionId != null)
+            if (string.IsNullOrWhiteSpace(sessionId))
             {
-                httpResponse.Cookies
-                    .AddCookie(new HttpCookie(HttpSessionStorage
-                        .SessionCookieKey, sessionId));
+                sessionId = Guid.NewGuid().ToString();
+            }
+
+            if (!HttpSessionStorage.ContainsSession(sessionId))
+            {
+                IHttpSession newSession = HttpSessionStorage.AddOrUpdateSession(sessionId);
+                httpResponse.AddCookie(new HttpCookie(HttpSessionStorage.SessionCookieKey, newSession.Id));
             }
         }
 
