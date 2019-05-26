@@ -76,6 +76,7 @@ namespace SIS.WebServer
         private string SetRequestSession(IHttpRequest httpRequest)
         {
             string sessionId = null;
+            bool isNewSession = false;
 
             if (httpRequest.Cookies.ContainsCookie(HttpSessionStorage.SessionCookieKey))
             {
@@ -85,10 +86,16 @@ namespace SIS.WebServer
             else
             {
                 sessionId = Guid.NewGuid().ToString();
+                isNewSession = true;
             }
 
             httpRequest.Session = HttpSessionStorage.GetSession(sessionId);
-            return httpRequest.Session.Id;
+
+            if (isNewSession)
+            {
+                return httpRequest.Session.Id;
+            }
+            return null;
         }
 
         private void SetResponseSession(IHttpResponse httpResponse, string sessionId)
