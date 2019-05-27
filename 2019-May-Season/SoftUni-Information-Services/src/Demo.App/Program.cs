@@ -7,9 +7,9 @@ using SIS.WebServer.Routing.Contracts;
 
 namespace Demo.App
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             using (var context = new DemoDbContext())
             {

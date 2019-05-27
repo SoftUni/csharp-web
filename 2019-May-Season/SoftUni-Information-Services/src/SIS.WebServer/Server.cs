@@ -15,7 +15,7 @@ namespace SIS.WebServer
 
         private readonly TcpListener tcpListener;
 
-        private IServerRoutingTable serverRoutingTable;
+        private readonly IServerRoutingTable serverRoutingTable;
 
         private bool isRunning;
 

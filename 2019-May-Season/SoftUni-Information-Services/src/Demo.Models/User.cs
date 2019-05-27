@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Demo.Models
+﻿namespace Demo.Models
 {
     public class User
     {
