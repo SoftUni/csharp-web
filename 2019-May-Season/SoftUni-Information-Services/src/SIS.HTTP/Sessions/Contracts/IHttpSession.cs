@@ -4,6 +4,8 @@
     {
         string Id { get; }
 
+        bool IsNew { get; set; }
+
         object GetParameter(string parameterName);
 
         bool ContainsParameter(string parameterName);

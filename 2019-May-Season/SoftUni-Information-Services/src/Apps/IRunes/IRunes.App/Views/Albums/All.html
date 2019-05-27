@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>IRunes</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container-fluid">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+                <a class="navbar-brand" href="#">IRunes</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Albums/All">Albums</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Users/Logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <hr class="bg-success" style="height: 2px" />
+        <main>
+            <h1>Albums</h1>
+            <hr class="bg-success" style="height: 2px" />
+            <a class="btn bg-success text-white" href="/Albums/Create">Create Album</a>
+            <hr class="bg-success" style="height: 2px" />
+            <div id="albums">
+                @Model.Albums
+            </div>
+        </main>
+        <hr class="bg-success" style="height: 2px" />
+        <footer>
+            <h5 class="font-weight-bold text-center">CopyRight &copy; Sanity Design Studios. All rights reserved.</h5>
+        </footer>
+    </div>
+</body>
+</html>

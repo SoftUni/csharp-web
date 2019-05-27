@@ -8,7 +8,7 @@ namespace SIS.HTTP.Cookies
 {
     public class HttpCookieCollection : IHttpCookieCollection
     {
-        private readonly Dictionary<string, HttpCookie> httpCookies;
+        private Dictionary<string, HttpCookie> httpCookies;
 
         public HttpCookieCollection()
         {
@@ -50,7 +50,7 @@ namespace SIS.HTTP.Cookies
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public override string ToString()

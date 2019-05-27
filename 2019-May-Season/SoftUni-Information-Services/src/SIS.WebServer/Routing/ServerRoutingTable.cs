@@ -10,8 +10,7 @@ namespace SIS.WebServer.Routing
 {
     public class ServerRoutingTable : IServerRoutingTable
     {
-        private readonly Dictionary<HttpRequestMethod, Dictionary<string, Func<IHttpRequest, IHttpResponse>>> routingTable;
-
+        private Dictionary<HttpRequestMethod, Dictionary<string, Func<IHttpRequest, IHttpResponse>>> routingTable;
         public ServerRoutingTable()
         {
             this.routingTable = new Dictionary<HttpRequestMethod, Dictionary<string, Func<IHttpRequest, IHttpResponse>>>

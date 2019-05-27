@@ -8,23 +8,17 @@ namespace SIS.WebServer.Sessions
     {
         public const string SessionCookieKey = "SIS_ID";
 
-        private static readonly ConcurrentDictionary<string, IHttpSession> HttpSessions =
+        private static readonly ConcurrentDictionary<string, IHttpSession> httpSessions =
             new ConcurrentDictionary<string, IHttpSession>();
 
         public static IHttpSession GetSession(string id)
         {
-            return HttpSessions.GetOrAdd(id, _ => new HttpSession(id));
+            return httpSessions.GetOrAdd(id, _ => new HttpSession(id));
         }
 
         public static bool ContainsSession(string id)
         {
-            return HttpSessions.ContainsKey(id);
-        }
-
-        public static IHttpSession AddOrUpdateSession(string id)
-        {
-            return HttpSessions
-                .AddOrUpdate(id, _ => new HttpSession(id), (key, val) => new HttpSession(id));
+            return httpSessions.ContainsKey(id);
         }
     }
 }
