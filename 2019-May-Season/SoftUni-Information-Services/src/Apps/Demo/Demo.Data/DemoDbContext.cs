@@ -7,10 +7,6 @@ namespace Demo.Data
     {
         public DbSet<User> Users { get; set; }
 
-        public DemoDbContext()
-        {
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=MvcFrameworkDemoApp;Integrated Security=True;");

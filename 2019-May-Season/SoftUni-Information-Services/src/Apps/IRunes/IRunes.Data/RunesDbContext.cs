@@ -12,11 +12,6 @@ namespace IRunes.Data
 
         public DbSet<Album> Albums { get; set; }
 
-        public RunesDbContext()
-        {
-
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(DatabaseConfiguration.ConnectionString);

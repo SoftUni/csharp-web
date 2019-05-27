@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Responses\Parameters\**" />
-    <EmbeddedResource Remove="Responses\Parameters\**" />
-    <None Remove="Responses\Parameters\**" />
-  </ItemGroup>
 
 </Project>
