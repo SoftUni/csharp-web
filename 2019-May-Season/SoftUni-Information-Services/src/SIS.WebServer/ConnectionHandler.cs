@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SIS.HTTP.Common;
@@ -63,12 +65,32 @@ namespace SIS.WebServer
             return new HttpRequest(result.ToString());
         }
 
+        private IHttpResponse ReturnIfResource(IHttpRequest httpRequest)
+        {
+            string folderPrefix = "/../";
+            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            string resourceFolderPath = "Resources/";
+            string requestedResource = httpRequest.Path;
+
+            string fullPathToResource = assemblyLocation + folderPrefix + resourceFolderPath + requestedResource;
+
+            if (File.Exists(fullPathToResource))
+            {
+                byte[] content = File.ReadAllBytes(fullPathToResource);
+                return new InlineResourceResult(content, HttpResponseStatusCode.Found);
+            }
+            else
+            {
+                return new TextResult($"Route with method {httpRequest.RequestMethod} and path \"{httpRequest.Path}\" not found.", HttpResponseStatusCode.NotFound);
+            }
+        }
+
         private IHttpResponse HandleRequest(IHttpRequest httpRequest)
         {
             // EXECUTE FUNCTION FOR CURRENT REQUEST -> RETURNS RESPONSE
             if (!this.serverRoutingTable.Contains(httpRequest.RequestMethod, httpRequest.Path))
             {
-                return new TextResult($"Route with method {httpRequest.RequestMethod} and path \"{httpRequest.Path}\" not found.", HttpResponseStatusCode.NotFound);
+                return this.ReturnIfResource(httpRequest);
             }
 
             return this.serverRoutingTable.Get(httpRequest.RequestMethod, httpRequest.Path).Invoke(httpRequest);
@@ -90,20 +112,24 @@ namespace SIS.WebServer
                 }
             }
 
+            if (httpRequest.Session == null)
+            {
+                string sessionId = Guid.NewGuid().ToString();
+
+                httpRequest.Session = HttpSessionStorage.GetSession(sessionId);
+            }
+
             return httpRequest.Session?.Id;
         }
 
         private void SetResponseSession(IHttpResponse httpResponse, string sessionId)
         {
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                sessionId = Guid.NewGuid().ToString();
-            }
+            IHttpSession responseSession = HttpSessionStorage.GetSession(sessionId);
 
-            if (!HttpSessionStorage.ContainsSession(sessionId))
+            if (responseSession.IsNew)
             {
-                IHttpSession newSession = HttpSessionStorage.AddOrUpdateSession(sessionId);
-                httpResponse.AddCookie(new HttpCookie(HttpSessionStorage.SessionCookieKey, newSession.Id));
+                responseSession.IsNew = false;
+                httpResponse.AddCookie(new HttpCookie(HttpSessionStorage.SessionCookieKey, responseSession.Id));
             }
         }
 

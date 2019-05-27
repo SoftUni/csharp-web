@@ -20,11 +20,5 @@ namespace SIS.WebServer.Sessions
         {
             return httpSessions.ContainsKey(id);
         }
-
-        public static IHttpSession AddOrUpdateSession(string id)
-        {
-            return httpSessions
-                .AddOrUpdate(id, _ => new HttpSession(id), (key, val) => new HttpSession(id));
-        }
     }
 }
