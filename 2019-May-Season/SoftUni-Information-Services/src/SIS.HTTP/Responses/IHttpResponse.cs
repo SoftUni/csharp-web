@@ -2,9 +2,8 @@
 using SIS.HTTP.Cookies.Contracts;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Headers;
-using SIS.HTTP.Headers.Contracts;
 
-namespace SIS.HTTP.Responses.Contracts
+namespace SIS.HTTP.Responses
 {
     public interface IHttpResponse
     {

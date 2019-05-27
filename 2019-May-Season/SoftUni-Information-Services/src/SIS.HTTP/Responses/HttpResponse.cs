@@ -5,8 +5,6 @@ using SIS.HTTP.Cookies.Contracts;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Extensions;
 using SIS.HTTP.Headers;
-using SIS.HTTP.Headers.Contracts;
-using SIS.HTTP.Responses.Contracts;
 
 namespace SIS.HTTP.Responses
 {

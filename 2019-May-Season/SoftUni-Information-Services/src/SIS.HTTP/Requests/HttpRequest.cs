@@ -7,9 +7,7 @@ using SIS.HTTP.Cookies.Contracts;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Exceptions;
 using SIS.HTTP.Headers;
-using SIS.HTTP.Headers.Contracts;
-using SIS.HTTP.Requests.Contracts;
-using SIS.HTTP.Sessions.Contracts;
+using SIS.HTTP.Sessions;
 
 namespace SIS.HTTP.Requests
 {
