@@ -7,10 +7,12 @@ using IRunes.Models;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
+using SIS.MvcFramework;
+using SIS.MvcFramework.Attributes;
 
 namespace IRunes.App.Controllers
 {
-    public class UsersController : BaseController
+    public class UsersController : Controller
     {
         private string HashPassword(string password)
         {
@@ -25,6 +27,7 @@ namespace IRunes.App.Controllers
             return this.View();
         }
 
+        [HttpPost(ActionName = "Login")]
         public IHttpResponse LoginConfirm(IHttpRequest httpRequest)
         {
             using (var context = new RunesDbContext())
@@ -35,13 +38,12 @@ namespace IRunes.App.Controllers
                 User userFromDb = context.Users.FirstOrDefault(user => (user.Username == username
                                                                         || user.Email == username)
                                                                        && user.Password == this.HashPassword(password));
-
                 if (userFromDb == null)
                 {
                     return this.Redirect("/Users/Login");
                 }
 
-                this.SignIn(httpRequest, userFromDb);
+                this.SignIn(httpRequest, userFromDb.Id, userFromDb.Username, userFromDb.Email);
             }
 
             return this.Redirect("/");
@@ -52,6 +54,7 @@ namespace IRunes.App.Controllers
             return this.View();
         }
 
+        [HttpPost(ActionName = "Register")]
         public IHttpResponse RegisterConfirm(IHttpRequest httpRequest)
         {
             using (var context = new RunesDbContext())

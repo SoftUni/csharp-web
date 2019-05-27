@@ -1,28 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
-using IRunes.Models;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.WebServer.Result;
 
-namespace IRunes.App.Controllers
+namespace SIS.MvcFramework
 {
-    public abstract class BaseController
+    public abstract class Controller
     {
-        protected BaseController()
+        protected Controller()
         {
-            this.ViewData = new Dictionary<string, object>();
+            ViewData = new Dictionary<string, object>();
         }
 
         protected Dictionary<string, object> ViewData;
 
         private string ParseTemplate(string viewContent)
         {
-            foreach (var param in this.ViewData)
+            foreach (var param in ViewData)
             {
-                viewContent = viewContent.Replace($"@Model.{param.Key}", 
+                viewContent = viewContent.Replace($"@Model.{param.Key}",
                     param.Value.ToString());
             }
 
@@ -34,11 +33,11 @@ namespace IRunes.App.Controllers
             return request.Session.ContainsParameter("username");
         }
 
-        protected void SignIn(IHttpRequest httpRequest, User user)
+        protected void SignIn(IHttpRequest httpRequest, string id, string username, string email)
         {
-            httpRequest.Session.AddParameter("id", user.Id);
-            httpRequest.Session.AddParameter("username", user.Username);
-            httpRequest.Session.AddParameter("email", user.Email);
+            httpRequest.Session.AddParameter("id", id);
+            httpRequest.Session.AddParameter("username", username);
+            httpRequest.Session.AddParameter("email", email);
         }
 
         protected void SignOut(IHttpRequest httpRequest)
@@ -48,14 +47,14 @@ namespace IRunes.App.Controllers
 
         protected IHttpResponse View([CallerMemberName] string view = null)
         {
-            string controllerName = this.GetType().Name.Replace("Controller", string.Empty);
+            string controllerName = GetType().Name.Replace("Controller", string.Empty);
             string viewName = view;
 
             string viewContent = File.ReadAllText("Views/" + controllerName + "/" + viewName + ".html");
 
-            viewContent = this.ParseTemplate(viewContent);
+            viewContent = ParseTemplate(viewContent);
 
-            HtmlResult htmlResult = new HtmlResult(viewContent, HttpResponseStatusCode.Ok);
+            HtmlResult htmlResult = new HtmlResult(viewContent);
 
             return htmlResult;
         }
