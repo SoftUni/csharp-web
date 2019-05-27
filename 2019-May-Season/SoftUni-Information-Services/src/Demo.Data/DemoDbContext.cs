@@ -13,7 +13,7 @@ namespace Demo.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=DemoDB;Integrated Security=True;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-07K6OOE\SQLEXPRESS;Database=MvcFrameworkDemoApp;Integrated Security=True;");
 
             base.OnConfiguring(optionsBuilder);
         }

@@ -21,20 +21,20 @@ namespace Demo.App
             // [GET] MAPPINGS
             serverRoutingTable.Add(HttpRequestMethod.Get, "/", httpRequest 
                 => new HomeController(httpRequest).Index(httpRequest));
-            serverRoutingTable.Add(HttpRequestMethod.Get, "/login", httpRequest
+            serverRoutingTable.Add(HttpRequestMethod.Get, "/user/login", httpRequest
                 => new UsersController().Login(httpRequest));
-            serverRoutingTable.Add(HttpRequestMethod.Get, "/register", httpRequest
+            serverRoutingTable.Add(HttpRequestMethod.Get, "/user/register", httpRequest
                 => new UsersController().Register(httpRequest));
-            serverRoutingTable.Add(HttpRequestMethod.Get, "/logout", httpRequest
+            serverRoutingTable.Add(HttpRequestMethod.Get, "/user/logout", httpRequest
                 => new UsersController().Logout(httpRequest));
 
             serverRoutingTable.Add(HttpRequestMethod.Get, "/home", httpRequest
                 => new HomeController(httpRequest).Home(httpRequest));
 
             // [POST] MAPPINGS
-            serverRoutingTable.Add(HttpRequestMethod.Post, "/login", httpRequest
+            serverRoutingTable.Add(HttpRequestMethod.Post, "/user/login", httpRequest
                 => new UsersController().LoginConfirm(httpRequest));
-            serverRoutingTable.Add(HttpRequestMethod.Post, "/register", httpRequest
+            serverRoutingTable.Add(HttpRequestMethod.Post, "/user/register", httpRequest
                 => new UsersController().RegisterConfirm(httpRequest));
 
             Server server = new Server(8000, serverRoutingTable);
