@@ -77,7 +77,7 @@ namespace SIS.WebServer
             if (File.Exists(fullPathToResource))
             {
                 byte[] content = File.ReadAllBytes(fullPathToResource);
-                return new InlineResourceResult(content, HttpResponseStatusCode.Found);
+                return new InlineResourceResult(content, HttpResponseStatusCode.Ok);
             }
             else
             {
