@@ -9,12 +9,10 @@ namespace SIS.HTTP.Exceptions
 
         public BadRequestException() : this(BadRequestExceptionDefaultMessage)
         {
-            
         }
 
         public BadRequestException(string name) : base(name)
         {
-            
         }
     }
 }

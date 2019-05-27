@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Responses\Parameters\" />
+    <Compile Remove="Responses\Parameters\**" />
+    <EmbeddedResource Remove="Responses\Parameters\**" />
+    <None Remove="Responses\Parameters\**" />
   </ItemGroup>
 
 </Project>
