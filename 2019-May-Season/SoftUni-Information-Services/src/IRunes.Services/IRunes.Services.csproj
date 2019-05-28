@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Apps\IRunes\IRunes.Data\IRunes.Data.csproj" />
+    <ProjectReference Include="..\Apps\IRunes\IRunes.Models\IRunes.Models.csproj" />
+  </ItemGroup>
+
+</Project>

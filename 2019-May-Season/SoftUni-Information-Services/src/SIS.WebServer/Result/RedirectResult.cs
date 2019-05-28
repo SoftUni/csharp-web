@@ -1,10 +1,9 @@
 ﻿using SIS.HTTP.Enums;
 using SIS.HTTP.Headers;
-using SIS.HTTP.Responses;
 
-namespace SIS.WebServer.Result
+namespace SIS.MvcFramework.Result
 {
-    public class RedirectResult : HttpResponse
+    public class RedirectResult : ActionResult
     {
         public RedirectResult(string location) : base(HttpResponseStatusCode.SeeOther)
         {
