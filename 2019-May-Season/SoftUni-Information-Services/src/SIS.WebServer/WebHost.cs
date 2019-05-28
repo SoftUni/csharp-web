@@ -34,7 +34,7 @@ namespace SIS.MvcFramework
                     .GetMethods(BindingFlags.DeclaredOnly
                     | BindingFlags.Public
                     | BindingFlags.Instance)
-                    .Where(x => !x.IsSpecialName && x.DeclaringType == controller);
+                    .Where(x => !x.IsSpecialName && x.DeclaringType == controller&&!x.IsVirtual);
                 foreach (var action in actions)
                 {
                     var path = $"/{controller.Name.Replace("Controller", string.Empty)}/{action.Name}";
