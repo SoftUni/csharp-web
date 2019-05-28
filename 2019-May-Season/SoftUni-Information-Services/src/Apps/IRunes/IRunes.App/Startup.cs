@@ -6,7 +6,6 @@ using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework;
 using SIS.WebServer;
-using SIS.WebServer.Result;
 using SIS.WebServer.Routing;
 
 namespace IRunes.App

@@ -6,9 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\IRunes.Services\IRunes.Services.csproj" />
     <ProjectReference Include="..\..\..\SIS.HTTP\SIS.HTTP.csproj" />
     <ProjectReference Include="..\..\..\SIS.WebServer\SIS.MvcFramework.csproj" />
-    <ProjectReference Include="..\IRunes.Data\IRunes.Data.csproj" />
+    <ProjectReference Include="..\IRunes.Models\IRunes.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
