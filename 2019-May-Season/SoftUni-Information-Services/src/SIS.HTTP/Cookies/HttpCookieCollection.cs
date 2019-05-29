@@ -39,10 +39,14 @@ namespace SIS.HTTP.Cookies
         public HttpCookie GetCookie(string key)
         {
             CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
-
-            // TODO: Validation for existing parameter (maybe throw exception)
-
-            return this.httpCookies[key];
+            if (this.httpCookies.TryGetValue(key,out HttpCookie cookie))
+            {
+                return cookie;
+            }
+            else
+            {
+                throw new ArgumentException(message:"There is no cookie with this key in the dictionary",paramName:"key");
+            }
         }
 
         public bool HasCookies()
