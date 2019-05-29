@@ -18,13 +18,18 @@ namespace SIS.HTTP.Sessions
 
         public bool IsNew { get; set; }
 
-        public object GetParameter(string parameterName)
+       public object GetParameter(string parameterName)
         {
             CoreValidator.ThrowIfNullOrEmpty(parameterName, nameof(parameterName));
 
-            // TODO: Validation for existing parameter (maybe throw exception)
-
-            return this.sessionParameters[parameterName];
+            if (this.sessionParameters.TryGetValue(parameterName, out object obj))
+            {
+                return obj;
+            }
+            else
+            {
+                throw new ArgumentException(message: "There is no object with this key in the sessionParameters dictionary", paramName: "parameterName");
+            }
         }
 
         public bool ContainsParameter(string parameterName)
