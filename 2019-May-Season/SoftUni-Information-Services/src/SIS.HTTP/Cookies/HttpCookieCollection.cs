@@ -15,11 +15,18 @@ namespace SIS.HTTP.Cookies
             this.httpCookies = new Dictionary<string, HttpCookie>();
         }
 
-        public void AddCookie(HttpCookie httpCookie)
+         public void AddCookie(HttpCookie httpCookie)
         {
             CoreValidator.ThrowIfNull(httpCookie, nameof(httpCookie));
 
-            this.httpCookies.Add(httpCookie.Key, httpCookie);
+            if (this.httpCookies.ContainsKey(httpCookie.Key) == false)
+            {
+                this.httpCookies.Add(httpCookie.Key, httpCookie);
+            }
+            else
+            {
+                this.httpCookies[httpCookie.Key] = httpCookie;
+            }
         }
 
         public bool ContainsCookie(string key)
