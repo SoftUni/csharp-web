@@ -58,7 +58,7 @@ namespace SIS.HTTP.Requests
             CoreValidator.ThrowIfNullOrEmpty(queryString, nameof(queryString));
             CoreValidator.ThrowIfNull(queryParameters, nameof(queryParameters));
 
-            string pattern = @"^([\w +\.%\*\-]+={1}[\w +\.%\*\-]+&?)+$";
+            string pattern = @"^([\w +\.%\*\-]+={1}[\w +\.%\*\-/]+&?)+$";
             Match match = Regex.Match(queryString, pattern);
 
             if (match.Success == false

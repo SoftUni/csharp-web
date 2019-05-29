@@ -18,17 +18,17 @@ namespace IRunes.App.Controllers
             return base.ToString();
         }
 
-        public ActionResult Json(IHttpRequest request)
+        public ActionResult Json()
         {
             return Json(new { });
         }
 
-        public ActionResult File(IHttpRequest request)
+        public ActionResult File()
         {
             string folderPrefix = "/../";
             string assemblyLocation = this.GetType().Assembly.Location;
             string resourceFolderPath = "Resources/";
-            string requestedResource = request.QueryData["file"].ToString();
+            string requestedResource = this.Request.QueryData["file"].ToString();
 
             string fullPathToResource = assemblyLocation + folderPrefix + resourceFolderPath + requestedResource;
 
@@ -36,17 +36,16 @@ namespace IRunes.App.Controllers
             {
                 // TODO: Students, Do this!!!
                 FileInfo resourceFile = new FileInfo(fullPathToResource);
-                string mimeType = resourceFile.Extension;
                 string fileName = resourceFile.Name;
 
                 byte[] content = System.IO.File.ReadAllBytes(fullPathToResource);
-                return File(content);
+                return File(content, fileName);
             }
 
             return NotFound();
         }
 
-        public IHttpResponse About(IHttpRequest request)
+        public IHttpResponse About()
         {
             return this.View();
         }
