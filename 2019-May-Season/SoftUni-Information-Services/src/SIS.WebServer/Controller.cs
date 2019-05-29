@@ -16,11 +16,8 @@ namespace SIS.MvcFramework
 
         protected Dictionary<string, object> ViewData;
 
-        // TODO: Refactor this
-        public Principal User => 
-            this.Request.Session.ContainsParameter("principal")
-            ? (Principal) this.Request.Session.GetParameter("principal")
-            : null;
+        public Principal User => public Principal User => GetPrincipalIfIsPossible();
+           
 
         public IHttpRequest Request { get; set; }
 
@@ -92,6 +89,15 @@ namespace SIS.MvcFramework
         protected ActionResult NotFound(string message = "")
         {
             return new NotFoundResult(message);
+        }
+        
+        private Principal GetPrincipalIfIsPossible()
+        {
+            if (this.Request.Session.ContainsParameter("principal"))
+            {
+                return (Principal)this.Request.Session.GetParameter("principal");
+            }
+            return null;
         }
     }
 }
