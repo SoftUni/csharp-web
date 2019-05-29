@@ -34,12 +34,20 @@ namespace SIS.HTTP.Sessions
             return this.sessionParameters.ContainsKey(parameterName);
         }
 
-        public void AddParameter(string parameterName, object parameter)
+         public void AddParameter(string parameterName, object parameter)
         {
             CoreValidator.ThrowIfNullOrEmpty(parameterName, nameof(parameterName));
             CoreValidator.ThrowIfNull(parameter, nameof(parameter));
 
-            this.sessionParameters[parameterName] = parameter;
+            if (this.sessionParameters.ContainsKey(parameterName) == false)
+            {
+                this.sessionParameters.Add(parameterName, parameter);
+            }
+            else
+            {
+                this.sessionParameters[parameterName] = parameter;
+            }
+            
         }
 
         public void ClearParameters()
