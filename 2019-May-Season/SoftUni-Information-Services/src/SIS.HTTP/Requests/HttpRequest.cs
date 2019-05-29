@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Cookies.Contracts;
@@ -55,6 +56,16 @@ namespace SIS.HTTP.Requests
         private bool IsValidRequestQueryString(string queryString, string[] queryParameters)
         {
             CoreValidator.ThrowIfNullOrEmpty(queryString, nameof(queryString));
+            CoreValidator.ThrowIfNull(queryParameters, nameof(queryParameters));
+
+            string pattern = @"^([\w +\.%\*\-]+={1}[\w +\.%\*\-]+&?)+$";
+            Match match = Regex.Match(queryString, pattern);
+
+            if (match.Success == false
+                || queryParameters.Length == 0)
+            {
+                return false;
+            }
 
             return true; //TODO: REGEX QUERY STRING
         }
@@ -110,15 +121,24 @@ namespace SIS.HTTP.Requests
 
         private void ParseRequestQueryParameters()
         {
-            if (this.HasQueryString())
+            if (this.HasQueryString() == false)
             {
-                this.Url.Split('?', '#')[1]
-                    .Split('&')
+                return;
+            }
+
+            string queryString = this.Url.Split('?', '#')[1];
+            string[] queryParameters = queryString.Split('&');
+
+            if (this.IsValidRequestQueryString(queryString, queryParameters) == false)
+            {
+                throw new BadRequestException();
+            }
+
+            queryParameters
                     .Select(plainQueryParameter => plainQueryParameter.Split('='))
                     .ToList()
                     .ForEach(queryParameterKeyValuePair =>
-                        this.QueryData.Add(queryParameterKeyValuePair[0], queryParameterKeyValuePair[1]));
-            }
+                                    this.QueryData.Add(queryParameterKeyValuePair[0], queryParameterKeyValuePair[1]));
         }
 
         private void ParseRequestFormDataParameters(string requestBody)

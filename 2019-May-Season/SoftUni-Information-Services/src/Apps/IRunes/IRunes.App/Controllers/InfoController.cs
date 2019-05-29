@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework;
@@ -34,8 +35,9 @@ namespace IRunes.App.Controllers
             if (System.IO.File.Exists(fullPathToResource))
             {
                 // TODO: Students, Do this!!!
-                string mimeType = null;
-                string fileName = null;
+                FileInfo resourceFile = new FileInfo(fullPathToResource);
+                string mimeType = resourceFile.Extension;
+                string fileName = resourceFile.Name;
 
                 byte[] content = System.IO.File.ReadAllBytes(fullPathToResource);
                 return File(content);
