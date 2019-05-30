@@ -12,6 +12,7 @@ using SIS.MvcFramework.Result;
 
 namespace IRunes.App.Controllers
 {
+    [Authorize]
     public class AlbumsController : Controller
     {
         private readonly IAlbumService albumService;
@@ -21,7 +22,6 @@ namespace IRunes.App.Controllers
             this.albumService = new AlbumService();
         }
 
-        [Authorize]
         public ActionResult All()
         {
             ICollection<Album> allAlbums = this.albumService.GetAllAlbums();
@@ -40,13 +40,11 @@ namespace IRunes.App.Controllers
             return this.View();
         }
 
-        [Authorize]
         public ActionResult Create()
         {
             return this.View();
         }
 
-        [Authorize]
         [HttpPost(ActionName = "Create")]
         public ActionResult CreateConfirm()
         {
@@ -65,7 +63,6 @@ namespace IRunes.App.Controllers
             return this.Redirect("/Albums/All");
         }
 
-        [Authorize]
         public ActionResult Details()
         {
             string albumId = this.Request.QueryData["id"].ToString();
