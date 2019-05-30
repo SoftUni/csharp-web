@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using SIS.HTTP.Requests;
 using SIS.MvcFramework.Extensions;
@@ -57,15 +58,18 @@ namespace SIS.MvcFramework
 
         protected ActionResult View([CallerMemberName] string view = null)
         {
-            string controllerName = GetType().Name.Replace("Controller", string.Empty);
+            // TODO: Support for layout
+            string controllerName = this.GetType().Name.Replace("Controller", string.Empty);
             string viewName = view;
 
             string viewContent = System.IO.File.ReadAllText("Views/" + controllerName + "/" + viewName + ".html");
-
             viewContent = ParseTemplate(viewContent);
 
-            HtmlResult htmlResult = new HtmlResult(viewContent);
+            string layoutContent = System.IO.File.ReadAllText("Views/_Layout.html");
+            layoutContent = ParseTemplate(layoutContent);
+            layoutContent = layoutContent.Replace("@RenderBody()", viewContent);
 
+            var htmlResult = new HtmlResult(layoutContent);
             return htmlResult;
         }
 
