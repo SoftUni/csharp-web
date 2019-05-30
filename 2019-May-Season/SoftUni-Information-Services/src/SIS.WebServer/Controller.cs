@@ -45,8 +45,8 @@ namespace SIS.MvcFramework
             this.Request.Session.AddParameter("principal", new Principal
             {
                 Id = id,
-                Username = username,
-                Email = email
+                Username = username.Decode(),
+                Email = email.Decode()
             });
         }
 
