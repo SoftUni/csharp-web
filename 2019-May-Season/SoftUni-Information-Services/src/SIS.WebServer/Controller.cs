@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using SIS.HTTP.Requests;
 using SIS.MvcFramework.Extensions;
 using SIS.MvcFramework.Identity;
 using SIS.MvcFramework.Result;
+using SIS.MvcFramework.ViewEngine;
 
 namespace SIS.MvcFramework
 {
     public abstract class Controller
     {
+        private IViewEngine viewEngine = new SisViewEngine();
+
         protected Controller()
         {
             ViewData = new Dictionary<string, object>();
@@ -23,17 +27,6 @@ namespace SIS.MvcFramework
             : null;
 
         public IHttpRequest Request { get; set; }
-
-        private string ParseTemplate(string viewContent)
-        {
-            foreach (var param in ViewData)
-            {
-                viewContent = viewContent.Replace($"@Model.{param.Key}",
-                    param.Value.ToString());
-            }
-
-            return viewContent;
-        }
 
         protected bool IsLoggedIn()
         {
@@ -57,15 +50,24 @@ namespace SIS.MvcFramework
 
         protected ActionResult View([CallerMemberName] string view = null)
         {
-            string controllerName = GetType().Name.Replace("Controller", string.Empty);
+            return this.View<object>(null, view);
+        }
+
+        protected ActionResult View<T>(T model = null, [CallerMemberName] string view = null)
+            where T : class
+        {
+            // TODO: Support for layout
+            string controllerName = this.GetType().Name.Replace("Controller", string.Empty);
             string viewName = view;
 
             string viewContent = System.IO.File.ReadAllText("Views/" + controllerName + "/" + viewName + ".html");
+            viewContent = this.viewEngine.GetHtml(viewContent, model);
 
-            viewContent = ParseTemplate(viewContent);
+            string layoutContent = System.IO.File.ReadAllText("Views/_Layout.html");
+            layoutContent = this.viewEngine.GetHtml(layoutContent, model);
+            layoutContent = layoutContent.Replace("@RenderBody()", viewContent);
 
-            HtmlResult htmlResult = new HtmlResult(viewContent);
-
+            var htmlResult = new HtmlResult(layoutContent);
             return htmlResult;
         }
 
