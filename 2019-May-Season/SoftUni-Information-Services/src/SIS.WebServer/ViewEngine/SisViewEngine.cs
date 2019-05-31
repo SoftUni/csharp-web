@@ -13,7 +13,7 @@ namespace SIS.MvcFramework.ViewEngine
     {
         public string GetHtml<T>(string viewContent, T model)
         {
-            string csharpHtmlCode = GetCSharpCode(viewContent);
+            string csharpHtmlCode = this.GetCSharpCode(viewContent);
             string code = $@"
 using System;
 using System.Linq;
@@ -35,7 +35,7 @@ namespace AppViewCodeNamespace
         }}
     }}
 }}";
-            var view = CompileAndInstance(code, model.GetType().Assembly);
+            var view = this.CompileAndInstance(code, model.GetType().Assembly);
             var htmlResult = view?.GetHtml(model);
             return htmlResult;
         }
@@ -121,7 +121,7 @@ namespace AppViewCodeNamespace
                 var compilationResult = compilation.Emit(memoryStream);
                 if (!compilationResult.Success)
                 {
-                    foreach (var error in compilationResult.Diagnostics) // .Where(x => x.Severity == DiagnosticSeverity.Error)
+                    foreach (var error in compilationResult.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error))
                     {
                         Console.WriteLine(error.GetMessage());
                     }
@@ -141,12 +141,6 @@ namespace AppViewCodeNamespace
                 }
 
                 var instance = Activator.CreateInstance(type);
-                if (instance == null)
-                {
-                    Console.WriteLine("AppViewCode cannot be instanciated.");
-                    return null;
-                }
-
                 return instance as IView;
             }
         }

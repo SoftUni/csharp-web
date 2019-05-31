@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SIS.MvcFramework.ViewEngine
+﻿namespace SIS.MvcFramework.ViewEngine
 {
     public interface IView
     {
