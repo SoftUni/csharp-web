@@ -3,7 +3,6 @@ using System.Linq;
 using IRunes.Data;
 using IRunes.Models;
 using Microsoft.EntityFrameworkCore;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace IRunes.Services
 {

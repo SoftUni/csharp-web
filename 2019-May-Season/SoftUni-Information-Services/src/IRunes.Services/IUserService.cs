@@ -1,5 +1,4 @@
-﻿using System;
-using IRunes.Models;
+﻿using IRunes.Models;
 
 namespace IRunes.Services
 {

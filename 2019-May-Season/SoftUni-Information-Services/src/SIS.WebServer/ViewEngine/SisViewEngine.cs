@@ -13,7 +13,7 @@ namespace SIS.MvcFramework.ViewEngine
     {
         public string GetHtml<T>(string viewContent, T model)
         {
-            string csharpHtmlCode = GetCSharpCode(viewContent);
+            string csharpHtmlCode = this.GetCSharpCode(viewContent);
             string code = $@"
 using System;
 using System.Linq;
@@ -35,7 +35,7 @@ namespace AppViewCodeNamespace
         }}
     }}
 }}";
-            var view = CompileAndInstance(code, model.GetType().Assembly);
+            var view = this.CompileAndInstance(code, model.GetType().Assembly);
             var htmlResult = view?.GetHtml(model);
             return htmlResult;
         }
@@ -44,21 +44,22 @@ namespace AppViewCodeNamespace
         {
             // TODO: { var a = "Niki"; }
             var lines = viewContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            var cSharpCode = new StringBuilder();
-            var supportedOpperators = new[] { "for", "if", "else" };
+            var csharpCode = new StringBuilder();
+            var supportedOperators = new[] { "for", "if", "else" };
+            var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
             foreach (var line in lines)
             {
                 if (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}"))
                 {
                     // { / }
-                    cSharpCode.AppendLine(line);
+                    csharpCode.AppendLine(line);
                 }
-                else if (supportedOpperators.Any(x => line.TrimStart().StartsWith("@" + x)))
+                else if (supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
                 {
                     // @C#
                     var atSignLocation = line.IndexOf("@");
                     var csharpLine = line.Remove(atSignLocation, 1);
-                    cSharpCode.AppendLine(csharpLine);
+                    csharpCode.AppendLine(csharpLine);
                 }
                 else
                 {
@@ -66,7 +67,7 @@ namespace AppViewCodeNamespace
                     if (!line.Contains("@"))
                     {
                         var csharpLine = $"html.AppendLine(@\"{line.Replace("\"", "\"\"")}\");";
-                        cSharpCode.AppendLine(csharpLine);
+                        csharpCode.AppendLine(csharpLine);
                     }
                     else
                     {
@@ -75,8 +76,7 @@ namespace AppViewCodeNamespace
                         while (restOfLine.Contains("@"))
                         {
                             var atSignLocation = restOfLine.IndexOf("@");
-                            var plainText = restOfLine.Substring(0, atSignLocation);
-                            var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
+                            var plainText = restOfLine.Substring(0, atSignLocation).Replace("\"", "\"\"");
                             var csharpExpression = csharpCodeRegex.Match(restOfLine.Substring(atSignLocation + 1))?.Value;
                             csharpStringToAppend += plainText + "\" + " + csharpExpression + " + @\"";
 
@@ -90,13 +90,13 @@ namespace AppViewCodeNamespace
                             }
                         }
 
-                        csharpStringToAppend += $"{restOfLine}\");";
-                        cSharpCode.AppendLine(csharpStringToAppend);
+                        csharpStringToAppend += $"{restOfLine.Replace("\"", "\"\"")}\");";
+                        csharpCode.AppendLine(csharpStringToAppend);
                     }
                 }
             }
 
-            return cSharpCode.ToString();
+            return csharpCode.ToString();
         }
 
         private IView CompileAndInstance(string code, Assembly modelAssembly)
@@ -121,7 +121,7 @@ namespace AppViewCodeNamespace
                 var compilationResult = compilation.Emit(memoryStream);
                 if (!compilationResult.Success)
                 {
-                    foreach (var error in compilationResult.Diagnostics) // .Where(x => x.Severity == DiagnosticSeverity.Error)
+                    foreach (var error in compilationResult.Diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error))
                     {
                         Console.WriteLine(error.GetMessage());
                     }
@@ -141,12 +141,6 @@ namespace AppViewCodeNamespace
                 }
 
                 var instance = Activator.CreateInstance(type);
-                if (instance == null)
-                {
-                    Console.WriteLine("AppViewCode cannot be instanciated.");
-                    return null;
-                }
-
                 return instance as IView;
             }
         }
