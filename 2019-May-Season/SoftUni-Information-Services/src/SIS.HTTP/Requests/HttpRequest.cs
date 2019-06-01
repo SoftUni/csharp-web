@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using SIS.Common;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Cookies.Contracts;
@@ -16,7 +17,7 @@ namespace SIS.HTTP.Requests
     {
         public HttpRequest(string requestString)
         {
-            CoreValidator.ThrowIfNullOrEmpty(requestString, nameof(requestString));
+            requestString.ThrowIfNullOrEmpty(nameof(requestString));
 
             this.FormData = new Dictionary<string,object>();
             this.QueryData = new Dictionary<string, object>();
@@ -55,7 +56,7 @@ namespace SIS.HTTP.Requests
 
         private bool IsValidRequestQueryString(string queryString, string[] queryParameters)
         {
-            CoreValidator.ThrowIfNullOrEmpty(queryString, nameof(queryString));
+            queryString.ThrowIfNullOrEmpty(nameof(queryString));
 
             return true; //TODO: REGEX QUERY STRING
         }

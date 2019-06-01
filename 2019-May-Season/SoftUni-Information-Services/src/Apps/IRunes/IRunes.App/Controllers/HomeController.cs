@@ -1,4 +1,5 @@
-﻿using SIS.MvcFramework;
+﻿using IRunes.App.ViewModels;
+using SIS.MvcFramework;
 using SIS.MvcFramework.Attributes;
 using SIS.MvcFramework.Result;
 
@@ -16,9 +17,7 @@ namespace IRunes.App.Controllers
         {
             if (this.IsLoggedIn())
             {
-                this.ViewData["Username"] = this.User.Username;
-
-                return this.View("Home");
+                return this.View(new UserHomeViewModel{ Username = this.User.Username }, "Home");
             }
 
             return this.View();
