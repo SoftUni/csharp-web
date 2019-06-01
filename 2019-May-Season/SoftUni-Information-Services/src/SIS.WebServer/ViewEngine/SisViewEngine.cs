@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -48,6 +49,9 @@ namespace AppViewCodeNamespace
             var supportedOperators = new[] { "for", "if", "else" };
             var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
             var isHtmlEscapeTag = false;
+            var isCsharpCodeBlock = false;
+            Stack<string> stackCodeBlock = new Stack<string>();
+
             foreach (var line in lines)
             {
                 if (line.TrimStart().StartsWith("<style>") || line.TrimStart().StartsWith("<script>"))
@@ -60,10 +64,51 @@ namespace AppViewCodeNamespace
                     isHtmlEscapeTag = false;
                 }
 
-                if (!isHtmlEscapeTag && (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}")))
+                if (line.TrimStart().StartsWith("@{"))
                 {
+                    isCsharpCodeBlock = true;
+                    stackCodeBlock.Push(line);
+                }
+
+                if (stackCodeBlock.Count == 0)
+                {
+                    isCsharpCodeBlock = false;
+                }
+
+                if ((!isHtmlEscapeTag 
+                        && !isCsharpCodeBlock)
+                    && (line.TrimStart().StartsWith("{") 
+                        || line.TrimStart().StartsWith("}")))
+                {
+
                     // { / }
-                    csharpCode.AppendLine(line);
+                    csharpCode.AppendLine(line);   
+                }
+                else if (isCsharpCodeBlock)
+                {
+                    if (line.TrimStart().StartsWith("{"))
+                    {
+                        stackCodeBlock.Push(line);
+                    }
+
+                    if (line.TrimStart().StartsWith("}") || line.TrimEnd().EndsWith("}"))
+                    {
+                        stackCodeBlock.Pop();
+                    }
+
+                    if (line.TrimStart().StartsWith("@{") && line.TrimEnd().EndsWith("}"))
+                    {
+                        var atSignLocation = line.IndexOf("@");
+                        var csharpLine = line.Remove(atSignLocation, 2);
+                        csharpLine = csharpLine.Remove(csharpLine.Length - 1, 1);
+                        csharpCode.AppendLine(csharpLine);
+                    }
+
+                    if (stackCodeBlock.Count != 0 && !line.TrimStart().StartsWith("@{"))
+                    {
+                        csharpCode.AppendLine(line);
+                    }
+
                 }
                 else if (!isHtmlEscapeTag && supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
                 {
