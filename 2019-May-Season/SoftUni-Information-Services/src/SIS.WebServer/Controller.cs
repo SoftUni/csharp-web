@@ -49,7 +49,7 @@ namespace SIS.MvcFramework
 
         protected ActionResult View([CallerMemberName] string view = null)
         {
-            return this.View<object>(null, view);
+            return this.View<object>(new object(), view);
         }
 
         protected ActionResult View<T>(T model = null, [CallerMemberName] string view = null)

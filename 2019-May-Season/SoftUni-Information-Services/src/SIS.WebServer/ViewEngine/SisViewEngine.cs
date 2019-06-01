@@ -47,14 +47,25 @@ namespace AppViewCodeNamespace
             var csharpCode = new StringBuilder();
             var supportedOperators = new[] { "for", "if", "else" };
             var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
+            var isHtmlEscapeTag = false;
             foreach (var line in lines)
             {
-                if (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}"))
+                if (line.TrimStart().StartsWith("<style>") || line.TrimStart().StartsWith("<script>"))
+                {
+                    isHtmlEscapeTag = true;
+                }
+
+                if (line.TrimStart().StartsWith("</style>") || line.TrimStart().StartsWith("</script>"))
+                {
+                    isHtmlEscapeTag = false;
+                }
+
+                if (!isHtmlEscapeTag && (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}")))
                 {
                     // { / }
                     csharpCode.AppendLine(line);
                 }
-                else if (supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
+                else if (!isHtmlEscapeTag && supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
                 {
                     // @C#
                     var atSignLocation = line.IndexOf("@");
@@ -63,8 +74,8 @@ namespace AppViewCodeNamespace
                 }
                 else
                 {
-                    // HTML
-                    if (!line.Contains("@"))
+                    // HTML TODO: Improve escape @RenderBody()
+                    if (!line.Contains("@") || line.Contains("@RenderBody()"))
                     {
                         var csharpLine = $"html.AppendLine(@\"{line.Replace("\"", "\"\"")}\");";
                         csharpCode.AppendLine(csharpLine);

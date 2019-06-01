@@ -16,9 +16,9 @@ namespace IRunes.App.Controllers
         {
             if (this.IsLoggedIn())
             {
-                this.ViewData["Username"] = this.User.Username;
+               // this.ViewData["Username"] = this.User.Username;
 
-                return this.View("Home");
+                return this.View(this.User, "Home");
             }
 
             return this.View();
