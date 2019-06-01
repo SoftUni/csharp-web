@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework.Attributes;
@@ -9,6 +10,7 @@ using SIS.MvcFramework.Attributes.Security;
 using SIS.MvcFramework.Result;
 using SIS.WebServer;
 using SIS.WebServer.Routing;
+using SIS.MvcFramework.Identity;
 
 namespace SIS.MvcFramework
 {
@@ -24,27 +26,75 @@ namespace SIS.MvcFramework
             server.Run();
         }
 
+        private static IEnumerable<Type> GetApplicationControlles(IMvcApplication application)
+        {
+            return application.GetType().Assembly.GetTypes()
+                .Where(type => type.IsClass && !type.IsAbstract
+                    && typeof(Controller).IsAssignableFrom(type));
+        }
+
+        private static IEnumerable<MethodInfo> GetApplicationControlerActions(Type controller)
+        {
+            return controller
+                .GetMethods(BindingFlags.DeclaredOnly
+                | BindingFlags.Public
+                | BindingFlags.Instance)
+                .Where(x => !x.IsSpecialName && x.DeclaringType == controller)
+                .Where(x => x.GetCustomAttributes().All(a => a.GetType() != typeof(NonActionAttribute)));
+        }
+
+        private static string GetApplicationContorolerActionPath(Type controller, string actionName)
+        {
+            return $"/{controller.Name.Replace("Controller", string.Empty)}/{actionName}";
+        }
+
+        private static TAttribute GetApplicationControllerActionAtribute<TAttribute>(MethodInfo action)
+           where TAttribute : Attribute
+        {
+            return action.GetCustomAttributes().LastOrDefault(
+                attribute =>
+                    attribute.GetType() == typeof(AuthorizeAttribute)
+                 || attribute.GetType().IsSubclassOf(typeof(TAttribute))) as TAttribute;
+        }
+
+        private static TAttribute GetApplicationControllerAtribute<TAttribute>(Type controller)
+            where TAttribute : Attribute
+        {
+            return controller.GetCustomAttributes().LastOrDefault(
+                attribute =>
+                    attribute.GetType() == typeof(AuthorizeAttribute)) as TAttribute;
+        }
+
+        private static bool IsPrincipalAuthorized(Principal controllerPrincipal, Type controller, MethodInfo action)
+        {
+            var authorizeActionAttribute = GetApplicationControllerActionAtribute<AuthorizeAttribute>(action);
+            var authorizeConttrolerAttribute = GetApplicationControllerAtribute<AuthorizeAttribute>(controller);
+
+            if (authorizeActionAttribute != null
+                && (!authorizeActionAttribute.IsInAuthority(controllerPrincipal)
+                    || !authorizeConttrolerAttribute.IsInAuthority(controllerPrincipal))
+                )
+            {
+
+                return false;
+            }
+
+            return true;
+        }
+
         private static void AutoRegisterRoutes(
             IMvcApplication application, IServerRoutingTable serverRoutingTable)
         {
-            var controllers = application.GetType().Assembly.GetTypes()
-                .Where(type => type.IsClass && !type.IsAbstract
-                    && typeof(Controller).IsAssignableFrom(type));
+            var controllers = GetApplicationControlles(application);
             // TODO: RemoveToString from InfoController
             foreach (var controller in controllers)
             {
-                var actions = controller
-                    .GetMethods(BindingFlags.DeclaredOnly
-                    | BindingFlags.Public
-                    | BindingFlags.Instance)
-                    .Where(x => !x.IsSpecialName && x.DeclaringType == controller)
-                    .Where(x => x.GetCustomAttributes().All(a => a.GetType() != typeof(NonActionAttribute)));
+                var actions = GetApplicationControlerActions(controller);
 
                 foreach (var action in actions)
                 {
-                    var path = $"/{controller.Name.Replace("Controller", string.Empty)}/{action.Name}";
-                    var attribute = action.GetCustomAttributes().Where(
-                        x => x.GetType().IsSubclassOf(typeof(BaseHttpAttribute))).LastOrDefault() as BaseHttpAttribute;
+                    var path = GetApplicationContorolerActionPath(controller, action.Name);
+                    var attribute = GetApplicationControllerActionAtribute<BaseHttpAttribute>(action);
                     var httpMethod = HttpRequestMethod.Get;
                     if (attribute != null)
                     {
@@ -58,7 +108,7 @@ namespace SIS.MvcFramework
 
                     if (attribute?.ActionName != null)
                     {
-                        path = $"/{controller.Name.Replace("Controller", string.Empty)}/{attribute.ActionName}";
+                        path = GetApplicationContorolerActionPath(controller, attribute.ActionName);
                     }
 
                     serverRoutingTable.Add(httpMethod, path, request =>
@@ -67,12 +117,10 @@ namespace SIS.MvcFramework
                         var controllerInstance = Activator.CreateInstance(controller);
                         ((Controller)controllerInstance).Request = request;
 
-                        // Security Authorization - TODO: Refactor this
+                        // Security Authorization
                         var controllerPrincipal = ((Controller)controllerInstance).User;
-                        var authorizeAttribute = action.GetCustomAttributes()
-                            .LastOrDefault(a => a.GetType() == typeof(AuthorizeAttribute)) as AuthorizeAttribute;
-
-                        if (authorizeAttribute != null && !authorizeAttribute.IsInAuthority(controllerPrincipal))
+                        
+                        if (!IsPrincipalAuthorized(controllerPrincipal, controller, action))
                         {
                             // TODO: Redirect to configured URL
                             return new HttpResponse(HttpResponseStatusCode.Forbidden);
