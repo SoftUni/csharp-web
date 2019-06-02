@@ -1,4 +1,5 @@
-﻿using SIS.MvcFramework.ViewEngine;
+﻿using SIS.MvcFramework.Identity;
+using SIS.MvcFramework.ViewEngine;
 
 using System.Collections.Generic;
 using System.IO;
@@ -21,12 +22,17 @@ namespace SIS.MvcFramework.Tests
 
             var viewContent = File.ReadAllText(viewFileName);
             var expectedResult = File.ReadAllText(expectedResultFileName);
+            Principal user = new Principal
+            {
+                Username = "Pesho"
 
-            var actualResult = viewEngine.GetHtml<object>(viewContent, new TestViewModel()
+            };
+            var model = new TestViewModel()
             {
                 StringValue = "str",
                 ListValues = new List<string> { "123", "val1", string.Empty },
-            });
+            };
+            var actualResult = viewEngine.GetHtml<object>(viewContent, model, user );
             Assert.Equal(expectedResult.TrimEnd(), actualResult.TrimEnd());
         }
 
@@ -43,8 +49,13 @@ namespace SIS.MvcFramework.Tests
 
             var viewContent = File.ReadAllText(viewFileName);
             var expectedResult = File.ReadAllText(expectedResultFileName);
+            Principal user = new Principal
+            {
+                Username = "Jon"
 
-            var actualResult = viewEngine.GetHtml<object>(viewContent, new object());
+            };
+
+            var actualResult = viewEngine.GetHtml<object>(viewContent, new object(), user);
             Assert.Equal(expectedResult.TrimEnd(), actualResult.TrimEnd());
         }
     }

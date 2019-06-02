@@ -11,6 +11,7 @@ using SIS.MvcFramework.Result;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Routing;
 using SIS.MvcFramework.Sessions;
+using SIS.MvcFramework.Identity;
 
 namespace SIS.MvcFramework
 {
@@ -72,9 +73,8 @@ namespace SIS.MvcFramework
             var authorizeActionAttribute = GetApplicationControllerActionAtribute<AuthorizeAttribute>(action);
             var authorizeConttrolerAttribute = GetApplicationControllerAtribute<AuthorizeAttribute>(controller);
 
-            if (authorizeActionAttribute != null
-                && (!authorizeActionAttribute.IsInAuthority(controllerPrincipal)
-                    || !authorizeConttrolerAttribute.IsInAuthority(controllerPrincipal))
+            if (authorizeActionAttribute != null && !authorizeActionAttribute.IsInAuthority(controllerPrincipal)
+                 || (authorizeConttrolerAttribute != null && !authorizeConttrolerAttribute.IsInAuthority(controllerPrincipal))
                 )
             {
 

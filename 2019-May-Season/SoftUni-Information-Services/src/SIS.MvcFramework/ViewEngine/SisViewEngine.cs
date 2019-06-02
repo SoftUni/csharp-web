@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using SIS.MvcFramework.Identity;
+using System.Collections.Generic;
 
 namespace SIS.MvcFramework.ViewEngine
 {
