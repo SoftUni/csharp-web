@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ViewTests\TestCsharpCodeBlockWhitHtml.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ViewTests\TestCsharpCodeBlockWhitHtml.Result.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ViewTests\TestCsharpCodeBlock.Result.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

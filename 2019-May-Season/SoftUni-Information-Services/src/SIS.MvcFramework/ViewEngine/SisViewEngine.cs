@@ -14,6 +14,13 @@ namespace SIS.MvcFramework.ViewEngine
 {
     public class SisViewEngine : IViewEngine
     {
+        private bool IsHtmlEscapeTag = false;
+        private bool IsHtmlTag = false;
+        private bool IsCsharpCodeBlock = false;
+
+        private Stack<string> StackCodeBlock;
+        private Stack<string> StackHtmlBlock;
+
         private string GetModelType<T>(T model)
         {
             if (model is IEnumerable)
@@ -57,60 +64,133 @@ namespace AppViewCodeNamespace
             return htmlResult;
         }
 
+        private void TrakingHtmlEscapeTag(string line)
+        {
+            if (line.TrimStart().StartsWith("<style>") || line.TrimStart().StartsWith("<script>"))
+            {
+                this.IsHtmlEscapeTag = true;
+            }
+
+            if (line.TrimStart().StartsWith("</style>") || line.TrimStart().StartsWith("</script>")
+                || line.TrimEnd().EndsWith("</style>") || line.TrimEnd().EndsWith("</script>"))
+            {
+                this.IsHtmlEscapeTag = false;
+            }
+        }
+
+        private void TrakingHtmlTags(string line)
+        {
+            if (line.Contains("<"))
+            {
+                this.IsHtmlTag = true;
+                this.StackHtmlBlock.Push(line);
+            }
+
+            if (this.StackHtmlBlock.Count == 0)
+            {
+                this.IsHtmlTag = false;
+            }
+
+            if (this.StackHtmlBlock.Count != 0 && line.Contains("</"))
+            {
+                this.StackHtmlBlock.Pop();
+            }
+
+        }
+
+        private void TrakingCsharpCodeBlock(string line)
+        {
+            if (line.TrimStart().StartsWith("@{"))
+            {
+                this.IsCsharpCodeBlock = true;
+                this.StackCodeBlock.Push(line);
+            }
+
+            if (this.StackCodeBlock.Count == 0)
+            {
+                this.IsCsharpCodeBlock = false;
+            }
+
+            if (this.IsCsharpCodeBlock)
+            {
+                if (line.TrimStart().StartsWith("{"))
+                {
+                    this.StackCodeBlock.Push(line);
+                }
+
+                if (this.StackCodeBlock.Count != 0 &&
+                    line.TrimStart().StartsWith("}") || line.TrimEnd().EndsWith("}"))
+                {
+                    this.StackCodeBlock.Pop();
+                }
+            }
+        }
+
+        private string GetCsharpStringFromHtmlLine(string line)
+        {
+            var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
+
+            var csharpStringToAppend = "html.AppendLine(@\"";
+            var restOfLine = line;
+            while (restOfLine.Contains("@"))
+            {
+                var atSignLocation = restOfLine.IndexOf("@");
+                var plainText = restOfLine.Substring(0, atSignLocation).Replace("\"", "\"\"");
+                var csharpExpression = csharpCodeRegex.Match(restOfLine.Substring(atSignLocation + 1))?.Value;
+
+                if (csharpExpression.Contains("{") && csharpExpression.Contains("}"))
+                {
+                    var csharpInlineExpression =
+                        csharpExpression.Substring(1, csharpExpression.IndexOf("}") - 1);
+
+                    csharpStringToAppend += plainText + "\" + " + csharpInlineExpression + " + @\"";
+
+                    csharpExpression = csharpExpression.Substring(0, csharpExpression.IndexOf("}") + 1);
+                }
+                else
+                {
+                    csharpStringToAppend += plainText + "\" + " + csharpExpression + " + @\"";
+                }
+
+                if (restOfLine.Length <= atSignLocation + csharpExpression.Length + 1)
+                {
+                    restOfLine = string.Empty;
+                }
+                else
+                {
+                    restOfLine = restOfLine.Substring(atSignLocation + csharpExpression.Length + 1);
+                }
+            }
+
+            csharpStringToAppend += $"{restOfLine.Replace("\"", "\"\"")}\");";
+            return csharpStringToAppend;
+        }
+
         private string GetCSharpCode(string viewContent)
         {
             // TODO: { var a = "Niki"; }
             var lines = viewContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             var csharpCode = new StringBuilder();
             var supportedOperators = new[] { "for", "if", "else" };
-            var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
-            var isHtmlEscapeTag = false;
-            var isCsharpCodeBlock = false;
-            Stack<string> stackCodeBlock = new Stack<string>();
+            
+            this.StackCodeBlock = new Stack<string>();
+            this.StackHtmlBlock = new Stack<string>();
 
             foreach (var line in lines)
             {
-                if (line.TrimStart().StartsWith("<style>") || line.TrimStart().StartsWith("<script>"))
-                {
-                    isHtmlEscapeTag = true;
-                }
 
-                if (line.TrimStart().StartsWith("</style>") || line.TrimStart().StartsWith("</script>"))
-                {
-                    isHtmlEscapeTag = false;
-                }
+                this.TrakingHtmlEscapeTag(line);
+                this.TrakingCsharpCodeBlock(line);
 
-                if (line.TrimStart().StartsWith("@{"))
+                if (!this.IsHtmlEscapeTag && !this.IsCsharpCodeBlock
+                    && (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}")))
                 {
-                    isCsharpCodeBlock = true;
-                    stackCodeBlock.Push(line);
-                }
-
-                if (stackCodeBlock.Count == 0)
-                {
-                    isCsharpCodeBlock = false;
-                }
-
-                if ((!isHtmlEscapeTag 
-                        && !isCsharpCodeBlock)
-                    && (line.TrimStart().StartsWith("{") 
-                        || line.TrimStart().StartsWith("}")))
-                {
-
                     // { / }
                     csharpCode.AppendLine(line);   
                 }
-                else if (isCsharpCodeBlock)
+                else if (this.IsCsharpCodeBlock)
                 {
-                    if (line.TrimStart().StartsWith("{"))
-                    {
-                        stackCodeBlock.Push(line);
-                    }
-
-                    if (line.TrimStart().StartsWith("}") || line.TrimEnd().EndsWith("}"))
-                    {
-                        stackCodeBlock.Pop();
-                    }
+                    this.TrakingHtmlTags(line);
 
                     if (line.TrimStart().StartsWith("@{") && line.TrimEnd().EndsWith("}"))
                     {
@@ -120,13 +200,19 @@ namespace AppViewCodeNamespace
                         csharpCode.AppendLine(csharpLine);
                     }
 
-                    if (stackCodeBlock.Count != 0 && !line.TrimStart().StartsWith("@{"))
+                    if (this.StackCodeBlock.Count != 0 && !line.TrimStart().StartsWith("@{") && !this.IsHtmlTag)
                     {
                         csharpCode.AppendLine(line);
                     }
 
+                    if(this.IsHtmlTag)
+                    {
+                        string csharpStringToAppend = GetCsharpStringFromHtmlLine(line);
+                        csharpCode.AppendLine(csharpStringToAppend);
+                    }
+
                 }
-                else if (!isHtmlEscapeTag && supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
+                else if (supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
                 {
                     // @C#
                     var atSignLocation = line.IndexOf("@");
@@ -143,39 +229,7 @@ namespace AppViewCodeNamespace
                     }
                     else
                     {
-                        var csharpStringToAppend = "html.AppendLine(@\"";
-                        var restOfLine = line;
-                        while (restOfLine.Contains("@"))
-                        {
-                            var atSignLocation = restOfLine.IndexOf("@");
-                            var plainText = restOfLine.Substring(0, atSignLocation).Replace("\"", "\"\"");
-                            var csharpExpression = csharpCodeRegex.Match(restOfLine.Substring(atSignLocation + 1))?.Value;
-
-                            if (csharpExpression.Contains("{") && csharpExpression.Contains("}"))
-                            {
-                                var csharpInlineExpression =
-                                    csharpExpression.Substring(1, csharpExpression.IndexOf("}") - 1);
-
-                                csharpStringToAppend += plainText + "\" + " + csharpInlineExpression + " + @\"";
-
-                                csharpExpression = csharpExpression.Substring(0, csharpExpression.IndexOf("}") + 1);
-                            }
-                            else
-                            {
-                                csharpStringToAppend += plainText + "\" + " + csharpExpression + " + @\"";
-                            }
-
-                            if (restOfLine.Length <= atSignLocation + csharpExpression.Length + 1)
-                            {
-                                restOfLine = string.Empty;
-                            }
-                            else
-                            {
-                                restOfLine = restOfLine.Substring(atSignLocation + csharpExpression.Length + 1);
-                            }
-                        }
-
-                        csharpStringToAppend += $"{restOfLine.Replace("\"", "\"\"")}\");";
+                        string csharpStringToAppend = GetCsharpStringFromHtmlLine(line);
                         csharpCode.AppendLine(csharpStringToAppend);
                     }
                 }
@@ -183,6 +237,8 @@ namespace AppViewCodeNamespace
 
             return csharpCode.ToString();
         }
+
+
 
         private IView CompileAndInstance(string code, Assembly modelAssembly)
         {

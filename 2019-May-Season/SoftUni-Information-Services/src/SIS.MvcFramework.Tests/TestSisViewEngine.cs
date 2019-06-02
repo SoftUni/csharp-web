@@ -41,6 +41,7 @@ namespace SIS.MvcFramework.Tests
         [InlineData("UseForForeachAndIf")]
         [InlineData("TestEscapeStyleAndScript")]
         [InlineData("TestCsharpCodeBlock")]
+        [InlineData("TestCsharpCodeBlockWhitHtml")]
         public void TestGetHtmlWhitOutModel(string testFileName)
         {
             IViewEngine viewEngine = new SisViewEngine();

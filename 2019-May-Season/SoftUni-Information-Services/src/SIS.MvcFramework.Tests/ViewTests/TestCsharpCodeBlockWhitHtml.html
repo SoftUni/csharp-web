@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>IRunes</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+        .img-thumbnail {
+            width: 700px;
+            height: 480px;
+        }
+    </style>
+    <script>
+        function myFunction() {
+            document.getElementById("demo").innerHTML = "Paragraph changed.";
+        }
+
+/**/</script>
+</head>
+<body>
+    @{
+        var head = "JavaScript in Head";
+    }
+    <div class="container-fluid">
+        <h2>@head</h2>
+        <p id="demo">A Paragraph.</p>
+
+        <button type="button" onclick="myFunction()">Try it</button>
+
+        @RenderBody()
+        @{ var body = "JavaScript in Body"; }
+        <h2>@body</h2>
+        @{
+        var p = "A Paragraph.";
+        <p id="demoBody">@p</p>
+        <p id="demoBody1">A Paragraph.</p>
+        }
+
+        <button type="button" onclick="myFunctionBody()">Try it</button>
+
+        <script>
+            function myFunctionBody() {
+                document.getElementById("demoBody").innerHTML = "Paragraph changed.";
+            }
+        </script>
+        <hr class="bg-success mt-5" style="height: 2px" />
+        <footer>
+            <h5 class="font-weight-bold text-center">CopyRight &copy; Sanity Design Studios. All rights reserved.</h5>
+        </footer>
+    </div>
+</body>
+</html>
