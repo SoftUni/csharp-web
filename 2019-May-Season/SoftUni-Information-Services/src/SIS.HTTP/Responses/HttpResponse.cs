@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using SIS.Common;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Cookies.Contracts;
@@ -19,7 +20,7 @@ namespace SIS.HTTP.Responses
 
         public HttpResponse(HttpResponseStatusCode statusCode) : this()
         {
-            CoreValidator.ThrowIfNull(statusCode, nameof(statusCode));
+            statusCode.ThrowIfNull(nameof(statusCode));
             this.StatusCode = statusCode;
         }
 

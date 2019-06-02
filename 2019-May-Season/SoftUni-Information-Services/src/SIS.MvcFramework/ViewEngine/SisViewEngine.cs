@@ -1,33 +1,48 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using SIS.MvcFramework.Identity;
 
 namespace SIS.MvcFramework.ViewEngine
 {
     public class SisViewEngine : IViewEngine
     {
-        public string GetHtml<T>(string viewContent, T model)
+        private string GetModelType<T>(T model)
+        {
+            if (model is IEnumerable)
+            {
+                return $"IEnumerable<{model.GetType().GetGenericArguments()[0].FullName}>";
+            }
+
+            return model.GetType().FullName;
+        }
+
+        public string GetHtml<T>(string viewContent, T model, Principal user = null)
         {
             string csharpHtmlCode = this.GetCSharpCode(viewContent);
             string code = $@"
 using System;
+using System.Net;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using SIS.MvcFramework.ViewEngine;
+using SIS.MvcFramework.Identity;
 namespace AppViewCodeNamespace
 {{
     public class AppViewCode : IView
     {{
-        public string GetHtml(object model)
+        public string GetHtml(object model, Principal user)
         {{
-            var Model = model as {model.GetType().FullName};
+            var Model = {(model == null ? "new {}" : "model as " + GetModelType(model))};
+            var User = user;            
+
 	        var html = new StringBuilder();
 
             {csharpHtmlCode}
@@ -36,8 +51,8 @@ namespace AppViewCodeNamespace
         }}
     }}
 }}";
-            var view = this.CompileAndInstance(code, model.GetType().Assembly);
-            var htmlResult = view?.GetHtml(model);
+            var view = this.CompileAndInstance(code, model?.GetType().Assembly);
+            var htmlResult = view?.GetHtml(model, user);
             return htmlResult;
         }
 
@@ -134,7 +149,20 @@ namespace AppViewCodeNamespace
                             var atSignLocation = restOfLine.IndexOf("@");
                             var plainText = restOfLine.Substring(0, atSignLocation).Replace("\"", "\"\"");
                             var csharpExpression = csharpCodeRegex.Match(restOfLine.Substring(atSignLocation + 1))?.Value;
-                            csharpStringToAppend += plainText + "\" + " + csharpExpression + " + @\"";
+
+                            if (csharpExpression.Contains("{") && csharpExpression.Contains("}"))
+                            {
+                                var csharpInlineExpression =
+                                    csharpExpression.Substring(1, csharpExpression.IndexOf("}") - 1);
+
+                                csharpStringToAppend += plainText + "\" + " + csharpInlineExpression + " + @\"";
+
+                                csharpExpression = csharpExpression.Substring(0, csharpExpression.IndexOf("}") + 1);
+                            }
+                            else
+                            {
+                                csharpStringToAppend += plainText + "\" + " + csharpExpression + " + @\"";
+                            }
 
                             if (restOfLine.Length <= atSignLocation + csharpExpression.Length + 1)
                             {
@@ -157,10 +185,14 @@ namespace AppViewCodeNamespace
 
         private IView CompileAndInstance(string code, Assembly modelAssembly)
         {
+            modelAssembly = modelAssembly ?? Assembly.GetEntryAssembly();
+
             var compilation = CSharpCompilation.Create("AppViewAssembly")
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                .AddReferences(MetadataReference.CreateFromFile(typeof(Object).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location))
+                .AddReferences(MetadataReference.CreateFromFile(Assembly.GetEntryAssembly().Location))
                 .AddReferences(MetadataReference.CreateFromFile(modelAssembly.Location));
 
             var netStandardAssembly = Assembly.Load(new AssemblyName("netstandard")).GetReferencedAssemblies();

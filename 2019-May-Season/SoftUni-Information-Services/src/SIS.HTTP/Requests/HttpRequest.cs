@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
+using SIS.Common;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Cookies.Contracts;
@@ -16,7 +18,7 @@ namespace SIS.HTTP.Requests
     {
         public HttpRequest(string requestString)
         {
-            CoreValidator.ThrowIfNullOrEmpty(requestString, nameof(requestString));
+            requestString.ThrowIfNullOrEmpty(nameof(requestString));
 
             this.FormData = new Dictionary<string,object>();
             this.QueryData = new Dictionary<string, object>();
@@ -55,8 +57,7 @@ namespace SIS.HTTP.Requests
 
         private bool IsValidRequestQueryString(string queryString, string[] queryParameters)
         {
-            CoreValidator.ThrowIfNullOrEmpty(queryString, nameof(queryString));
-            CoreValidator.ThrowIfNull(queryParameters, nameof(queryParameters));
+            queryString.ThrowIfNullOrEmpty(nameof(queryString));
 
             string pattern = @"^([\w +\.%\*\-]+={1}[\w +\.%\*\-/]+&?)+$";
             Match match = Regex.Match(queryString, pattern);
@@ -103,7 +104,7 @@ namespace SIS.HTTP.Requests
 
         private void ParseRequestUrl(string[] requestLineParams)
         {
-            this.Url = requestLineParams[1];
+            this.Url = HttpUtility.UrlDecode(requestLineParams[1]);
         }
 
         private void ParseRequestPath()
