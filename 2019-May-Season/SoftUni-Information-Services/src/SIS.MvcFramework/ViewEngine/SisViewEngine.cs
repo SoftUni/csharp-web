@@ -26,7 +26,6 @@ namespace SIS.MvcFramework.ViewEngine
         public string GetHtml<T>(string viewContent, T model, Principal user = null)
         {
             string csharpHtmlCode = this.GetCSharpCode(viewContent);
-            Console.WriteLine(csharpHtmlCode);
             string code = $@"
 using System;
 using System.Net;
