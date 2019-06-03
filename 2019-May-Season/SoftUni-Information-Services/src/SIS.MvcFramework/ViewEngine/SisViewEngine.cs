@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using SIS.HTTP.Common;
 using SIS.MvcFramework.Identity;
 
 namespace SIS.MvcFramework.ViewEngine
@@ -26,6 +27,7 @@ namespace SIS.MvcFramework.ViewEngine
         public string GetHtml<T>(string viewContent, T model, Principal user = null)
         {
             string csharpHtmlCode = this.GetCSharpCode(viewContent);
+            Console.WriteLine(csharpHtmlCode);
             string code = $@"
 using System;
 using System.Net;
@@ -58,14 +60,22 @@ namespace AppViewCodeNamespace
 
         private string GetCSharpCode(string viewContent)
         {
-            // TODO: { var a = "Niki"; }
-            var lines = viewContent.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+ 
+            var lines = viewContent.Trim('\r','\n').Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
             var csharpCode = new StringBuilder();
             var supportedOperators = new[] { "for", "if", "else" };
             var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
             foreach (var line in lines)
             {
-                if (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}"))
+                if (line.Trim().StartsWith("{")&&line.Trim().EndsWith("}"))
+                {
+                    //{ & }
+                    var variable = line.Trim('{', '}');
+         
+                    csharpCode.AppendLine(variable);
+                }
+                else if (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}"))
                 {
                     // { / }
                     csharpCode.AppendLine(line);

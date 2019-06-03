@@ -40,9 +40,6 @@ namespace SIS.MvcFramework
                     .GetMethods(BindingFlags.DeclaredOnly
                     | BindingFlags.Public
                     | BindingFlags.Instance)
-
-                    .Where(x => !x.IsSpecialName && x.DeclaringType == controller&&!x.IsVirtual);
-
                     .Where(x => !x.IsSpecialName && x.DeclaringType == controller)
                     .Where(x => x.GetCustomAttributes().All(a => a.GetType() != typeof(NonActionAttribute)));
 
