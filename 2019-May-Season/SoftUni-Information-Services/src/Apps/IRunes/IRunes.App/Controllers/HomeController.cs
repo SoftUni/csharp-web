@@ -1,26 +1,23 @@
-﻿using SIS.HTTP.Requests;
-using SIS.HTTP.Responses;
+﻿using IRunes.App.ViewModels;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Attributes;
-using SIS.WebServer.Result;
+using SIS.MvcFramework.Result;
 
 namespace IRunes.App.Controllers
 {
     public class HomeController : Controller
     {
         [HttpGet(Url = "/")]
-        public IHttpResponse IndexSlash(IHttpRequest httpRequest)
+        public ActionResult IndexSlash()
         {
-            return Index(httpRequest);
+            return Index();
         }
 
-        public IHttpResponse Index(IHttpRequest httpRequest)
+        public ActionResult Index()
         {
-            if (this.IsLoggedIn(httpRequest))
+            if (this.IsLoggedIn())
             {
-                this.ViewData["Username"] = httpRequest.Session.GetParameter("username");
-
-                return this.View("Home");
+                return this.View(new UserHomeViewModel{ Username = this.User.Username }, "Home");
             }
 
             return this.View();

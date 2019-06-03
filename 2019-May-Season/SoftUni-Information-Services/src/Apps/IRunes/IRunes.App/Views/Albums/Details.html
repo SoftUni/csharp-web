@@ -1,48 +1,44 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title>IRunes</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <style>
-        .img-thumbnail {
-            width: 700px;
-            height: 480px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid">
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-                <a class="navbar-brand" href="#">IRunes</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/Albums/All">Albums</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/Users/Logout">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <hr class="bg-success" style="height: 2px" />
-        <main>
-            @Model.Album
-        </main>
-        <hr class="bg-success" style="height: 2px" />
-        <footer>
-            <h5 class="font-weight-bold text-center">CopyRight &copy; Sanity Design Studios. All rights reserved.</h5>
-        </footer>
+﻿<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <a class="navbar-brand" href="#">IRunes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Albums/All">Albums</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Users/Logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<hr class="bg-success" style="height: 2px" />
+<main>
+    <div class="album-details d-flex justify-content-between row">
+        <div class="album-data col-md-5">
+            <img src="@{WebUtility.UrlDecode(Model.Cover)}" class="img-thumbnail" />
+            <h1 class="text-center">Album Name: @{WebUtility.UrlDecode(Model.Name)}</h1>
+            <h1 class="text-center">Album Price: @Model.Price</h1>
+            <div class="d-flex justify-content-between">
+                <a class="btn bg-success text-white" href="/Tracks/Create?albumId=@Model.Id">Create Track</a>
+                <a class="btn bg-success text-white" href="/Albums/All">Back To All</a>
+            </div>
+        </div>
+        <div class="album-tracks col-md-6">
+            <h1>Tracks</h1>
+            @for(int index = 0; index < Model.Tracks.Count; index++) 
+            {
+            <li>
+                <strong>@{index+1}</strong>. <a href="/Tracks/Details?albumId=@{Model.Id}&trackId=@{Model.Tracks[index].Id}"><i>@{WebUtility.UrlDecode(Model.Tracks[index].Name)}</i></a>
+            </li>
+            }
+        </div>
     </div>
-</body>
-</html>
+</main>

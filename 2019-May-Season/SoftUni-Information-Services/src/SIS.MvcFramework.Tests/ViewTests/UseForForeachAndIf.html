@@ -1,0 +1,12 @@
+﻿@DateTime.UtcNow.Year
+<div data-year="@DateTime.UtcNow.Year"></div>
+@for (int i = 1; i <= 3; i++)
+{
+    @foreach (var num in Enumerable.Range(101, 5))
+    {
+        @if (num % 2 == 0)
+        {
+            <div><span>@i </span> - <span>@num</span></div>
+        }
+    }
+}

@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SIS.HTTP\SIS.HTTP.csproj" />
-    <ProjectReference Include="..\..\..\SIS.WebServer\SIS.MvcFramework.csproj" />
-    <ProjectReference Include="..\IRunes.Data\IRunes.Data.csproj" />
+    <ProjectReference Include="..\..\..\SIS.MvcFramework\SIS.MvcFramework.csproj" />
+    <ProjectReference Include="..\IRunes.Models\IRunes.Models.csproj" />
+    <ProjectReference Include="..\IRunes.Services\IRunes.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +52,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Users\Register.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\_Layout.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
