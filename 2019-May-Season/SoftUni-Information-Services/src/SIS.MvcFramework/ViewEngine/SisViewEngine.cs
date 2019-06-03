@@ -59,7 +59,7 @@ namespace AppViewCodeNamespace
         private string GetCSharpCode(string viewContent)
         {
             // TODO: { var a = "Niki"; }
-            var lines = viewContent.Split(new char[] { '\n', '\r' });
+            var lines = viewContent.Split(new string[] { "\r\n", "\n\r", "\n" }, StringSplitOptions.None);
             var csharpCode = new StringBuilder();
             var supportedOperators = new[] { "for", "if", "else" };
             var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
@@ -80,12 +80,7 @@ namespace AppViewCodeNamespace
                 else
                 {
                     // HTML
-                    if (!line.Contains("@"))
-                    {
-                        var csharpLine = $"html.AppendLine(@\"{line.Replace("\"", "\"\"")}\");";
-                        csharpCode.AppendLine(csharpLine);
-                    }
-                    else if (line.Contains("@RenderBody()"))
+                    if (line.Contains("@RenderBody()"))
                     {
                         var csharpLine = $"html.AppendLine(@\"{line}\");";
                         csharpCode.AppendLine(csharpLine);
