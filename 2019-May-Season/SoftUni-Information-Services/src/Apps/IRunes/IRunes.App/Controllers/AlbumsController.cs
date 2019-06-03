@@ -44,8 +44,8 @@ namespace IRunes.App.Controllers
         [HttpPost(ActionName = "Create")]
         public ActionResult CreateConfirm()
         {
-            string name = ((ISet<string>)this.Request.FormData["name"]).FirstOrDefault();
-            string cover = ((ISet<string>)this.Request.FormData["cover"]).FirstOrDefault();
+            string name = (this.Request.FormData["name"]).FirstOrDefault();
+            string cover = (this.Request.FormData["cover"]).FirstOrDefault();
 
             Album album = new Album
             {
@@ -62,7 +62,7 @@ namespace IRunes.App.Controllers
         [Authorize]
         public ActionResult Details()
         {
-            string albumId = this.Request.QueryData["id"].ToString();
+            string albumId = this.Request.QueryData["id"].FirstOrDefault();
             Album albumFromDb = this.albumService.GetAlbumById(albumId);
 
             AlbumDetailsViewModel albumViewModel = ModelMapper.ProjectTo<AlbumDetailsViewModel>(albumFromDb);
