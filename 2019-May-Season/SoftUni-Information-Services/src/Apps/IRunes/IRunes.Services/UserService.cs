@@ -8,9 +8,9 @@ namespace IRunes.Services
     {
         private readonly RunesDbContext context;
 
-        public UserService()
+        public UserService(RunesDbContext runesDbContext)
         {
-            this.context = new RunesDbContext();
+            this.context = runesDbContext;
         }
 
         public User CreateUser(User user)

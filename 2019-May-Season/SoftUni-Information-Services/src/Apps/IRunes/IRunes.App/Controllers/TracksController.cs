@@ -3,6 +3,7 @@ using System.Linq;
 using IRunes.App.ViewModels;
 using IRunes.Models;
 using IRunes.Services;
+using Microsoft.Extensions.Logging;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Attributes;
 using SIS.MvcFramework.Attributes.Security;
@@ -17,10 +18,10 @@ namespace IRunes.App.Controllers
 
         private readonly IAlbumService albumService;
 
-        public TracksController()
+        public TracksController(ITrackService trackService, IAlbumService albumService)
         {
-            this.trackService = new TrackService();
-            this.albumService = new AlbumService();
+            this.trackService = trackService;
+            this.albumService = albumService;
         }
 
         [Authorize]

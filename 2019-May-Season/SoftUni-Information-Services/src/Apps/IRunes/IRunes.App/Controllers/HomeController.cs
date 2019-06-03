@@ -22,5 +22,10 @@ namespace IRunes.App.Controllers
 
             return this.View();
         }
+
+        public ActionResult Test()
+        {
+            return this.View();
+        }
     }
 }

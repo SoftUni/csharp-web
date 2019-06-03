@@ -15,9 +15,10 @@ namespace IRunes.App.Controllers
     {
         private readonly IAlbumService albumService;
 
-        public AlbumsController()
+        public AlbumsController(IAlbumService albumService)
         {
-            this.albumService = new AlbumService();
+            // new is glue
+            this.albumService = albumService;
         }
 
         [Authorize]
