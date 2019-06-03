@@ -104,19 +104,22 @@ namespace SIS.MvcFramework
             foreach (var parameter in parameters)
             {
                 var parameterName = parameter.Name.ToLower();
-                //ISet<string> httpDataValue = null;
-                //if (request.QueryData.Any(x => x.Key.ToLower() == parameterName))
-                //{
-                //    parameterValue = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == parameterName);
-                //}
+                ISet<string> httpDataValue = null;
+                if (request.QueryData.Any(x => x.Key.ToLower() == parameterName))
+                {
+                    httpDataValue = request.QueryData.FirstOrDefault(
+                        x => x.Key.ToLower() == parameterName).Value;
+                }
+                else if (request.FormData.Any(x => x.Key.ToLower() == parameterName))
+                {
+                    httpDataValue = request.FormData.FirstOrDefault(
+                        x => x.Key.ToLower() == parameterName).Value;
+                }
 
-                //if (request.FormData.Any(x => x.Key.ToLower() == parameterName))
-                //{
-                //    parameterValue = request.FormData.FirstOrDefault(x => x.Key.ToLower() == parameterName);
-                //}
-
-
-                // System.Convert.ChangeType()
+                // TODO: Support lists
+                string httpStringValue = httpDataValue.FirstOrDefault();
+                var parameterValue = System.Convert.ChangeType(httpStringValue, parameter.ParameterType);
+                parameterValues.Add(parameterValue);
             }
 
             var response = action.Invoke(controllerInstance, parameterValues.ToArray()) as ActionResult;

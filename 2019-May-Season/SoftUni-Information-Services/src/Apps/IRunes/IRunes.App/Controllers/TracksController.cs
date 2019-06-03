@@ -25,27 +25,20 @@ namespace IRunes.App.Controllers
         }
 
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Create(string albumId)
         {
-            string albumId = this.Request.QueryData["albumId"].FirstOrDefault();
-
             return this.View(new TrackCreateViewModel{ AlbumId = albumId });
         }
 
         [Authorize]
         [HttpPost(ActionName = "Create")]
-        public ActionResult CreateConfirm()
+        public ActionResult CreateConfirm(string albumId, string name, string link, decimal price)
         {
-            string albumId = this.Request.QueryData["albumId"].FirstOrDefault();
-            string name = this.Request.FormData["name"].FirstOrDefault();
-            string link = this.Request.FormData["link"].FirstOrDefault();
-            string price = this.Request.FormData["price"].FirstOrDefault();
-
             Track trackForDb = new Track
             {
                 Name = name,
                 Link = link,
-                Price = decimal.Parse(price)
+                Price = price,
             };
 
             if (!this.albumService.AddTrackToAlbum(albumId, trackForDb))
@@ -57,11 +50,8 @@ namespace IRunes.App.Controllers
         }
 
         [Authorize]
-        public ActionResult Details()
+        public ActionResult Details(string albumId, string trackId)
         {
-            string albumId = this.Request.QueryData["albumId"].FirstOrDefault();
-            string trackId = this.Request.QueryData["trackId"].FirstOrDefault();
-
             Track trackFromDb = this.trackService.GetTrackById(trackId);
 
             if (trackFromDb == null)

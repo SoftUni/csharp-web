@@ -62,7 +62,7 @@ namespace AppViewCodeNamespace
             var lines = viewContent.Split(new string[] { "\r\n", "\n\r", "\n" }, StringSplitOptions.None);
             var csharpCode = new StringBuilder();
             var supportedOperators = new[] { "for", "if", "else" };
-            var csharpCodeRegex = new Regex(@"[^\s<""]+", RegexOptions.Compiled);
+            var csharpCodeRegex = new Regex(@"[^\s<""\&]+", RegexOptions.Compiled);
             foreach (var line in lines)
             {
                 if (line.TrimStart().StartsWith("{") || line.TrimStart().StartsWith("}"))

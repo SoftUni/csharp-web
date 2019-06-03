@@ -22,11 +22,11 @@
 <hr class="bg-success" style="height: 2px" />
 <main>
     <div class="track-details">
-        <h4 class="text-center">Track Name: @{WebUtility.UrlDecode(Model.Name)}</h4>
+        <h4 class="text-center">Track Name: @Model.Name</h4>
         <h4 class="text-center">Track Price: @Model.Price</h4>
         <hr class="bg-success w-50" style="height: 2px" />
         <div class="d-flex justify-content-center">
-            <iframe src="@{WebUtility.UrlDecode(Model.Link)}" class="w-50" height="480"></iframe>
+            <iframe src="@Model.Link" class="w-50" height="480"></iframe>
             </div>
         <hr class="bg-success w-50" style="height: 2px" />
         <div class="d-flex justify-content-center">

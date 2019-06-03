@@ -31,7 +31,7 @@
             @foreach(var album in Model)
             {
                 <h3>
-                    <a href="/Albums/Details?id=@album.Id">@{WebUtility.UrlDecode(album.Name)}</a>
+                    <a href="/Albums/Details?id=@album.Id">@album.Name</a>
                 </h3>
             }
         }

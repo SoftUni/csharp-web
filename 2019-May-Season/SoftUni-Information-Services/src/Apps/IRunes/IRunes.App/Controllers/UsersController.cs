@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-
 using IRunes.Models;
 using IRunes.Services;
 using SIS.MvcFramework;
@@ -36,11 +33,8 @@ namespace IRunes.App.Controllers
         }
 
         [HttpPost(ActionName = "Login")]
-        public ActionResult LoginConfirm()
+        public ActionResult LoginConfirm(string username, string password)
         {
-            string username = ((ISet<string>)this.Request.FormData["username"]).FirstOrDefault();
-            string password = ((ISet<string>)this.Request.FormData["password"]).FirstOrDefault();
-
             User userFromDb = this.userService.GetUserByUsernameAndPassword(username, this.HashPassword(password));
 
             if (userFromDb == null)
@@ -59,13 +53,8 @@ namespace IRunes.App.Controllers
         }
 
         [HttpPost(ActionName = "Register")]
-        public ActionResult RegisterConfirm()
+        public ActionResult RegisterConfirm(string username, string password, string confirmPassword, string email)
         {
-            string username = ((ISet<string>)this.Request.FormData["username"]).FirstOrDefault();
-            string password = ((ISet<string>)this.Request.FormData["password"]).FirstOrDefault();
-            string confirmPassword = ((ISet<string>)this.Request.FormData["confirmPassword"]).FirstOrDefault();
-            string email = ((ISet<string>)this.Request.FormData["email"]).FirstOrDefault();
-
             if (password != confirmPassword)
             {
                 return this.Redirect("/Users/Register");
