@@ -7,7 +7,6 @@ using SIS.MvcFramework.Attributes;
 using SIS.MvcFramework.Attributes.Action;
 using SIS.MvcFramework.Attributes.Security;
 using SIS.MvcFramework.Result;
-using SIS.MvcFramework;
 using SIS.MvcFramework.Routing;
 using SIS.MvcFramework.Sessions;
 
@@ -93,8 +92,6 @@ namespace SIS.MvcFramework
             // typeof(Server).GetMethods()
             // sb.GetType().GetMethods();
             // Activator.CreateInstance(typeof(Server))
-            var sb = DateTime.UtcNow;
-
         }
     }
 }
