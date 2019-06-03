@@ -72,10 +72,12 @@ namespace SIS.MvcFramework
 
                         // Security Authorization - TODO: Refactor this
                         var controllerPrincipal = ((Controller)controllerInstance).User;
-                        var authorizeAttribute = action.GetCustomAttributes()
-                            .LastOrDefault(a => a.GetType() == typeof(AuthorizeAttribute)) as AuthorizeAttribute;
 
-                        if (authorizeAttribute != null && !authorizeAttribute.IsInAuthority(controllerPrincipal))
+                        var classAttribute = GetAttribute<AuthorizeAttribute, Type>(controller);
+                        var acctionAttribute = GetAttribute<AuthorizeAttribute, MethodInfo>(action);
+
+                        if ((classAttribute != null && !classAttribute.IsInAuthority(controllerPrincipal)) ||
+                       (acctionAttribute != null && !acctionAttribute.IsInAuthority(controllerPrincipal)))
                         {
                             // TODO: Redirect to configured URL
                             return new HttpResponse(HttpResponseStatusCode.Forbidden);
@@ -95,6 +97,14 @@ namespace SIS.MvcFramework
             // Activator.CreateInstance(typeof(Server))
             var sb = DateTime.UtcNow;
 
+        }
+
+        private static AttributeType GetAttribute<AttributeType, EntityType>(EntityType entity)
+           where AttributeType : Attribute
+           where EntityType : MemberInfo
+        {
+            return (AttributeType)entity.GetCustomAttributes()
+                          .LastOrDefault(a => a.GetType() == typeof(AttributeType));
         }
     }
 }
