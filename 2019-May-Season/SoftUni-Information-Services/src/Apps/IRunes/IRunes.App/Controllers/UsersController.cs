@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-
 using IRunes.Models;
 using IRunes.Services;
 using SIS.MvcFramework;
@@ -16,9 +13,9 @@ namespace IRunes.App.Controllers
     {
         private readonly IUserService userService;
 
-        public UsersController()
+        public UsersController(IUserService userService)
         {
-            this.userService = new UserService();
+            this.userService = userService;
         }
 
         [NonAction]
@@ -35,12 +32,9 @@ namespace IRunes.App.Controllers
             return this.View();
         }
 
-        [HttpPost(ActionName = "Login")]
-        public ActionResult LoginConfirm()
+        [HttpPost]
+        public ActionResult Login(string username, string password)
         {
-            string username = ((ISet<string>)this.Request.FormData["username"]).FirstOrDefault();
-            string password = ((ISet<string>)this.Request.FormData["password"]).FirstOrDefault();
-
             User userFromDb = this.userService.GetUserByUsernameAndPassword(username, this.HashPassword(password));
 
             if (userFromDb == null)
@@ -58,14 +52,9 @@ namespace IRunes.App.Controllers
             return this.View();
         }
 
-        [HttpPost(ActionName = "Register")]
-        public ActionResult RegisterConfirm()
+        [HttpPost]
+        public ActionResult Register(string username, string password, string confirmPassword, string email)
         {
-            string username = ((ISet<string>)this.Request.FormData["username"]).FirstOrDefault();
-            string password = ((ISet<string>)this.Request.FormData["password"]).FirstOrDefault();
-            string confirmPassword = ((ISet<string>)this.Request.FormData["confirmPassword"]).FirstOrDefault();
-            string email = ((ISet<string>)this.Request.FormData["email"]).FirstOrDefault();
-
             if (password != confirmPassword)
             {
                 return this.Redirect("/Users/Register");

@@ -1,6 +1,8 @@
 ﻿<h1>Model data</h1>
 @Model.StringValue
+<a href="https://google.com/?q=@Model.StringValue&x=y"></a>
 @foreach (var item in Model.ListValues)
 {
     <div>@item</div>
 }
+@Model.ListValues.First()[0]

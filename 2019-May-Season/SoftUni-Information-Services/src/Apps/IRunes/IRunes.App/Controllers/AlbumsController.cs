@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using IRunes.App.Extensions;
 using IRunes.App.ViewModels;
 using IRunes.Models;
 using IRunes.Services;
@@ -16,9 +15,10 @@ namespace IRunes.App.Controllers
     {
         private readonly IAlbumService albumService;
 
-        public AlbumsController()
+        public AlbumsController(IAlbumService albumService)
         {
-            this.albumService = new AlbumService();
+            // new is glue
+            this.albumService = albumService;
         }
 
         [Authorize]
@@ -26,18 +26,12 @@ namespace IRunes.App.Controllers
         {
             ICollection<Album> allAlbums = this.albumService.GetAllAlbums();
 
-            if (allAlbums.Count == 0)
+            if (allAlbums.Count != 0)
             {
-                this.ViewData["Albums"] = "There are currently no albums.";
-            }
-            else
-            {
-                this.ViewData["Albums"] =
-                    string.Join(string.Empty,
-                    allAlbums.Select(album => album.ToHtmlAll()).ToList());
+                return this.View(allAlbums.Select(ModelMapper.ProjectTo<AlbumAllViewModel>).ToList());
             }
 
-            return this.View();
+            return this.View(new List<AlbumAllViewModel>());
         }
 
         [Authorize]
@@ -47,12 +41,9 @@ namespace IRunes.App.Controllers
         }
 
         [Authorize]
-        [HttpPost(ActionName = "Create")]
-        public ActionResult CreateConfirm()
+        [HttpPost]
+        public ActionResult Create(string name, string cover)
         {
-            string name = ((ISet<string>)this.Request.FormData["name"]).FirstOrDefault();
-            string cover = ((ISet<string>)this.Request.FormData["cover"]).FirstOrDefault();
-
             Album album = new Album
             {
                 Name = name,
@@ -66,20 +57,18 @@ namespace IRunes.App.Controllers
         }
 
         [Authorize]
-        public ActionResult Details()
+        public ActionResult Details(string id)
         {
-            string albumId = this.Request.QueryData["id"].ToString();
-            Album albumFromDb = this.albumService.GetAlbumById(albumId);
+            Album albumFromDb = this.albumService.GetAlbumById(id);
 
-            AlbumViewModel albumViewModel = ModelMapper.ProjectTo<AlbumViewModel>(albumFromDb);
+            AlbumDetailsViewModel albumViewModel = ModelMapper.ProjectTo<AlbumDetailsViewModel>(albumFromDb);
 
             if (albumFromDb == null)
             {
                 return this.Redirect("/Albums/All");
             }
 
-            this.ViewData["Album"] = albumFromDb.ToHtmlDetails();
-            return this.View();
+            return this.View(albumViewModel);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace SIS.MvcFramework.Tests
             {
                 StringValue = "str",
                 ListValues = new List<string> { "123", "val1", string.Empty },
-            });
+            }, new Identity.Principal() { });
             Assert.Equal(expectedResult.TrimEnd(), actualResult.TrimEnd());
         }
     }
