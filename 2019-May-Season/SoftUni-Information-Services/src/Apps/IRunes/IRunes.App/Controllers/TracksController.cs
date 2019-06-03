@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using IRunes.App.ViewModels;
+using IRunes.App.ViewModels.Tracks;
 using IRunes.Models;
 using IRunes.Services;
 using Microsoft.Extensions.Logging;
@@ -31,22 +32,22 @@ namespace IRunes.App.Controllers
         }
 
         [Authorize]
-        [HttpPost(ActionName = "Create")]
-        public ActionResult CreateConfirm(string albumId, string name, string link, decimal price)
+        [HttpPost]
+        public ActionResult Create(CreateInputModel model)
         {
             Track trackForDb = new Track
             {
-                Name = name,
-                Link = link,
-                Price = price,
+                Name = model.Name,
+                Link = model.Link,
+                Price = model.Price,
             };
 
-            if (!this.albumService.AddTrackToAlbum(albumId, trackForDb))
+            if (!this.albumService.AddTrackToAlbum(model.AlbumId, trackForDb))
             {
                 return this.Redirect("/Albums/All");
             }
 
-            return this.Redirect($"/Albums/Details?id={albumId}");
+            return this.Redirect($"/Albums/Details?id={model.AlbumId}");
         }
 
         [Authorize]
