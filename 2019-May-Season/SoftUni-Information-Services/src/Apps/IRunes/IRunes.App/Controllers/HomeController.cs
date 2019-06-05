@@ -16,11 +16,6 @@ namespace IRunes.App.Controllers
 
         public ActionResult Index()
         {
-            if (this.IsLoggedIn())
-            {
-                return this.View(new UserHomeViewModel{ Username = this.User.Username }, "Home");
-            }
-
             return this.View();
         }
 

@@ -1,24 +1,5 @@
-﻿<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <a class="navbar-brand" href="#">IRunes</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/Users/Login">Login</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/Users/Register">Register</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+﻿@if(User == null)
+{
 <hr class="bg-success" style="height: 2px" />
 <main>
     <div class="jumbotron bg-success text-white">
@@ -28,3 +9,15 @@
         <h2><a class="text-warning" href="/Users/Register">Register</a> if you don't.</h2>
     </div>
 </main>
+}
+@else
+{
+<hr class="bg-success" style="height: 2px" />
+<main>
+    <div class="jumbotron bg-success text-white">
+        <h1>Welcome, <span class="text-warning">@User.Username</span></h1>
+        <hr class="bg-white" style="height: 2px" />
+        <h2>IRunes wishes you a fun experience.</h2>
+    </div>
+</main>
+}

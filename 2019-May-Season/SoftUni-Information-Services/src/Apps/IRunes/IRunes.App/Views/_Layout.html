@@ -7,7 +7,55 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid">    
+        @if(User == null) 
+        {
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+                <a class="navbar-brand" href="#">IRunes</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Users/Login">Login</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Users/Register">Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        }
+        @else 
+        {
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+                <a class="navbar-brand" href="#">IRunes</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Albums/All">Albums</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Users/Logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        }
         @RenderBody()
         <hr class="bg-success mt-5" style="height: 2px" />
         <footer>
