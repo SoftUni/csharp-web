@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIS.MvcFramework", "SIS.Mvc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIS.Common", "SIS.Common\SIS.Common.csproj", "{B5704B4A-209B-4594-B0CA-AC96EEFD42EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.SandBox", "Apps\SIS.SandBox\SIS.SandBox.csproj", "{0B114439-680F-4681-A1E8-3564E6D5001C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
