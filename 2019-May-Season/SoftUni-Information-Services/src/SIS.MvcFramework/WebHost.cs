@@ -18,8 +18,13 @@ using IServiceProvider = SIS.MvcFramework.DependencyContainer.IServiceProvider;
 
 namespace SIS.MvcFramework
 {
+    using Attributes.Validation;
+    using Validation;
+
     public static class WebHost
     {
+        private static readonly IControllerState controllerState = new ControllerState();
+
         public static void Start(IMvcApplication application)
         {
             IServerRoutingTable serverRoutingTable = new ServerRoutingTable();
@@ -88,6 +93,7 @@ namespace SIS.MvcFramework
             IHttpRequest request)
         {
             var controllerInstance = serviceProvider.CreateInstance(controllerType) as Controller;
+            controllerState.SetState(controllerInstance);
             controllerInstance.Request = request;
 
             // Security Authorization - TODO: Refactor this
@@ -157,12 +163,47 @@ namespace SIS.MvcFramework
                         }
                     }
 
+                    if (request.RequestMethod == HttpRequestMethod.Post)
+                    {
+                        controllerState.Reset();
+                        controllerInstance.ModelState = ValidateObject(paramaterValue);
+                        controllerState.Initialize(controllerInstance);
+                    }
+
                     parameterValues.Add(paramaterValue);
                 }
             }
 
             var response = action.Invoke(controllerInstance, parameterValues.ToArray()) as ActionResult;
             return response;
+        }
+
+        private static ModelStateDictionary ValidateObject(object value)
+        {
+            var modelState = new ModelStateDictionary();
+
+            var objectProperties = value.GetType().GetProperties();
+
+            foreach (var objectProperty in objectProperties)
+            {
+                var validationAttributes = objectProperty
+                    .GetCustomAttributes()
+                    .Where(type => type is ValidationSisAttribute)
+                    .Cast<ValidationSisAttribute>()
+                    .ToList();
+
+                foreach (var validationAttribute in validationAttributes)
+                {
+                    if (validationAttribute.IsValid(objectProperty.GetValue(value)))
+                    {
+                       continue;
+                    }
+
+                    modelState.Add(objectProperty.Name, validationAttribute.ErrorMessage);
+                }
+            }
+
+            return modelState;
         }
 
         private static ISet<string> TryGetHttpParameter(IHttpRequest request, string parameterName)

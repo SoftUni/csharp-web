@@ -3,6 +3,7 @@
     <h1 class="text-center text-success">Login</h1>
     <hr class="bg-success w-50" style="height: 2px" />
     <form class="w-50 mx-auto" action="/Users/Login" method="POST">
+        @Widgets.ValidationWidget
         <div class="form-group">
             <label for="username">Username / Email</label>
             <input type="text" class="form-control" id="username" name="username" placeholder="Username / Email..." />

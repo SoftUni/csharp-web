@@ -3,6 +3,7 @@
     <h1 class="text-center text-success">Create Track</h1>
     <hr class="bg-success w-50" style="height: 2px" />
     <form action="/Tracks/Create?albumId=@Model.AlbumId" class="w-50 mx-auto" method="POST">
+        @Widgets.ValidationWidget
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Name..." />

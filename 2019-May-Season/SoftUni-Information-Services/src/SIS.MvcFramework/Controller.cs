@@ -7,6 +7,8 @@ using SIS.MvcFramework.ViewEngine;
 
 namespace SIS.MvcFramework
 {
+    using Validation;
+
     public abstract class Controller
     {
         private readonly IViewEngine viewEngine;
@@ -14,6 +16,7 @@ namespace SIS.MvcFramework
         protected Controller()
         {
             this.viewEngine = new SisViewEngine();
+            this.ModelState = new ModelStateDictionary();
         }
 
         // TODO: Refactor this
@@ -23,6 +26,8 @@ namespace SIS.MvcFramework
             : null;
 
         public IHttpRequest Request { get; set; }
+
+        public ModelStateDictionary ModelState { get; set; }
 
         protected bool IsLoggedIn()
         {
@@ -57,10 +62,10 @@ namespace SIS.MvcFramework
             string viewName = view;
 
             string viewContent = System.IO.File.ReadAllText("Views/" + controllerName + "/" + viewName + ".html");
-            viewContent = this.viewEngine.GetHtml(viewContent, model, this.User);
+            viewContent = this.viewEngine.GetHtml(viewContent, model,this.ModelState, this.User);
 
             string layoutContent = System.IO.File.ReadAllText("Views/_Layout.html");
-            layoutContent = this.viewEngine.GetHtml(layoutContent, model, this.User);
+            layoutContent = this.viewEngine.GetHtml(layoutContent, model,this.ModelState, this.User);
             layoutContent = layoutContent.Replace("@RenderBody()", viewContent);
 
             var htmlResult = new HtmlResult(layoutContent);
