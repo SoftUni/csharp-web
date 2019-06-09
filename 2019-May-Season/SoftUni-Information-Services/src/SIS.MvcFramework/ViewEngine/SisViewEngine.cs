@@ -92,8 +92,10 @@ namespace AppViewCodeNamespace
 
         private string GetCSharpCode(string viewContent)
         {
+
             // TODO: { var a = "Niki"; }
             var lines = viewContent.Split(new string[] { "\r\n", "\n\r", "\n" }, StringSplitOptions.None);
+
             var csharpCode = new StringBuilder();
             var supportedOperators = new[] { "for", "if", "else" };
             var csharpCodeRegex = new Regex(@"[^\s<""\&]+", RegexOptions.Compiled);
@@ -101,6 +103,7 @@ namespace AppViewCodeNamespace
 
             foreach (var line in lines)
             {
+
                 string currentLine = line;
 
                 if (currentLine.TrimStart().StartsWith("@{"))
@@ -108,6 +111,7 @@ namespace AppViewCodeNamespace
                     csharpCodeDepth++;
                 }
                 else if (currentLine.TrimStart().StartsWith("{") || currentLine.TrimStart().StartsWith("}"))
+
                 {
                     // { / }
                     if (csharpCodeDepth > 0)

@@ -57,6 +57,7 @@ namespace SIS.MvcFramework
                     .Where(x => !x.IsSpecialName && x.DeclaringType == controllerType)
                     .Where(x => x.GetCustomAttributes().All(a => a.GetType() != typeof(NonActionAttribute)));
 
+
                 foreach (var action in actions)
                 {
                     var path = $"/{controllerType.Name.Replace("Controller", string.Empty)}/{action.Name}";
