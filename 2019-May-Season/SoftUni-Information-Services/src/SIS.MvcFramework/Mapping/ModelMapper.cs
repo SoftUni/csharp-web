@@ -35,6 +35,11 @@
                     destinationProperty.SetValue(destinationInstance, originProperty.GetValue(originInstance));
                 }
             }
+            else if (originProperty.PropertyType.IsEnum)
+            {
+                var type = originProperty.PropertyType;
+                destinationProperty.SetValue(destinationInstance, Enum.Parse(type, originProperty.GetValue(originInstance).ToString()));
+            }
             else if (typeof(IEnumerable).IsAssignableFrom(destinationProperty.PropertyType))
             {
                 // TODO: Research if possible for other collections
