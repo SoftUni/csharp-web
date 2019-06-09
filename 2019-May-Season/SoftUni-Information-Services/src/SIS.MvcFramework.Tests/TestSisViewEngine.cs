@@ -15,7 +15,6 @@ namespace SIS.MvcFramework.Tests
         [InlineData("TestWithoutCSharpCode")]
         [InlineData("UseForForeachAndIf")]
         [InlineData("UseModelData")]
-        [InlineData("UseVariables")]
         public void TestGetHtml(string testFileName)
         {
             IViewEngine viewEngine = new SisViewEngine();
