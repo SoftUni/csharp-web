@@ -1,0 +1,45 @@
+.bg-panda {
+    background-color: black;
+}
+
+.text-panda {
+    color: #202020;
+}
+
+.border-panda {
+    border: 2px solid #202020;
+    border-radius: 7px;
+}
+
+.nav-link-white {
+    color: #FFFFFF;
+}
+
+.hr-2 {
+    height: 2px;
+}
+
+a {
+    text-underline: none;
+}
+
+a:hover {
+    outline: none;
+    text-decoration: none;
+}
+
+tr {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+textarea {
+    resize: none;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    border: 0;
+    width: 98%;
+}
