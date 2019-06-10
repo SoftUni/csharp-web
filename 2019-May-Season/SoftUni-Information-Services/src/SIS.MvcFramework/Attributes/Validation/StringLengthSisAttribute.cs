@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SIS.MvcFramework.Attributes.Validation
 {
@@ -20,7 +18,7 @@ namespace SIS.MvcFramework.Attributes.Validation
         {
             string valueAsString = (string)Convert.ChangeType(value, typeof(string));
 
-            if (valueAsString.Length >= minLength && valueAsString.Length <= maxLength)
+            if (valueAsString.Length >= this.minLength && valueAsString.Length <= this.maxLength)
             {
                 return true;
             }

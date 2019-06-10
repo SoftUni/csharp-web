@@ -48,7 +48,7 @@ namespace IRunes.App.Controllers
         [HttpPost]
         public IActionResult Register(UserRegisterInputModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.Redirect("/Users/Register");
             }

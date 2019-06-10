@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using IRunes.App.ViewModels;
 using IRunes.Models;
 using IRunes.Services;
 using SIS.MvcFramework;
@@ -46,7 +45,7 @@ namespace IRunes.App.Controllers
         [HttpPost]
         public IActionResult Create(AlbumCreateInputModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.Redirect("/Albums/Create");
             }

@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using IRunes.App.ViewModels;
-using IRunes.App.ViewModels.Tracks;
+﻿using IRunes.App.ViewModels.Tracks;
 using IRunes.Models;
 using IRunes.Services;
-using Microsoft.Extensions.Logging;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Attributes;
 using SIS.MvcFramework.Attributes.Security;
@@ -35,7 +31,7 @@ namespace IRunes.App.Controllers
         [HttpPost]
         public IActionResult Create(TrackCreateInputModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.Redirect("/");
             }
@@ -53,7 +49,7 @@ namespace IRunes.App.Controllers
         [Authorize]
         public IActionResult Details(TrackDetailsInputModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.Redirect($"Albums/All");
             }

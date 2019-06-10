@@ -1,5 +1,4 @@
-﻿using IRunes.App.ViewModels;
-using SIS.MvcFramework;
+﻿using SIS.MvcFramework;
 using SIS.MvcFramework.Attributes;
 using SIS.MvcFramework.Result;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace IRunes.App.Controllers
         [HttpGet(Url = "/")]
         public IActionResult IndexSlash()
         {
-            return Index();
+            return this.Index();
         }
 
         public IActionResult Index()
