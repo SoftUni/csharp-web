@@ -46,7 +46,7 @@ namespace SIS.MvcFramework.Attributes.Validation
 
             if (objectType == typeof(decimal))
             {
-                return (decimal)value >= (decimal)minValue && (decimal)value <= (decimal)maxValue;
+                return (decimal)value >= decimal.Parse((string)minValue) && (decimal)value <= decimal.Parse((string)maxValue);
             }
 
             return false;
