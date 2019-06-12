@@ -1,0 +1,17 @@
+﻿@if(!ModelState.IsValid)
+{
+<div class="alert alert-danger" role="alert">
+    Error
+    <br />
+    @foreach (var propertyName in ModelState.ErrorMessage)
+    {
+    <p1>@propertyName.Key</p1>
+    <br />
+    @foreach (var errorMessage in propertyName.Value)
+    {
+    <p1>@errorMessage</p1>
+    }
+    <br />
+    }
+</div>
+}

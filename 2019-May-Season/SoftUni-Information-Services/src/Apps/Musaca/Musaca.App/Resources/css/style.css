@@ -1,0 +1,51 @@
+.bg-musaca {
+    background-color: #32CD32;
+    color: #000000;
+}
+
+.text-musaca {
+    color: #32CD32;
+}
+
+.border-musaca {
+    border: 3px solid #32CD32;
+    border-radius: 5px;
+}
+
+.nav-link-white {
+    color: #FFFFFF;
+}
+
+.hr-2 {
+    height: 2px;
+}
+
+a {
+    text-underline: none;
+}
+
+a:hover {
+    outline: none;
+    text-decoration: none;
+}
+
+tr {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+textarea {
+    resize: none;
+}
+
+img {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    border: 0;
+    width: 98%;
+}
