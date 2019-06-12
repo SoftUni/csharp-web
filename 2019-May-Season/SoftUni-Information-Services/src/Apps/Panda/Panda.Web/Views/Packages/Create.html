@@ -1,0 +1,41 @@
+﻿<main class="w-50 mx-auto">
+    <h1 class="text-center">Create Package</h1>
+    
+    <hr class="bg-panda" style="height: 2px"/>
+
+    <form method="post" action="/Packages/Create">
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <input type="text" class="form-control" id="Description" placeholder="Description..." name="Description">
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="weight">Weight</label>
+                    <input type="number" step="any" class="form-control" id="weight" placeholder="Weight..." name="Weight">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="ShippingAddress">Shipping Address</label>
+                    <input type="text" class="form-control" id="ShippingAddress" placeholder="Shipping Address..." name="ShippingAddress">
+                </div>
+            </div>
+        </div>
+        <hr class="bg-panda" style="height: 2px"/>
+        <div class="form-group text-center">
+            <label for="RecipientName">Recipient</label>
+            <select class="form-control" id="RecipientName" name="RecipientName">
+                <option selected disabled>-- Choose Recipient --</option>
+                @foreach(var option in Model)
+                {
+                    <option>@option</option>
+                }
+            </select>
+        </div>
+        <hr class="bg-panda" style="height: 2px"/>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn bg-panda text-white" style="background: black">Create</button>
+        </div>
+    </form>
+</main>
