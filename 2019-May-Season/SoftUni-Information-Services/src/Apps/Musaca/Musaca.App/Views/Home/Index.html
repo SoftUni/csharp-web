@@ -1,0 +1,65 @@
+﻿@if(User == null)
+{
+    <main class="mt-3">
+        <div class="jumbotron mt-3 bg-musaca">
+            <h1 class="text-white">Welcome to MUSACA Sales and Accounting.</h1>
+            <hr class="bg-white hr-2" />
+            <h3 class="text-white"><a href="/Users/Login">Login</a> if you have an account.</h3>
+            <h3 class="text-white"><a href="/Users/Register">Register</a> if you don't.</h3>
+        </div>
+    </main>
+}
+@else
+{
+<main class="mt-3">
+    <form class="" method="post" action="/Products/Order">
+        <div class="form-group w-50 d-flex justify-content-start">
+            <div class="label-holder">
+                <label for="product" class="text-musaca p-2 m-0 font-weight-bold border-musaca">Product</label>
+            </div>
+            <input type="text" class="form-control ml-5 w-25 font-weight-bold" id="product" placeholder="Product..." name="product">
+            <div class="button-holder ml-5 my-1">
+                <button type="submit" class="btn bg-musaca p-2 font-weight-bold text-white">Order</button>
+            </div>
+        </div>
+    </form>
+    <hr class="hr-2 bg-musaca">
+    <div class="products-holder mt-4">
+        <div class="product d-flex justify-content-between">
+            <div class="product-name w-75">
+                <h4>Product Name</h4>
+            </div>
+            <div class="product-quantity-and-price d-flex justify-content-end w-25">
+                <h4 class="text-center w-50">Price</h4>
+            </div>
+        </div>
+        <hr class="hr-2 bg-musaca">
+        @foreach(var product in Model.Products)
+        {
+            @{
+                var formattedPrice = $"{product.Price:F2}";
+            }
+            <div class="product d-flex justify-content-between">
+                <div class="product-name w-75">
+                    <h4>@product.Name</h4>
+                </div>
+                <div class="product-quantity-and-price d-flex justify-content-end w-25">
+                    <h4 class="text-center w-50">$@formattedPrice</h4>
+                </div>
+            </div>
+        }
+    </div>
+    <hr class="hr-2 bg-musaca">
+    <div class="finish-order-holder d-flex justify-content-between">
+        <div class="form-holder w-25">
+            <a class="btn bg-musaca text-white font-weight-bold px-5 py-2" href="/Orders/Cashout">Cashout</a>
+        </div>
+        <div class="price-holder w-25">
+            @{
+                var totalFormattedPrice = $"{Model.Price:F2}";
+            }
+            <h2 class="text-right">Total: $@totalFormattedPrice</h2>
+        </div>
+    </div>
+</main>
+}
