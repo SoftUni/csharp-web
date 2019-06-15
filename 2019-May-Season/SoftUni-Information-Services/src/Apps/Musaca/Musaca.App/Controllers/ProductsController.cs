@@ -41,7 +41,7 @@ namespace Musaca.App.Controllers
         [Authorize]
         public IActionResult Create(ProductCreateBindingModel productCreateBindingModel)
         {
-            if(!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 // TODO: SAVE FORM RESULT
                 return this.View();
@@ -57,7 +57,8 @@ namespace Musaca.App.Controllers
         {
             Product productToOrder = this.productService.GetByName(productOrderBindingModel.Product);
 
-            this.orderService.AddProductToCurrentActiveOrder(productToOrder.Id, this.User.Id);
+            if (productToOrder != null)
+                this.orderService.AddProductToCurrentActiveOrder(productToOrder.Id, this.User.Id);
 
             return this.Redirect("/");
         }
