@@ -14,6 +14,7 @@ using SIS.MvcFramework.Result;
 namespace Musaca.App.Controllers
 {
     using BindingModels.Users;
+    using SIS.MvcFramework.Attributes.Security;
 
     public class UsersController : Controller
     {
@@ -78,6 +79,7 @@ namespace Musaca.App.Controllers
             return this.Redirect("/Users/Login");
         }
 
+        [Authorize]
         public IActionResult Profile()
         {
             UserProfileViewModel userProfileViewModel = new UserProfileViewModel();
@@ -100,6 +102,7 @@ namespace Musaca.App.Controllers
             return this.View(userProfileViewModel);
         }
 
+        [Authorize]
         public IActionResult Logout()
         {
             this.SignOut();
