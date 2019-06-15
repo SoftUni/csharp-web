@@ -8,7 +8,7 @@ namespace Musaca.Models
     {
         public Order()
         {
-            this.Products = new List<OrderProduct>();
+            this.Products = new List<OrderProducts>();
         }
 
         public string Id { get; set; }
@@ -21,6 +21,6 @@ namespace Musaca.Models
 
         public User Cashier { get; set; }
 
-        public List<OrderProduct> Products { get; set; }
+        public List<OrderProducts> Products { get; set; }
     }
 }

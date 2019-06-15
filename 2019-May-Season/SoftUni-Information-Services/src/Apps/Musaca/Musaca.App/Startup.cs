@@ -12,6 +12,7 @@ namespace Musaca.App
         {
             using (var context = new MusacaDbContext())
             {
+                //context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
             }
         }

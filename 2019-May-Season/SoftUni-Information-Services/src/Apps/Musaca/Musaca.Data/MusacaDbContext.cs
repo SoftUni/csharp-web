@@ -11,7 +11,7 @@ namespace Musaca.Data
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<OrderProducts> OrderProducts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +31,9 @@ namespace Musaca.Data
             modelBuilder.Entity<Order>()
                 .HasKey(order => order.Id);
 
+            modelBuilder.Entity<OrderProducts>()
+                .HasKey(orderProduct => orderProduct.Id);
+
             modelBuilder.Entity<Order>()
                 .HasMany(order => order.Products)
                 .WithOne(orderProduct => orderProduct.Order)
@@ -38,9 +41,6 @@ namespace Musaca.Data
 
             modelBuilder.Entity<Order>()
                 .HasOne(order => order.Cashier);
-
-            modelBuilder.Entity<OrderProduct>()
-                .HasKey(orderProduct => new {orderProduct.OrderId, orderProduct.ProductId});
 
             base.OnModelCreating(modelBuilder);
         }
