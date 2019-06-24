@@ -1,0 +1,77 @@
+﻿@model List<Panda.App.Models.Package.PackageHomeViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Panda.App.Models.Package.PackageHomeViewModel> pendingPackages = null;
+    List<Panda.App.Models.Package.PackageHomeViewModel> shippedPackages = null;
+    List<Panda.App.Models.Package.PackageHomeViewModel> deliveredPackages = null;
+
+    if (this.User.Identity.IsAuthenticated)
+    {
+        pendingPackages = Model.Where(package => package.Status == "Pending").ToList();
+        shippedPackages = Model.Where(package => package.Status == "Shipped").ToList();
+        deliveredPackages = Model.Where(package => package.Status == "Delivered").ToList();
+    }
+}
+
+@if (!this.User.Identity.IsAuthenticated)
+{
+    <div class="jumbotron mt-3 bg-panda">
+        <h1 class="text-white">Welcome to PANDA Delivery Services.</h1>
+        <hr class="bg-white hr-2" />
+        <h3 class="text-white"><a href="/login">Login</a> if you have an account.</h3>
+        <h3 class="text-white"><a href="/register">Register</a> if you don't.</h3>
+    </div>
+}
+else
+{
+    if (this.User.IsInRole("Admin"))
+    {
+        <h1 class="text-center">Hello, Administrator @this.User.Identity.Name!</h1>
+    }
+    else
+    {
+<h1 class="text-center">Hello, @this.User.Identity.Name!</h1>
+    }
+    <hr class="hr-2 bg-panda">
+    <div class="d-flex justify-content-between">
+        <div class="w-25 bg-white">
+            <h2 class="text-center">Pending</h2>
+            <div class="border-panda p-3">
+                @foreach (var package in pendingPackages)
+                {
+                    <div class="p-2 d-flex justify-content-around">
+                        <h4 class="w-75">@package.Description</h4>
+                        <a href="/Packages/Details/@package.Id" class="btn bg-panda text-white w-25">Details</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="w-25 bg-white">
+            <h2 class="text-center">Shipped</h2>
+            <div class="border-panda p-3">
+                @foreach (var package in shippedPackages)
+                {
+                    <div class="p-2 d-flex justify-content-around">
+                        <h4 class="w-75">@package.Description</h4>
+                        <a href="/Packages/Details/@package.Id" class="btn bg-panda text-white w-25">Details</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="w-25 bg-white">
+            <h2 class="text-center">Delivered</h2>
+            <div class="border-panda p-3">
+                @foreach (var package in deliveredPackages)
+                {
+                    <div class="p-2 d-flex justify-content-around">
+                        <h4 class="w-75">@package.Description</h4>
+                        <a href="/Packages/Acquire/@package.Id" class="btn bg-panda text-white w-25">Acquire</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,53 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1 class="text-center text-torshia">Register</h1>
+<hr class="bg-panda w-50 hr-2" />
+<form class="mx-auto w-50" method="post">
+    <div class="form-group">
+        <label asp-for="Input.Username" class="text-torshia">Username</label>
+        <input type="text"
+               class="form-control"
+               id="username"
+               placeholder="Username..."
+               asp-for="Input.Username">
+        <span asp-validation-for="Input.Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Input.Password" class="text-torshia">Password</label>
+        <input type="password"
+               class="form-control"
+               id="password"
+               placeholder="Password..."
+               asp-for="Input.Password">
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Input.ConfirmPassword" class="text-torshia">Confirm Password</label>
+        <input type="password"
+               class="form-control"
+               id="confirmPassword"
+               placeholder="Confirm Password..."
+               asp-for="Input.ConfirmPassword">
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Input.Email" class="text-torshia">Email</label>
+        <input type="email"
+               class="form-control"
+               id="email"
+               placeholder="Email..."
+               asp-for="Input.Email">
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn bg-panda text-white">Register</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

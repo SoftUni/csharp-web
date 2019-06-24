@@ -1,0 +1,41 @@
+﻿@model Panda.App.Models.Receipt.ReceiptDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Receipt Details</h1>
+<hr class="hr-2 bg-panda">
+<div class="mx-auto">
+    <div class="receipt-id-handler d-flex justify-content-between">
+        <h3>Receipt Number:</h3>
+        <h3>@Model.Id</h3>
+    </div>
+    <hr class="hr-2 bg-panda">
+    <div class="d-flex justify-content-between">
+        <h4>Issued On:</h4>
+        <h4>@Model.IssuedOn</h4>
+    </div>
+    <div class="d-flex justify-content-between">
+        <h4>Delivery Address:</h4>
+        <h4>@Model.DeliveryAddress</h4>
+    </div>
+    <hr class="hr-2 bg-panda">
+    <div class="d-flex justify-content-between">
+        <h4>Package Weight (KG):</h4>
+        <h4>@Model.PackageWeight</h4>
+    </div>
+    <div class="d-flex justify-content-between">
+        <h4>Package Description:</h4>
+        <h4>@Model.PackageDescription</h4>
+    </div>
+    <div class="d-flex justify-content-between">
+        <h4>Recipient:</h4>
+        <h4>@Model.Recipient</h4>
+    </div>
+    <hr class="hr-2 bg-panda">
+    <div class="fee-holder d-flex justify-content-end">
+        <h3>Total: $@Model.Total.ToString("F2")</h3>
+    </div>
+</div>
