@@ -1,0 +1,12 @@
+﻿@using  Microsoft.AspNetCore.Hosting
+@using  Microsoft.Extensions.Configuration
+@using MyFirstMvcApp.Services
+@model IndexViewModel
+@inject IHostingEnvironment EnvService
+@inject IConfiguration Configuration
+@inject  ICounterService Counter
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>@Counter.GetCount()</div>
