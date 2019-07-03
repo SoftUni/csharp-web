@@ -1,0 +1,56 @@
+﻿@using  MyFirstMvcApp.Models.CarAd
+@model CreateInputModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<form asp-controller="CarAd" asp-action="Create" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div>
+        <label asp-for="Car.Brand"></label>
+        <input asp-for="Car.Brand" class="form-control" />
+        <span asp-validation-for="Car.Brand" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Car.Model"></label>
+        <input asp-for="Car.Model" class="form-control" />
+        <span asp-validation-for="Car.Model" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Year"></label>
+        <input asp-for="Year" class="form-control" data-val="false" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Type"></label>
+        <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList<CarType>()">
+            <option value="-1">Please select</option>
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <input type="submit" />
+</form>
+
+@section  Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
