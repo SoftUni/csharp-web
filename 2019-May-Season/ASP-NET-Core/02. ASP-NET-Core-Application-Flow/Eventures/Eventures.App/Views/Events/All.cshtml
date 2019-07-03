@@ -1,0 +1,34 @@
+﻿@model List<Eventures.App.Models.ViewModels.EventAllViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<div id="data-holder" class="w-75 mx-auto">
+    <h1 class="text-center">All Events</h1>
+    <hr class="bg-eventures hr-2" />
+
+    <table class="table">
+        <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-1">#</th>
+                <th class="col-md-5">Name</th>
+                <th class="col-md-2">Start</th>
+                <th class="col-md-2">End</th>
+                <th class="col-md-2">Place</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr class="row mx-auto">
+                    <td class="col-md-1">@(i + 1)</td>
+                    <td class="col-md-5">@Model[i].Name</td>
+                    <td class="col-md-2">@Model[i].Start</td>
+                    <td class="col-md-2">@Model[i].End</td>
+                    <td class="col-md-2">@Model[i].Place</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
