@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Panda.App.Models.Receipt;
 using Panda.Data;
 using Panda.Domain;
+using Panda.Services;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -12,18 +13,17 @@ namespace Panda.App.Controllers
 {
     public class ReceiptsController : Controller
     {
-        private readonly PandaDbContext context;
+        private readonly IReceiptsService receiptsService;        
 
-        public ReceiptsController(PandaDbContext context)
-        {
-            this.context = context;
+        public ReceiptsController(IReceiptsService receiptsService)
+        {            
+            this.receiptsService = receiptsService;
         }
 
         [Authorize]
         public IActionResult My()
         {
-            List<ReceiptMyViewModel> myReceipts = this.context.Receipts
-                .Include(receipt => receipt.Recipient)
+            List<ReceiptMyViewModel> myReceipts = this.receiptsService.GetAllReceiptsWithRecipient()                
                 .Where(receipt => receipt.Recipient.UserName == this.User.Identity.Name)
                 .Select(receipt => new ReceiptMyViewModel
                 {
@@ -41,10 +41,8 @@ namespace Panda.App.Controllers
         [Authorize]
         public IActionResult Details(string id)
         {
-            Receipt receiptFromDb = this.context.Receipts
-                .Where(receipt => receipt.Id == id)
-                .Include(receipt => receipt.Package)
-                .Include(receipt => receipt.Recipient)
+            Receipt receiptFromDb = this.receiptsService.GetAllReceiptsWithRecipientAndPackage()
+                .Where(receipt => receipt.Id == id)                
                 .SingleOrDefault();
 
             ReceiptDetailsViewModel viewModel = new ReceiptDetailsViewModel
