@@ -33,7 +33,7 @@ namespace MyFirstMvcApp.Models.CarAd
 
     public class CreateInputModel
     {
-        [Range(0, int.MaxValue, ErrorMessage = "Please select valid Type")]
+        [Range(0, int.MaxValue)]
         public CarType Type { get; set; }
 
         [Required]
@@ -42,7 +42,7 @@ namespace MyFirstMvcApp.Models.CarAd
         [Display(Name = "Long descrption")]
         [DataType(DataType.MultilineText)]
         [MinLength(20)]
-        [RegularExpression("[A-Z][a-z0-9 ]+", ErrorMessage = "")]
+        [RegularExpression("[A-Z][a-z0-9 ]+")]
         public string Description { get; set; }
 
         [DataType(DataType.Date)]

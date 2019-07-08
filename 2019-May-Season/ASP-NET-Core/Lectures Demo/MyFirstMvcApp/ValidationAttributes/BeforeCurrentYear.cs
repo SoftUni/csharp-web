@@ -19,18 +19,18 @@ namespace MyFirstMvcApp.ValidationAttributes
         {
             if (!(value is int))
             {
-                return new ValidationResult("Invalid " + validationContext.DisplayName);
+                return new ValidationResult("Invalid " + validationContext?.DisplayName);
             }
 
             var intValue = (int)value;
             if (intValue > DateTime.UtcNow.Year)
             {
-                return new ValidationResult(validationContext.DisplayName + " is after " + DateTime.UtcNow.Year);
+                return new ValidationResult(validationContext?.DisplayName + " is after " + DateTime.UtcNow.Year);
             }
 
             if (intValue < afterYear)
             {
-                return new ValidationResult(validationContext.DisplayName + " is before " + afterYear);
+                return new ValidationResult(validationContext?.DisplayName + " is before " + afterYear);
             }
 
             return ValidationResult.Success;

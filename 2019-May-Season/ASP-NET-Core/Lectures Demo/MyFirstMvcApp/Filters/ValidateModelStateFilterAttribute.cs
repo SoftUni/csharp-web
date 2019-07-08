@@ -20,6 +20,10 @@ namespace MyFirstMvcApp.Filters
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            if (this.usersService.GetCount() == 1)
+            {
+                this.usersService.GetUsernames();
+            }
         }
     }
 
