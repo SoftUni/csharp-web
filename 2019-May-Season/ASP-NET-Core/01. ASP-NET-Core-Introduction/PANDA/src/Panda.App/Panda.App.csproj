@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Panda.Data\Panda.Data.csproj" />
+    <ProjectReference Include="..\Panda.Service\Panda.Service.csproj" />
   </ItemGroup>
 
 

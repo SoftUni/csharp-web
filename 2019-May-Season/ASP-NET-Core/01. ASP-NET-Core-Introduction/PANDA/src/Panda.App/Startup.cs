@@ -60,6 +60,7 @@ namespace Panda.App
                         context.Roles.Add(new PandaUserRole { Name = "Admin", NormalizedName = "ADMIN" });
                         context.Roles.Add(new PandaUserRole { Name = "User", NormalizedName = "USER" });
                     }
+                    
 
                     if(!context.PackageStatus.Any())
                     {

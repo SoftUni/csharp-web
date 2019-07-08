@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Panda.App.Models.Package;
 using Panda.Data;
 using Panda.Domain;
+using Panda.Services;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -12,17 +13,21 @@ namespace Panda.App.Controllers
 {
     public class PackagesController : Controller
     {
-        private readonly PandaDbContext context;
+        private readonly IUsersService usersService;
+        private readonly IPackagesService packagesService;
+        private readonly IReceiptsService receiptsService;       
 
-        public PackagesController(PandaDbContext context)
+        public PackagesController(IUsersService usersService, IPackagesService packagesService, IReceiptsService receiptsService)
         {
-            this.context = context;
+            this.usersService = usersService;
+            this.packagesService = packagesService;
+            this.receiptsService = receiptsService;            
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            this.ViewData["Recipients"] = this.context.Users.ToList();
+            this.ViewData["Recipients"] = this.usersService.GetAllUsers();
 
             return this.View(new PackageCreateBindingModel());
         }
@@ -39,14 +44,13 @@ namespace Panda.App.Controllers
             Package package = new Package
             {
                 Description = bindingModel.Description,
-                Recipient = this.context.Users.SingleOrDefault(user => user.UserName == bindingModel.Recipient),
+                Recipient = this.usersService.GetUser(bindingModel.Recipient),
                 ShippingAddress = bindingModel.ShippingAddress,
                 Weight = bindingModel.Weight,
-                Status = this.context.PackageStatus.SingleOrDefault(status => status.Name == "Pending")
+                Status = this.packagesService.GetPackageStatus("Pending")
             };
 
-            this.context.Packages.Add(package);
-            this.context.SaveChanges();
+            this.packagesService.CreatePackage(package);
 
             return this.Redirect("/Packages/Pending");
         }
@@ -55,11 +59,7 @@ namespace Panda.App.Controllers
         [Authorize]
         public IActionResult Details(string id)
         {
-            Package package = this.context.Packages
-                .Where(packageFromDb => packageFromDb.Id == id)
-                .Include(packageFromDb => packageFromDb.Recipient)
-                .Include(packageFromDb => packageFromDb.Status)
-                .SingleOrDefault();
+            Package package = this.packagesService.GetPackage(id);
 
             PackageDetailsViewModel viewModel = new PackageDetailsViewModel
             {
@@ -90,11 +90,10 @@ namespace Panda.App.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Ship(string id)
         {
-            Package package = this.context.Packages.Find(id);
-            package.Status = this.context.PackageStatus.SingleOrDefault(status => status.Name == "Shipped");
+            Package package = this.packagesService.GetPackage(id);
+            package.Status = this.packagesService.GetPackageStatus("Shipped");
             package.EstimatedDeliveryDate = DateTime.Now.AddDays(new Random().Next(20, 40));
-            this.context.Update(package);
-            this.context.SaveChanges();
+            this.packagesService.UpdatePackage(package);
 
             return this.Redirect("/Packages/Shipped");
         }
@@ -103,10 +102,9 @@ namespace Panda.App.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Deliver(string id)
         {
-            Package package = this.context.Packages.Find(id);
-            package.Status = this.context.PackageStatus.SingleOrDefault(status => status.Name == "Delivered");
-            this.context.Update(package);
-            this.context.SaveChanges();
+            Package package = this.packagesService.GetPackage(id);
+            package.Status = this.packagesService.GetPackageStatus("Delivered");
+            this.packagesService.UpdatePackage(package);
 
             return this.Redirect("/Packages/Delivered");
         }
@@ -115,20 +113,19 @@ namespace Panda.App.Controllers
         [Authorize]
         public IActionResult Acquire(string id)
         {
-            Package package = this.context.Packages.Find(id);
-            package.Status = this.context.PackageStatus.SingleOrDefault(status => status.Name == "Acquired");
-            this.context.Update(package);
+            Package package = this.packagesService.GetPackage(id);
+            package.Status = this.packagesService.GetPackageStatus("Acquired");
+            this.packagesService.UpdatePackage(package);
 
             Receipt receipt = new Receipt
             {
                 Fee = (decimal)(2.67 * package.Weight),
                 IssuedOn = DateTime.Now,
                 Package = package,
-                Recipient = context.Users.SingleOrDefault(user => user.UserName == this.User.Identity.Name),
+                Recipient = this.usersService.GetUser(this.User.Identity.Name)
             };
 
-            this.context.Receipts.Add(receipt);
-            this.context.SaveChanges();
+            this.receiptsService.CreateReceipt(receipt);
 
             return this.Redirect("/Home/Index");
         }
@@ -138,8 +135,7 @@ namespace Panda.App.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Pending()
         {
-            return this.View(context.Packages
-                .Include(package => package.Recipient)
+            return this.View(this.packagesService.GetPackagesWithRecipientAndStatus()
                 .Where(package => package.Status.Name == "Pending")
                 .ToList().Select(package =>
             {
@@ -158,8 +154,7 @@ namespace Panda.App.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Shipped()
         {
-            return this.View(context.Packages
-                .Include(package => package.Recipient)
+            return this.View(this.packagesService.GetPackagesWithRecipientAndStatus()
                 .Where(package => package.Status.Name == "Shipped")
                 .ToList().Select(package =>
                 {
@@ -178,8 +173,7 @@ namespace Panda.App.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delivered()
         {
-            return this.View(context.Packages
-                .Include(package => package.Recipient)
+            return this.View(this.packagesService.GetPackagesWithRecipientAndStatus()
                 .Where(package => package.Status.Name == "Delivered" || package.Status.Name == "Acquired")
                 .ToList().Select(package =>
                 {
