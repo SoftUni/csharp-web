@@ -19,6 +19,9 @@ namespace MyFirstMvcApp
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(options =>
+                {
+                })
                 .UseStartup<Startup>();
     }
 }

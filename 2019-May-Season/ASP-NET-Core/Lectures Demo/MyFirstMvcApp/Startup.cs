@@ -45,6 +45,20 @@ namespace MyFirstMvcApp
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddResponseCaching();
+            services.AddMemoryCache();
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.SchemaName = "dbo";
+                options.TableName = "CacheEntries";
+            });
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc(options =>
             {
                 options.ModelBinderProviders.Insert(0, new DateTimeToYearModelBinderProvider());
@@ -55,6 +69,11 @@ namespace MyFirstMvcApp
                 options.Filters.Add(new MyExceptionFilter());
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
 
             // Application Services
             services.AddTransient<IUsersService, UsersService>();
@@ -78,12 +97,20 @@ namespace MyFirstMvcApp
             }
 
             app.UseHttpsRedirection();
+            app.UseResponseCompression();
             app.UseStaticFiles();
+            app.UseResponseCaching();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseSession();
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
