@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-Stopify.Web-B7826E67-0220-49CC-8663-5A273CACC857</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Stopify.Data\Stopify.Data.csproj" />
+    <ProjectReference Include="..\..\Services\Stopify.Services.Models\Stopify.Services.Models.csproj" />
+    <ProjectReference Include="..\..\Services\Stopify.Services\Stopify.Services.csproj" />
+    <ProjectReference Include="..\Stopify.Web.InputModels\Stopify.Web.InputModels.csproj" />
+    <ProjectReference Include="..\Stopify.Web.ViewModels\Stopify.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
