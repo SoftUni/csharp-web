@@ -9,6 +9,13 @@ using Stopify.Data;
 using Stopify.Data.Models;
 using System.Linq;
 using Stopify.Services;
+using System.Globalization;
+using CloudinaryDotNet;
+using Stopify.Services.Mapping;
+using Stopify.Web.InputModels;
+using System.Reflection;
+using Stopify.Web.ViewModels.Home.Index;
+using Stopify.Services.Models;
 
 namespace Stopify.Web
 {
@@ -31,6 +38,15 @@ namespace Stopify.Web
                 .AddEntityFrameworkStores<StopifyDbContext>()
                 .AddDefaultTokenProviders();
 
+            Account cloudinaryCredentials = new Account(
+                this.Configuration["Cloudinary:CloudName"],
+                this.Configuration["Cloudinary:ApiKey"],
+                this.Configuration["Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
+
+            services.AddSingleton(cloudinaryUtility);
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -45,12 +61,21 @@ namespace Stopify.Web
             });
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(
+                typeof(ProductCreateInputModel).GetTypeInfo().Assembly,
+                typeof(ProductHomeViewModel).GetTypeInfo().Assembly,
+                typeof(ProductServiceModel).GetTypeInfo().Assembly);
+
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             using(var serviceScope = app.ApplicationServices.CreateScope())
             {
                 using(var context = serviceScope.ServiceProvider.GetRequiredService<StopifyDbContext>())
@@ -87,12 +112,12 @@ namespace Stopify.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,9 +1,73 @@
-﻿@{
+﻿@model List<Stopify.Web.ViewModels.Home.Index.ProductHomeViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
+@if (!this.User.Identity.IsAuthenticated)
+{
     <div class="jumbotron bg-primary mt-3 mb-3">
         <h1 class="font-weight-bold text-white">Stopify Web Shop</h1>
         <hr class="bg-white hr-2" />
         <h3 class="text-white">Have a nice shopping experience!</h3>
     </div>
+}
+else
+{
+    <div class="d-flex justify-content-between">
+        <div id="products-search-bar-holder" class="form-group d-flex justify-content-between w-50">
+            <input type="text" class="form-control text-primary" id="products-search-bar" name="search" placeholder="Search..." />
+        </div>
+        <div id="sort-holder" class="form-group w-40 d-flex justify-content-between">
+            <label for="sort" class="text-primary font-weight-bold w-30 h4 mt-1 text-right">Order By: </label>
+            <select id="sort" class="form-control text-primary pl-2 ml-3 w-70">
+                <option value="none" selected>None</option>
+                <option value="none">Price (lowest to highest)</option>
+                <option value="none">Price (highest to lowest)</option>
+                <option value="none">Date of Manufacturing (oldest to newest)</option>
+                <option value="none">Date of Manufacturing (newest to oldest)</option>
+            </select>
+        </div>
+    </div>
+    <hr class="hr-2 bg-primary">
+    <div id="products" class="mt-3">
+        @for (int i = 0; i < Model.Count; i += 5)
+        {
+            <div class="products-row row d-flex justify-content-around my-5">
+                @for (int j = i; j < i + 5; j++)
+                {
+                    if (j < Model.Count)
+                    {
+                        <div class="product col-md-2">
+                            <div class="image-holder d-flex justify-content-center">
+                                <img class="img-thumbnail product-image" src="@Model[j].Picture" alt="...">
+                            </div>
+                            <h5 class="text-primary text-center mt-3">@Model[j].Name</h5>
+                            <h5 class="text-primary text-center mt-3">Price: $@Model[j].Price.ToString("F2")</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="product col-md-2 empty">
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+    <script>
+        $('#products-search-bar').on("change paste keyup", function () {
+            $('.product').show();
+
+            let searchValue = $('#products-search-bar').val();
+
+            for (let elem of $('.product')) {
+                let productName = $($(elem).children()[1]).text();
+
+                if (!productName.toLowerCase().includes(searchValue.toLowerCase())) {
+                    $(elem).hide();
+                }
+            }
+        });
+    </script>
+}

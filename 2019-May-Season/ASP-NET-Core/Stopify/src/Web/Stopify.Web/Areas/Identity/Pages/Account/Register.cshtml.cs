@@ -33,6 +33,8 @@ namespace Stopify.Web.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        public string Something { get; set; }
+
         public class InputModel
         {
             [Required]
@@ -56,6 +58,9 @@ namespace Stopify.Web.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            // SOME SERVICE QUERY
+            this.Something = "Hello, World!";
+
             ReturnUrl = returnUrl;
         }
 
