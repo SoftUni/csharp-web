@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MyFirstMvcApp.Data;
 using MyFirstMvcApp.Filters;
 using MyFirstMvcApp.Models;
@@ -30,19 +31,27 @@ namespace MyFirstMvcApp.Controllers
         private readonly IUsersService usersService;
         private readonly IConfiguration configuration;
         private readonly ICounterService counterService;
+        private readonly ILogger<HomeController> logger;
 
         public HomeController(
             IUsersService usersService,
             IConfiguration configuration,
-            ICounterService counterService)
+            ICounterService counterService,
+            ILogger<HomeController> logger)
         {
             this.usersService = usersService;
             this.configuration = configuration;
             this.counterService = counterService;
+            this.logger = logger;
         }
 
         public IActionResult Index(IndexInputModel input, int id)
         {
+            if (id == 0)
+            {
+                this.logger.LogCritical(100, $"Id is {id}");
+            }
+
             var viewModel = new IndexViewModel { Usernames = new[] { "niki" } };
             return View(viewModel);
         }

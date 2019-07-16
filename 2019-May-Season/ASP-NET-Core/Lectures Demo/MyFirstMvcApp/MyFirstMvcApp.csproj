@@ -15,6 +15,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Views\Others\" />
   </ItemGroup>
 
