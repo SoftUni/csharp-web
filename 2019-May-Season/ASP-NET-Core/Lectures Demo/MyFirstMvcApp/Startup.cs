@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MyFirstMvcApp.Services;
 using MyFirstMvcApp.Filters;
 using MyFirstMvcApp.ModelBinders;
+using MyFirstMvcAppML.Model.DataModels;
+using Microsoft.Extensions.ML;
 
 namespace MyFirstMvcApp
 {
@@ -74,6 +76,9 @@ namespace MyFirstMvcApp
             {
                 options.EnableForHttps = true;
             });
+
+            services.AddPredictionEnginePool<ModelInput, ModelOutput>()
+                    .FromFile("MLModels/MLModel.zip");
 
             // Application Services
             services.AddTransient<IUsersService, UsersService>();
