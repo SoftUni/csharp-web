@@ -6,7 +6,9 @@ namespace Stopify.Services
 {
     public interface IProductService
     {
-        Task<IQueryable<ProductTypeServiceModel>> GetAllProductTypes();
+        IQueryable<ProductTypeServiceModel> GetAllProductTypes();
+
+        IQueryable<ProductServiceModel> GetAllProducts();
 
         Task<bool> Create(ProductServiceModel productServiceModel);
 

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Stopify.Data.Models;
+using Stopify.Services.Mapping;
+using System;
 
 namespace Stopify.Services.Models
 {
-    public class ProductServiceModel
+    public class ProductServiceModel : IMapFrom<Product>, IMapTo<Product>
     {
         public string Id { get; set; }
 

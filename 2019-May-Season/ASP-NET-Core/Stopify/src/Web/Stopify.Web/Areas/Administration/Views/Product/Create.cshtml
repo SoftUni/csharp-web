@@ -8,7 +8,8 @@
 }
 
 <h1 class="bg-primary text-white font-weight-bold text-center p-3 w-60 mx-auto rounded">Create Product</h1>
-<form method="post" class="form border-primary-4 rounded p-3 w-60 mx-auto mt-3">
+<form method="post" class="form border-primary-4 rounded p-3 w-60 mx-auto mt-3" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly"></div>
     <div id="name-and-price-holder" class="d-flex justify-content-between">
         <div class="form-group mx-auto w-45">
             <div class="d-flex justify-content-center">
@@ -19,6 +20,7 @@
                    id="name"
                    placeholder="Name..."
                    asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group mx-auto w-45">
             <div class="d-flex justify-content-center">
@@ -30,6 +32,7 @@
                    id="price"
                    placeholder="Price..."
                    asp-for="Price">
+            <span asp-validation-for="Price" class="text-danger"></span>
         </div>
     </div>
     <div id="date-and-picture-holder" class="d-flex justify-content-between">
@@ -42,6 +45,7 @@
                    id="manufacturedOn"
                    placeholder="Manufactured On..."
                    asp-for="ManufacturedOn">
+            <span asp-validation-for="ManufacturedOn" class="text-danger"></span>
         </div>
         <div class="form-group mx-auto w-45">
             <div class="d-flex justify-content-center">
@@ -50,8 +54,9 @@
             <input type="file"
                    class="form-control text-primary text-center"
                    id="picture"
-                   placeholder="Picture Link..."
+                   placeholder="Picture..."
                    asp-for="Picture">
+            <span asp-validation-for="Picture" class="text-danger"></span>
         </div>
     </div>
     <hr class="hr-2 bg-primary mt-4">
@@ -66,6 +71,7 @@
                 <option value="@type.Name">@type.Name</option>
             }
         </select>
+        <span asp-validation-for="ProductType" class="text-danger"></span>
     </div>
     <hr class="hr-2 bg-primary mt-4">
     <div class="d-flex justify-content-center mt-3">

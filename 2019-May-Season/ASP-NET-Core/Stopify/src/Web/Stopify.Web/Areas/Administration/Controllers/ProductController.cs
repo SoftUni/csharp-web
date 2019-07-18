@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Stopify.Services;
 using Stopify.Services.Models;
-using Stopify.Web.InputModels;
 using System.Threading.Tasks;
 using System.Linq;
+using Stopify.Web.InputModels;
 using Stopify.Web.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Stopify.Web.Areas.Administration.Controllers
 {
@@ -12,9 +13,12 @@ namespace Stopify.Web.Areas.Administration.Controllers
     {
         private readonly IProductService productService;
 
-        public ProductController(IProductService productService)
+        private readonly ICloudinaryService cloudinaryService;
+
+        public ProductController(IProductService productService, ICloudinaryService cloudinaryService)
         {
             this.productService = productService;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [HttpGet("/Administration/Product/Type/Create")]
@@ -39,7 +43,7 @@ namespace Stopify.Web.Areas.Administration.Controllers
         [HttpGet(Name = "Create")]
         public async Task<IActionResult> Create()
         {
-            var allProductTypes = await this.productService.GetAllProductTypes();
+            var allProductTypes = await this.productService.GetAllProductTypes().ToListAsync();
 
             this.ViewData["types"] = allProductTypes.Select(productType => new ProductCreateProductTypeViewModel
             {
@@ -53,16 +57,26 @@ namespace Stopify.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateInputModel productCreateInputModel)
         {
-            ProductServiceModel productServiceModel = new ProductServiceModel
+            if(!this.ModelState.IsValid)
             {
-                Name = productCreateInputModel.Name,
-                Price = productCreateInputModel.Price,
-                ManufacturedOn = productCreateInputModel.ManufacturedOn,
-                ProductType = new ProductTypeServiceModel
+                var allProductTypes = await this.productService.GetAllProductTypes().ToListAsync();
+
+                this.ViewData["types"] = allProductTypes.Select(productType => new ProductCreateProductTypeViewModel
                 {
-                    Name = productCreateInputModel.ProductType
-                }
-            };
+                    Name = productType.Name
+                })
+                    .ToList(); ;
+
+                return this.View();
+            }
+
+            string pictureUrl = await this.cloudinaryService.UploadPictureAsync(
+                productCreateInputModel.Picture, 
+                productCreateInputModel.Name);
+
+            ProductServiceModel productServiceModel = AutoMapper.Mapper.Map<ProductServiceModel>(productCreateInputModel);
+
+            productServiceModel.Picture = pictureUrl;
 
             await this.productService.Create(productServiceModel);
 

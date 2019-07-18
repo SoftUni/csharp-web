@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Stopify.Services.Mapping\Stopify.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\Stopify.Services.Models\Stopify.Services.Models.csproj" />
+  </ItemGroup>
+
 </Project>

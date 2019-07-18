@@ -1,8 +1,7 @@
 ﻿using Stopify.Data;
 using Stopify.Data.Models;
+using Stopify.Services.Mapping;
 using Stopify.Services.Models;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,12 +18,12 @@ namespace Stopify.Services
 
         public async Task<bool> Create(ProductServiceModel productServiceModel)
         {
-            Product product = new Product
-            {
-                Name = productServiceModel.Name,
-                Price = productServiceModel.Price,
-                ManufacturedOn = productServiceModel.ManufacturedOn
-            };
+            ProductType productTypeFromDb = 
+                context.ProductTypes
+                .SingleOrDefault(productType => productType.Name == productServiceModel.ProductType.Name);
+
+            Product product = AutoMapper.Mapper.Map<Product>(productServiceModel);
+            product.ProductType = productTypeFromDb;
 
             context.Products.Add(product);
             int result = await context.SaveChangesAsync();
@@ -45,14 +44,14 @@ namespace Stopify.Services
             return result > 0;
         }
 
-        public async Task<IQueryable<ProductTypeServiceModel>> GetAllProductTypes()
+        public IQueryable<ProductTypeServiceModel> GetAllProductTypes()
         {
-            return this.context.ProductTypes
-                .Select(productType => new ProductTypeServiceModel
-                {
-                    Id = productType.Id,
-                    Name = productType.Name
-                });
+            return this.context.ProductTypes.To<ProductTypeServiceModel>();
+        }
+
+        public IQueryable<ProductServiceModel> GetAllProducts()
+        {
+            return this.context.Products.To<ProductServiceModel>();
         }
     }
 }

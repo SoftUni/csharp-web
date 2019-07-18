@@ -8,6 +8,8 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
@@ -16,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Stopify.Data\Stopify.Data.csproj" />
+    <ProjectReference Include="..\..\Services\Stopify.Services.Mapping\Stopify.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\Stopify.Services.Models\Stopify.Services.Models.csproj" />
     <ProjectReference Include="..\..\Services\Stopify.Services\Stopify.Services.csproj" />
     <ProjectReference Include="..\Stopify.Web.InputModels\Stopify.Web.InputModels.csproj" />
