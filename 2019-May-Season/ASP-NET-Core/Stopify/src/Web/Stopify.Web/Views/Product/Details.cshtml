@@ -1,0 +1,74 @@
+﻿@model Stopify.Web.ViewModels.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="d-flex justify-content-around row">
+        <div id="product-image-and-navigation-holder" class="w-45">
+            <div id="image-holder">
+                <img src="@Model.Picture"
+                     alt="..." class="img-thumbnail w-100" />
+                <hr class="hr-2 bg-primary mt-4" />
+                <div id="navigation-holder" class="mt-4 d-flex justify-content-around">
+                    <button class="btn btn-primary text-white font-weight-bold" data-toggle="modal" data-target="#orderModal">Order</button>
+                    @if (this.User.IsInRole("Admin"))
+                    {
+                        <a href="/Administration/Product/Edit/@Model.Id" class="btn btn-primary text-white font-weight-bold">Edit</a>
+                        <a href="/Administration/Product/Delete/@Model.Id" class="btn btn-primary text-white font-weight-bold">Delete</a>
+                    }
+                </div>
+                <hr class="hr-2 bg-primary mt-4" />
+            </div>
+        </div>
+        <div id="product-data-holder" class="w-45">
+            <hr class="hr-2 bg-primary" />
+            <h3 class="text-center">Name: @Model.Name</h3>
+            <h3 class="text-center">Price: $@Model.Price.ToString("F2")</h3>
+            <hr class="hr-2 bg-primary mt-4" />
+            <h3 class="text-center">Type: @Model.ProductTypeName</h3>
+            <h3 class="text-center">Manufactured On: @Model.ManufacturedOn.ToString("dd/MM/yyyy")</h3>
+            <hr class="hr-2 bg-primary mt-4" />
+            <h3 class="text-center">Description</h3>
+            <hr class="hr-2 bg-primary mt-4 w-50" />
+            <p class="text-center">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+        </div>
+    </div>
+
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">Order - @Model.Name</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="order-form" action="/Product/Order" method="post">
+                        <div class="form-group">
+                            <label for="quantity" class="col-form-label font-weight-bold">Quantity</label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="quantity"
+                                   name="quantity">
+                            <input type="hidden" value="@Model.Id" name="productId"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="complete-order-button">Complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $('#complete-order-button').click(function () {
+        $('#order-form').submit();
+    });
+</script>

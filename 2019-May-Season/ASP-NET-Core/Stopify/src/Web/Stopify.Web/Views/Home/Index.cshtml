@@ -39,7 +39,9 @@ else
                     {
                         <div class="product col-md-2">
                             <div class="image-holder d-flex justify-content-center">
-                                <img class="img-thumbnail product-image" src="@Model[j].Picture" alt="...">
+                                <a href="/Product/Details/@Model[j].Id">
+                                    <img class="img-thumbnail product-image" src="@Model[j].Picture" alt="...">
+                                </a>
                             </div>
                             <h5 class="text-primary text-center mt-3">@Model[j].Name</h5>
                             <h5 class="text-primary text-center mt-3">Price: $@Model[j].Price.ToString("F2")</h5>

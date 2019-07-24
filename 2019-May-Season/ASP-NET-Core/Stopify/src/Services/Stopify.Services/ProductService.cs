@@ -53,5 +53,12 @@ namespace Stopify.Services
         {
             return this.context.Products.To<ProductServiceModel>();
         }
+
+        public ProductServiceModel GetById(string id)
+        {
+            return this.context.Products
+                .To<ProductServiceModel>()
+                .SingleOrDefault(product => product.Id == id);
+        }
     }
 }

@@ -1,0 +1,36 @@
+﻿@model List<Stopify.Web.ViewModels.Order.Cart.OrderCartViewModel>
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-left text-primary">Cart</h1>
+<hr class="hr-2 bg-primary">
+<div id="orders" class="text-primary">
+    <div class="order-info row mt-4">
+        <h3 class="col-md-1 text-left">#</h3>
+        <h3 class="col-md-3 text-left">Image</h3>
+        <h3 class="col-md-4 text-left">Product</h3>
+        <h3 class="col-md-2 text-left">Price</h3>
+        <h3 class="col-md-2 text-right">Quantity</h3>
+    </div>
+    <hr class="hr-2 bg-primary">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+<div class="order row">
+    <h5 class="col-md-1 text-left">@(i + 1)</h5>
+    <div class="col-md-3">
+        <img class="img-thumbnail product-cart-image"
+             src="@Model[i].ProductPicture" />
+    </div>
+    <h5 class="col-md-4 text-left">@Model[i].ProductName</h5>
+    <h5 class="col-md-2 text-left">@Model[i].ProductPrice</h5>
+    <h5 class="col-md-2 text-right">x@(Model[i].Quantity)</h5>
+</div>
+    }
+</div>
+<hr class="hr-2 bg-primary">
+<form action="/Order/Cart/Complete" method="post" class="d-flex justify-content-between">
+    <button class="btn btn-primary font-weight-bold">Cashout</button>
+    <h2 class="text-primary">Total: @Model.Sum(order => order.ProductPrice * order.Quantity).ToString("F2")</h2>
+</form>

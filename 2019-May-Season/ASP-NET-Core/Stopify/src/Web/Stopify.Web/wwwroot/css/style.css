@@ -19,6 +19,10 @@ hr.hr-2 {
     height: 200px;
 }
 
+.product-cart-image {
+    max-width: 50%;
+}
+
 .w-30 {
     width: 30%;
 }

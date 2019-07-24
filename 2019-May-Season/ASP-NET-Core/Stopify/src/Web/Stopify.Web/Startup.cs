@@ -61,6 +61,7 @@ namespace Stopify.Web
             });
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -94,6 +95,21 @@ namespace Stopify.Web
                         {
                             Name = "User",
                             NormalizedName = "USER"
+                        });
+
+                        context.SaveChanges();
+                    }
+
+                    if(!context.OrderStatuses.Any())
+                    {
+                        context.OrderStatuses.Add(new OrderStatus
+                        {
+                            Name = "Active"
+                        });
+
+                        context.OrderStatuses.Add(new OrderStatus
+                        {
+                            Name = "Completed"
                         });
 
                         context.SaveChanges();

@@ -24,6 +24,7 @@ namespace Stopify.Web.Controllers
                 List<ProductHomeViewModel> products = await this.productService.GetAllProducts()
                     .Select(product => new ProductHomeViewModel
                     {
+                        Id = product.Id,
                         Name = product.Name,
                         Price = product.Price,
                         Picture = product.Picture
