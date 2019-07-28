@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Stopify.Web.ViewModels.Receipt.Profile.ReceiptProfileViewModel>
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center text-primary">My Receipts</h1>
+<hr class="hr-2 bg-primary w-50">
+<table class="table table-hover">
+    <thead>
+        <tr class="row text-primary text-center font-weight-bold">
+            <th class="col-md-4 h3">Id</th>
+            <th class="col-md-2 h3">Issued On</th>
+            <th class="col-md-2 h3">Total</th>
+            <th class="col-md-1 h3">Products</th>
+            <th class="col-md-3 h3">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var receipt in Model)
+        {
+            <tr class="row text-primary text-center font-weight-bold">
+                <td class="col-md-4 h5">@receipt.Id</td>
+                <td class="col-md-2 h5">@receipt.IssuedOn.ToString("dd/MM/yyyy")</td>
+                <td class="col-md-2 h5">$@(receipt.Total.ToString("F2"))</td>
+                <td class="col-md-1 h5">@receipt.Products</td>
+                <td class="col-md-3">
+                    <a href="/Receipt/Details/@receipt.Id" class="btn btn-primary font-weight-bold">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

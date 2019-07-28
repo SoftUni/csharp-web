@@ -3,34 +3,110 @@
     ViewData["Title"] = "Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1 class="text-left text-primary">Cart</h1>
 <hr class="hr-2 bg-primary">
-<div id="orders" class="text-primary">
-    <div class="order-info row mt-4">
-        <h3 class="col-md-1 text-left">#</h3>
-        <h3 class="col-md-3 text-left">Image</h3>
-        <h3 class="col-md-4 text-left">Product</h3>
-        <h3 class="col-md-2 text-left">Price</h3>
-        <h3 class="col-md-2 text-right">Quantity</h3>
+@if (Model.Count == 0)
+{
+    <h2 class="text-center text-primary">You have no orders in your cart.</h2>
+    <hr class="hr-2 bg-primary">
+}
+else
+{
+
+    <div id="orders" class="text-primary">
+        <div class="order-info row mt-4">
+            <h3 class="col-md-1 text-left">#</h3>
+            <h3 class="col-md-3 text-left">Image</h3>
+            <h3 class="col-md-3 text-left">Product</h3>
+            <h3 class="col-md-2 text-left">Price</h3>
+            <h3 class="col-md-1 text-left">Quantity</h3>
+            <h3 class="col-md-2 text-center">Actions</h3>
+        </div>
+        <hr class="hr-2 bg-primary">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="order row">
+                <h5 class="col-md-1 text-left">@(i + 1)</h5>
+                <div class="col-md-3">
+                    <img class="img-thumbnail product-cart-image"
+                         src="@Model[i].ProductPicture" />
+                </div>
+                <h5 class="col-md-3 text-left">@Model[i].ProductName</h5>
+                <h5 class="col-md-2 text-left order-price">@Model[i].ProductPrice</h5>
+                <h5 class="col-md-1 text-right order-quantity">x@(Model[i].Quantity)</h5>
+                <div class="col-md-1 mx-auto d-flex justify-content-around">
+                    <div class="minus-button" id="@(Model[i].Id)-minus">
+                        <i class="fas fa-minus text-primary h4"></i>
+                    </div>
+                    <div class="plus-button" id="@(Model[i].Id)-plus">
+                        <i class="fas fa-plus text-primary h4"></i>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
     <hr class="hr-2 bg-primary">
-    @for (int i = 0; i < Model.Count; i++)
-    {
-<div class="order row">
-    <h5 class="col-md-1 text-left">@(i + 1)</h5>
-    <div class="col-md-3">
-        <img class="img-thumbnail product-cart-image"
-             src="@Model[i].ProductPicture" />
-    </div>
-    <h5 class="col-md-4 text-left">@Model[i].ProductName</h5>
-    <h5 class="col-md-2 text-left">@Model[i].ProductPrice</h5>
-    <h5 class="col-md-2 text-right">x@(Model[i].Quantity)</h5>
-</div>
-    }
-</div>
-<hr class="hr-2 bg-primary">
-<form action="/Order/Cart/Complete" method="post" class="d-flex justify-content-between">
-    <button class="btn btn-primary font-weight-bold">Cashout</button>
-    <h2 class="text-primary">Total: @Model.Sum(order => order.ProductPrice * order.Quantity).ToString("F2")</h2>
-</form>
+    <form action="/Order/Cart/Complete" method="post" class="d-flex justify-content-between">
+        <button class="btn btn-primary font-weight-bold">Cashout</button>
+        <h2 class="text-primary" id="total-price">Total: @Model.Sum(order => order.ProductPrice * order.Quantity).ToString("F2")</h2>
+    </form>
+    <script>
+        function updateTotalPrice() {
+            // This function updates the total price upon changing the quantity of one product.
+
+            // Extract all elements with class order (the table rows)
+            let orders = $('.order');
+
+            // Variable to hold the total price
+            let totalPrice = 0;
+
+            // Iterate over all othe orders
+            for (let order of orders) {
+
+                // Extract the element <h5> holding the price
+                let priceElement = $($(order).children()[3]);
+                // Extract the element <h5> holding the quantity
+                let quantityElement = $($(order).children()[4]);
+
+                // Extract the elements' values
+                let currentPrice = Number($(priceElement).text())
+                let currentQuantity = Number($(quantityElement).text().toString().replace('x', ''));
+
+                // Calculate the total price
+                totalPrice += currentPrice * currentQuantity;
+            }
+
+            // Attach the new total price to the total-price element
+            $('#total-price').text('Total: ' + totalPrice.toFixed(2));
+        }
+
+        $('.minus-button').click(function () {
+            let orderId = $(this).attr('id').toString().replace('-minus', '');
+
+            let element = $($($($(this).parent()).parent()).children()[4]);
+
+            $.post({
+                url: `/Order/${orderId}/Quantity/Reduce`,
+                success: function () {
+                    let currentQuantity = Number(element.text().toString().replace('x', ''));
+                    element.text('x' + (currentQuantity - 1));
+                    updateTotalPrice();
+                }
+            });
+        });
+        $('.plus-button').click(function () {
+            let orderId = $(this).attr('id').toString().replace('-plus', '');
+
+            let element = $($($($(this).parent()).parent()).children()[4]);
+
+            $.post({
+                url: `/Order/${orderId}/Quantity/Increase`,
+                success: function () {
+                    let currentQuantity = Number(element.text().toString().replace('x', ''));
+                    element.text('x' + (currentQuantity + 1));
+                    updateTotalPrice();
+                }
+            });
+        });
+    </script>
+}

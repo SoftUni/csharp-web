@@ -6,6 +6,8 @@ namespace Stopify.Services.Models
 {
     public class OrderServiceModel : IMapTo<Order>, IMapFrom<Order>
     {
+        public string Id { get; set; }
+
         public DateTime IssuedOn { get; set; }
 
         public string ProductId { get; set; }
