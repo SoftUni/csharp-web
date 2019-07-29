@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstMvcAppML.Model", "My
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstMvcAppML.ConsoleApp", "MyFirstMvcAppML.ConsoleApp\MyFirstMvcAppML.ConsoleApp.csproj", "{79B5B330-AA1F-48FF-9544-7F25E02F2032}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum", "Forum\Forum.csproj", "{2E81C2FD-B089-4251-9BD9-DEE538708C55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{79B5B330-AA1F-48FF-9544-7F25E02F2032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79B5B330-AA1F-48FF-9544-7F25E02F2032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79B5B330-AA1F-48FF-9544-7F25E02F2032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E81C2FD-B089-4251-9BD9-DEE538708C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E81C2FD-B089-4251-9BD9-DEE538708C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E81C2FD-B089-4251-9BD9-DEE538708C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E81C2FD-B089-4251-9BD9-DEE538708C55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

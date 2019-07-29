@@ -57,7 +57,8 @@ namespace MyFirstMvcApp.Controllers
         }
 
         [ValidateModelStateFilter]
-
+        // Home/AcceptForm
+        [HttpGet("niki/{id}")]
         public IActionResult AcceptForm(FormInputModel input)
         {
             if (!ModelState.IsValid)
