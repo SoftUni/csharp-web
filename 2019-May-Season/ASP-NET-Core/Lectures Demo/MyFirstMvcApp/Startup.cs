@@ -18,6 +18,7 @@ using MyFirstMvcApp.Filters;
 using MyFirstMvcApp.ModelBinders;
 using MyFirstMvcAppML.Model.DataModels;
 using Microsoft.Extensions.ML;
+using MyFirstMvcApp.RouteConstraints;
 
 namespace MyFirstMvcApp
 {
@@ -61,6 +62,11 @@ namespace MyFirstMvcApp
                 options.Cookie.HttpOnly = true;
             });
 
+            services.AddRouting(options =>
+            {
+                options.ConstraintMap.Add("cyrillic", typeof(CyrillicRouteConstraint));
+            });
+
             services.AddMvc(options =>
             {
                 options.ModelBinderProviders.Insert(0, new DateTimeToYearModelBinderProvider());
@@ -70,6 +76,7 @@ namespace MyFirstMvcApp
                 options.Filters.Add(new MyResultFilter());
                 options.Filters.Add(new MyExceptionFilter());
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.Filters.Add(new CustomPageFilter());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddResponseCompression(options =>

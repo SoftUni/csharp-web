@@ -1,0 +1,45 @@
+﻿@page
+@model MyFirstMvcApp.Pages.ContactFormModel
+@{
+    ViewData["Title"] = "ContactForm";
+}
+
+@if (Model.InfoMessage != null)
+{
+    <div class="alert alert-info">@Model.InfoMessage</div>
+}
+
+<h1>ContactForm</h1>
+<form method="post">
+    <div asp-validation-summary="All"></div>
+
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Content"></label>
+        <input asp-for="Content" class="form-control" />
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <input type="submit" class="btn btn-primary" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
