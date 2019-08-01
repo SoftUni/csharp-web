@@ -1,0 +1,84 @@
+﻿@using Stopify.Web.ViewModels
+@model Stopify.Web.ViewModels.Product.Delete.ProductDeleteViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="bg-primary text-white font-weight-bold text-center p-3 w-60 mx-auto rounded">Delete Product</h1>
+<form method="post" class="form border-primary-4 rounded p-3 w-60 mx-auto mt-3" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div id="name-and-price-holder" class="d-flex justify-content-between">
+        <div class="form-group mx-auto w-45">
+            <div class="d-flex justify-content-center">
+                <label asp-for="Name" class="text-primary h5">Name</label>
+            </div>
+            <input type="text"
+                   class="form-control text-primary text-center"
+                   id="name"
+                   placeholder="Name..."
+                   value="@Model.Name"
+                   disabled>
+        </div>
+        <div class="form-group mx-auto w-45">
+            <div class="d-flex justify-content-center">
+                <label asp-for="Price" class="text-primary h5">Price</label>
+            </div>
+            <input type="number"
+                   step="0.01"
+                   class="form-control text-primary text-center"
+                   id="price"
+                   placeholder="Price..."
+                   value="@Model.Price"
+                   disabled>
+        </div>
+    </div>
+    <div id="date-and-picture-holder" class="d-flex justify-content-between">
+        <div class="form-group mx-auto w-45">
+            <div class="d-flex justify-content-center">
+                <label asp-for="ManufacturedOn" class="text-primary h5">Manufactured On</label>
+            </div>
+            <input type="text"
+                   class="form-control text-primary text-center"
+                   id="manufacturedOn"
+                   placeholder="Manufactured On..."
+                   value="@Model.ManufacturedOn"
+                   disabled>
+        </div>
+        <div class="form-group mx-auto w-45">
+            <div class="d-flex justify-content-center">
+                <label asp-for="Picture" class="text-primary h5">Picture</label>
+            </div>
+            <input type="file"
+                   class="form-control text-primary text-center"
+                   id="picture"
+                   placeholder="Picture..."
+                   disabled>
+        </div>
+    </div>
+    <hr class="hr-2 bg-primary mt-4">
+    <div class="form-group mx-auto w-45">
+        <div class="d-flex justify-content-center">
+            <label asp-for="ProductType" class="text-primary h5">Product Type</label>
+        </div>
+        <select class="form-control text-primary" id="type" disabled>
+            @foreach (var type in (IEnumerable<ProductCreateProductTypeViewModel>)this.ViewData["types"])
+            {
+                @if (type.Name == Model.ProductType.Name)
+                {
+                    <option value="@type.Name" selected>@type.Name</option>
+                }
+                else
+                {
+                    <option value="@type.Name">@type.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <hr class="hr-2 bg-primary mt-4">
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary font-weight-bold">Delete Product</button>
+    </div>
+</form>

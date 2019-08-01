@@ -23,7 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stopify.Web.InputModels", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stopify.Web.ViewModels", "Web\Stopify.Web.ViewModels\Stopify.Web.ViewModels.csproj", "{E2B89FF8-CCC5-447C-8BA5-0C6D14FD580B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stopify.Services.Mapping", "Services\Stopify.Services.Mapping\Stopify.Services.Mapping.csproj", "{F50C184C-504E-416C-A735-42AFBB6490AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stopify.Services.Mapping", "Services\Stopify.Services.Mapping\Stopify.Services.Mapping.csproj", "{F50C184C-504E-416C-A735-42AFBB6490AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50722CCA-0281-46E1-B58C-34F364FB5706}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stopify.Tests", "Stopify.Tests\Stopify.Tests.csproj", "{7F074D6B-7581-4FE6-934C-D7074A59B6BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,10 @@ Global
 		{F50C184C-504E-416C-A735-42AFBB6490AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F50C184C-504E-416C-A735-42AFBB6490AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F50C184C-504E-416C-A735-42AFBB6490AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F074D6B-7581-4FE6-934C-D7074A59B6BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F074D6B-7581-4FE6-934C-D7074A59B6BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F074D6B-7581-4FE6-934C-D7074A59B6BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F074D6B-7581-4FE6-934C-D7074A59B6BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +84,7 @@ Global
 		{4CE76B9F-30C1-4BF2-9FA4-AC1142967341} = {762239A1-1400-4304-8A32-638B9E4BC962}
 		{E2B89FF8-CCC5-447C-8BA5-0C6D14FD580B} = {762239A1-1400-4304-8A32-638B9E4BC962}
 		{F50C184C-504E-416C-A735-42AFBB6490AD} = {226C6FF9-42EE-46E2-8D5E-7601F7D1CC0C}
+		{7F074D6B-7581-4FE6-934C-D7074A59B6BC} = {50722CCA-0281-46E1-B58C-34F364FB5706}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E352A88-F2FA-4657-BCFD-BB77D25E3647}

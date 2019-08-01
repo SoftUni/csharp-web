@@ -24,7 +24,10 @@ namespace Stopify.Services
             Order orderFromDb = await this.context.Orders
                 .SingleOrDefaultAsync(order => order.Id == orderId);
 
-            // TODO: Validate that the requested order is existent and with status - "Active"
+            if(orderFromDb == null || orderFromDb.Status.Name != "Active")
+            {
+                throw new ArgumentException(nameof(orderFromDb));
+            }
 
             orderFromDb.Status = await this.context.OrderStatuses
                 .SingleOrDefaultAsync(orderStatus => orderStatus.Name == "Completed");
@@ -60,6 +63,11 @@ namespace Stopify.Services
             Order orderFromDb = await this.context.Orders
                 .SingleOrDefaultAsync(order => order.Id == orderId);
 
+            if (orderFromDb == null)
+            {
+                throw new ArgumentNullException(nameof(orderFromDb));
+            }
+
             orderFromDb.Quantity++;
 
             this.context.Update(orderFromDb);
@@ -73,7 +81,12 @@ namespace Stopify.Services
             Order orderFromDb = await this.context.Orders
                 .SingleOrDefaultAsync(order => order.Id == orderId);
 
-            if(orderFromDb.Quantity == 1)
+            if (orderFromDb == null)
+            {
+                throw new ArgumentNullException(nameof(orderFromDb));
+            }
+
+            if (orderFromDb.Quantity == 1)
             {
                 return false;
             }

@@ -22,9 +22,10 @@ namespace Stopify.Web.Controllers
         }
 
         [HttpGet(Name = "Details")]
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
-            ProductDetailsViewModel productViewModel = this.productService.GetById(id).To<ProductDetailsViewModel>();
+            ProductDetailsViewModel productViewModel = (await this.productService.GetById(id))
+                .To<ProductDetailsViewModel>();
 
             return View(productViewModel);
         }
