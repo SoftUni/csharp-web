@@ -9,7 +9,7 @@ namespace SIS.MvcFramework.Attributes.Validation
         private readonly Type objectType;
 
         public RangeSisAttribute(int minValue, int maxValue, string errorMessage)
-        : base(errorMessage)
+        : base(errorMessage.Replace("{minValue}",minValue.ToString()).Replace("{maxValue}",maxValue.ToString()))
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
@@ -17,7 +17,7 @@ namespace SIS.MvcFramework.Attributes.Validation
         }
 
         public RangeSisAttribute(double minValue, double maxValue, string errorMessage)
-            : base(errorMessage)
+            : base(errorMessage.Replace("{minValue}", minValue.ToString()).Replace("{maxValue}", maxValue.ToString()))
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
@@ -25,7 +25,7 @@ namespace SIS.MvcFramework.Attributes.Validation
         }
 
         public RangeSisAttribute(Type type, string minValue, string maxValue, string errorMessage)
-            : base(errorMessage)
+            : base(errorMessage.Replace("{minValue}", minValue).Replace("{maxValue}", maxValue))
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
