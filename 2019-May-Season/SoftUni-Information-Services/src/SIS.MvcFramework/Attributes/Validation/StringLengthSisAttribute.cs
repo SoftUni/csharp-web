@@ -8,7 +8,7 @@ namespace SIS.MvcFramework.Attributes.Validation
         private readonly int maxLength;
 
         public StringLengthSisAttribute(int minLength, int maxLength, string errorMessage)
-            : base(errorMessage)
+            : base(errorMessage.Replace("{minLength}", minLength.ToString()).Replace("{maxLength}", maxLength.ToString()))
         {
             this.minLength = minLength;
             this.maxLength = maxLength;
