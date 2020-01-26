@@ -38,7 +38,7 @@ namespace DemoApp
         public static HttpResponse Index(HttpRequest request)
         {
             var username = request.SessionData.ContainsKey("Username") ? request.SessionData["Username"] : "Anonymous";
-            return new HtmlResponse($"<h1>Home page. Hello, {username}</h1><img src='/images/img.jpeg' /><a href='/users/login/'>Go to login</a>");
+            return new HtmlResponse($"<h1>Home page. Hello, {username}</h1><img src='/images/img.jpeg' /><a href='/users/login'>Go to login</a> <form action='/' method='POST'><input name='test' type='text' /><input name='test2' type='text' /><input type='submit' /></form>");
         }
 
         public static HttpResponse Login(HttpRequest request)
