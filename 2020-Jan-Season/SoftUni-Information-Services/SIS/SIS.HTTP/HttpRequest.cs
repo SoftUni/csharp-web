@@ -88,6 +88,8 @@ namespace SIS.HTTP
                     bodyBuilder.AppendLine(line);
                 }
             }
+            
+            this.Body = bodyBuilder.ToString().Trim();
         }
 
         public HttpMethodType Method { get; set; }
