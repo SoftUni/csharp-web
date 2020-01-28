@@ -50,11 +50,9 @@ namespace SIS.HTTP
             using NetworkStream networkStream = tcpClient.GetStream();
             try
             {
-                byte[] requestBytes = new byte[1000000]; // TODO: Use buffer
-                int bytesRead = await networkStream.ReadAsync(requestBytes, 0, requestBytes.Length);
-                string requestAsString = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
+                string result = ReadRequest(networkStream);
 
-                var request = new HttpRequest(requestAsString);
+                var request = new HttpRequest(result.ToString());
                 string newSessionId = null;
                 var sessionCookie = request.Cookies.FirstOrDefault(x => x.Name == HttpConstants.SessionIdCookieName);
                 if (sessionCookie != null && this.sessions.ContainsKey(sessionCookie.Value))
@@ -106,6 +104,38 @@ namespace SIS.HTTP
                 await networkStream.WriteAsync(responseBytes, 0, responseBytes.Length);
                 await networkStream.WriteAsync(errorResponse.Body, 0, errorResponse.Body.Length);
             }
+        }
+
+        private string ReadRequest(NetworkStream networkStream)
+        {
+            var requestBytes = new byte[1024];
+            var result = new StringBuilder();
+
+            while (true)
+            {
+                int numberOfReadBytes = networkStream
+                    .ReadAsync(requestBytes, 0, requestBytes.Length).GetAwaiter().GetResult();
+
+                if (numberOfReadBytes == 0)
+                {
+                    break;
+                }
+
+                var byteAsString = Encoding.UTF8.GetString(requestBytes, 0, requestBytes.Length);
+                result.AppendLine(byteAsString);
+
+                if (numberOfReadBytes < 1023)
+                {
+                    break;
+                }
+            }
+
+            if (result.Length == 0)
+            {
+                return null;
+            }
+
+            return result.ToString();
         }
     }
 }
