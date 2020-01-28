@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SIS.HTTP.Response
+﻿namespace SIS.HTTP.Response
 {
     public class FileResponse : HttpResponse
     {

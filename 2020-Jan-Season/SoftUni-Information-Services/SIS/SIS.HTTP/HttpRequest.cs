@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace SIS.HTTP
@@ -11,6 +10,7 @@ namespace SIS.HTTP
         {
             this.Headers = new List<Header>();
             this.Cookies = new List<Cookie>();
+            this.SessionData = new Dictionary<string, string>();
 
             var lines = httpRequestAsString.Split(
                 new string[] { HttpConstants.NewLine },
