@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DemoApp
 {
@@ -26,9 +27,9 @@ namespace DemoApp
 
         // /headers => html table the list of all header
 
-        private static HttpResponse FavIcon(HttpRequest request)
+        private static async Task<HttpResponse> FavIcon(HttpRequest request)
         {
-            var byteContent = File.ReadAllBytes("wwwroot/favicon.ico");
+            var byteContent = await File.ReadAllBytesAsync("wwwroot/favicon.ico");
             return new FileResponse(byteContent, "image/x-icon");
         }
 

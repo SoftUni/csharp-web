@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SIS.HTTP
 {
@@ -11,10 +12,19 @@ namespace SIS.HTTP
             Action = action;
         }
 
+        public Route(HttpMethodType httpMethod, string path, Func<HttpRequest, Task<HttpResponse>> asyncAction)
+        {
+            HttpMethod = httpMethod;
+            Path = path;
+            AsyncAction = asyncAction;
+        }
+
         public string Path { get; set; }
 
         public HttpMethodType HttpMethod { get; set; }
 
         public Func<HttpRequest, HttpResponse> Action { get; set; }
+
+        public Func<HttpRequest, Task<HttpResponse>> AsyncAction { get; set; }
     }
 }
