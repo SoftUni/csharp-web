@@ -1,4 +1,5 @@
-﻿using SIS.HTTP;
+﻿using Microsoft.EntityFrameworkCore;
+using SIS.HTTP;
 using SIS.MvcFramework;
 using SulsApp.Controllers;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace SulsApp
         public void ConfigureServices()
         {
             var db = new ApplicationDbContext();
-            db.Database.EnsureCreated();
+            db.Database.Migrate();
         }
 
         public void Configure(IList<Route> routeTable)
