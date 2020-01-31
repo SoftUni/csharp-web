@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SIS.HTTP
+﻿namespace SIS.HTTP
 {
+    using System;
+    using System.Net;
+    using System.Text;
+    using System.Linq;
+    using System.Net.Sockets;
+    using System.Threading.Tasks;
+    using System.Collections.Generic;
+
     public class HttpServer : IHttpServer
     {
+        //---------------- FIELDS ----------------
         private readonly TcpListener tcpListener;
         private readonly IList<Route> routeTable;
         private readonly IDictionary<string, IDictionary<string, string>> sessions;
 
+        //------------- CONSTRUCTORS -------------
         // TODO: actions
         public HttpServer(int port, IList<Route> routeTable)
         {
@@ -22,12 +24,20 @@ namespace SIS.HTTP
             this.sessions = new Dictionary<string, IDictionary<string, string>>();
         }
 
+
+        //------------ PUBLIC METHODS ------------
+        /// <summary>
+        /// Resets the HTTP Server asynchronously.
+        /// </summary>
         public async Task ResetAsync()
         {
             this.Stop();
             await this.StartAsync();
         }
 
+        /// <summary>
+        /// Starts the HTTP Server asynchronously.
+        /// </summary>
         public async Task StartAsync()
         {
             this.tcpListener.Start();
@@ -40,11 +50,20 @@ namespace SIS.HTTP
             }
         }
 
+        /// <summary>
+        /// Stops the HTTP Server.
+        /// </summary>
         public void Stop()
         {
             this.tcpListener.Stop();
         }
 
+        //------------ PRIVATE METHODS -----------
+        /// <summary>
+        /// Processes the <see cref="TcpClient"/> asynchronously and returns HTTP Response for the browser.
+        /// </summary>
+        /// <param name="tcpClient">TCP Client</param>
+        /// <returns></returns>
         private async Task ProcessClientAsync(TcpClient tcpClient)
         {
             using NetworkStream networkStream = tcpClient.GetStream();
