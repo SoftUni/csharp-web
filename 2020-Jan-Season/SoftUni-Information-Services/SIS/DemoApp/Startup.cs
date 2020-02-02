@@ -27,9 +27,9 @@ namespace DemoApp
 
         // /headers => html table the list of all header
 
-        private static async Task<HttpResponse> FavIcon(HttpRequest request)
+        private static HttpResponse FavIcon(HttpRequest request)
         {
-            var byteContent = await File.ReadAllBytesAsync("wwwroot/favicon.ico");
+            var byteContent = File.ReadAllBytes("wwwroot/favicon.ico");
             return new FileResponse(byteContent, "image/x-icon");
         }
 
