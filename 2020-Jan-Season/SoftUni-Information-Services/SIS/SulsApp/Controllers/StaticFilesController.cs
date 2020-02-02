@@ -12,17 +12,17 @@ namespace SulsApp.Controllers
     {
         public HttpResponse Bootstrap(HttpRequest request)
         {
-            return new FileResponse(File.ReadAllBytes("wwwroot/css/bootstrap.min.css"), "text/css");
+            return this.CssFileView("bootstrap.min");
         }
 
         public HttpResponse Site(HttpRequest request)
         {
-            return new FileResponse(File.ReadAllBytes("wwwroot/css/site.css"), "text/css");
+            return this.CssFileView("site");
         }
 
         public HttpResponse Reset(HttpRequest request)
         {
-            return new FileResponse(File.ReadAllBytes("wwwroot/css/reset-css.css"), "text/css");
+            return this.CssFileView("reset-css");
         }
     }
 }

@@ -18,5 +18,12 @@ namespace SIS.MvcFramework
             var bodyWithLayout = layout.Replace("@RenderBody()", html);
             return new HtmlResponse(bodyWithLayout);
         }
+
+        protected HttpResponse CssFileView(string fileName)
+        {
+            var fileContent = File.ReadAllBytes("wwwroot/css/" + $"{fileName}" + ".css");
+
+            return new FileResponse(fileContent, "text/css");
+        }
     }
 }
