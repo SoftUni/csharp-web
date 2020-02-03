@@ -1,5 +1,8 @@
 ﻿namespace SIS.HTTP
 {
+    /// <summary>
+    /// HTTP Response Status Codes.
+    /// </summary>
     public enum HttpResponseCode
     {
         Ok = 200,
