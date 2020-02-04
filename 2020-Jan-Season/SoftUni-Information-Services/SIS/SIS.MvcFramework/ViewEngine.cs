@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace SIS.MvcFramework
 {
@@ -14,11 +15,13 @@ namespace SIS.MvcFramework
         public string GetHtml(string templateHtml, object model)
         {
             var methodCode = PrepareCSharpCode(templateHtml);
-            var typeName = model.GetType().FullName;
-            if (model.GetType().IsGenericType)
+
+            Type modelType = model.GetType();
+            var typeName = modelType.FullName;
+
+            if (modelType.IsGenericType)
             {
-                typeName = model.GetType().Name.Replace("`1", string.Empty) + "<"
-                    + model.GetType().GenericTypeArguments.First().Name + ">";
+                typeName = GetGenericTypeFullName(modelType);
             }
 
             var code = @$"using System;
@@ -45,6 +48,34 @@ namespace AppViewNamespace
             IView view = GetInstanceFromCode(code, model);
             string html = view.GetHtml(model);
             return html;
+        }
+
+        private string GetGenericTypeFullName(Type modelType)
+        {
+            int argumentCountBegining = modelType.Name
+                .LastIndexOf('`');
+
+            string genericModelTypeName = modelType.Name
+                .Substring(0, argumentCountBegining);
+
+            string genericTypeFullName = $"{modelType.Namespace}.{genericModelTypeName}";
+
+            IEnumerable<string> genericTypeArguments = modelType.GenericTypeArguments
+                .Select(GetGenericTypeArgumentFullName);
+
+            string modelTypeName = $"{genericTypeFullName}<{string.Join(", ", genericTypeArguments)}>";
+
+            return modelTypeName;
+        }
+
+        private string GetGenericTypeArgumentFullName(Type genericTypeArgument)
+        {
+            if (genericTypeArgument.IsGenericType)
+            {
+                return GetGenericTypeFullName(genericTypeArgument);
+            }
+
+            return genericTypeArgument.FullName;
         }
 
         private IView GetInstanceFromCode(string code, object model)
@@ -89,7 +120,7 @@ namespace AppViewNamespace
             StringBuilder cSharpCode = new StringBuilder();
             StringReader reader = new StringReader(templateHtml);
             string line;
-            while((line = reader.ReadLine()) != null)
+            while ((line = reader.ReadLine()) != null)
             {
                 if (line.TrimStart().StartsWith("{")
                     || line.TrimStart().StartsWith("}"))

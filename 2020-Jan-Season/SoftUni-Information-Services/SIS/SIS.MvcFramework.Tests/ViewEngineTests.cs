@@ -49,5 +49,69 @@ namespace SIS.MvcFramework.Tests
 
             Assert.Equal(expectedResultContent, actualResult);
         }
+
+        [Fact]
+        public void TestGetHtmlWithGenericTemplateModel()
+        {
+            var viewModel = new Dictionary<string, Dictionary<string, int>>()
+            {
+                {
+                    "Pesho",
+                    new Dictionary<string, int>()
+                    {
+                        {
+                            "C# Basics",
+                            100
+                        },
+                        {
+                            "C# Web",
+                            75
+                        },
+                    }
+                },
+                {
+                    "Gosho",
+                    new Dictionary<string, int>()
+                    {
+                        {
+                            "JavaScript Advanced",
+                            30
+                        },
+                        {
+                            "PHP Web",
+                            50
+                        },
+                    }
+                }
+            };
+
+            var viewContent = @"
+@foreach (var student in Model)
+{
+<p> User: @student.Key </p>
+<ul>
+@foreach (var course in student.Value)
+{
+<li> @course.Key -> @course.Value </li>
+}
+</ul>
+}";
+            var expectedResultContent = @"
+<p> User: Pesho </p>
+<ul>
+<li> C# Basics -> 100 </li>
+<li> C# Web -> 75 </li>
+</ul>
+<p> User: Gosho </p>
+<ul>
+<li> JavaScript Advanced -> 30 </li>
+<li> PHP Web -> 50 </li>
+</ul>
+";
+            IViewEngine viewEngine = new ViewEngine();
+            var actualResult = viewEngine.GetHtml(viewContent, viewModel);
+
+            Assert.Equal(expectedResultContent, actualResult);
+        }
     }
 }
