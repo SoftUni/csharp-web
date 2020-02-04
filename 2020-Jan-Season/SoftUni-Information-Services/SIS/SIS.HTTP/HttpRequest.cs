@@ -10,7 +10,6 @@
     /// </summary>
     public class HttpRequest
     {
-        //------------- CONSTRUCTORS -------------
         /// <summary>
         /// Initializes a new <see cref="HttpRequest"/> class.
         /// </summary>
@@ -110,7 +109,6 @@
             }
         }
 
-        //-------------- PROPERTIES --------------
         /// <summary>
         /// HTTP Request line Method.
         /// </summary>
