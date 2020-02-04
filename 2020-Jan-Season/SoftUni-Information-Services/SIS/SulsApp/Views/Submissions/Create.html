@@ -1,0 +1,13 @@
+﻿<h1 class="text-center suls-text-color">Problem - @Model.Name</h1>
+<form class="mx-auto half-width col-5" method="post" action="/Submissions/Create">
+    <div class="top-border-line primary-separator"></div>
+    <div class="form-group">
+        <label for="code" class="suls-text-color">Submit your code here:</label>
+        <textarea class="form-control" id="code" name="code" rows="10"></textarea>
+    </div>
+    <input class="invisible" id="ProblemId" name="ProblemId" value="@Model.ProblemId" />
+    <div class="top-border-line primary-separator"></div>
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn suls-bg-color">Submit</button>
+    </div>
+</form>

@@ -10,13 +10,10 @@
 
     public class HttpServer : IHttpServer
     {
-        //---------------- FIELDS ----------------
         private readonly TcpListener tcpListener;
         private readonly IList<Route> routeTable;
         private readonly IDictionary<string, IDictionary<string, string>> sessions;
 
-        //------------- CONSTRUCTORS -------------
-        // TODO: actions
         public HttpServer(int port, IList<Route> routeTable)
         {
             this.tcpListener = new TcpListener(IPAddress.Loopback, port);
@@ -24,8 +21,6 @@
             this.sessions = new Dictionary<string, IDictionary<string, string>>();
         }
 
-
-        //------------ PUBLIC METHODS ------------
         /// <summary>
         /// Resets the HTTP Server asynchronously.
         /// </summary>
@@ -58,7 +53,6 @@
             this.tcpListener.Stop();
         }
 
-        //------------ PRIVATE METHODS -----------
         /// <summary>
         /// Processes the <see cref="TcpClient"/> asynchronously and returns HTTP Response for the browser.
         /// </summary>
@@ -91,7 +85,7 @@
                 Console.WriteLine($"{request.Method} {request.Path}");
 
                 var route = this.routeTable.FirstOrDefault(
-                    x => x.HttpMethod == request.Method && x.Path == request.Path);
+                    x => x.HttpMethod == request.Method && string.Compare(x.Path, request.Path, true) == 0);
                 HttpResponse response;
                 if (route == null)
                 {

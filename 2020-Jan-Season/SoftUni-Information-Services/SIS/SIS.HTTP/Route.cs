@@ -25,7 +25,6 @@
             Action = action;
         }
 
-        //-------------- PROPERTIES --------------
         /// <summary>
         /// Route URL Path.
         /// </summary>
@@ -40,5 +39,10 @@
         /// Routing function that receives <see cref="HttpRequest"/> and returns <see cref="HttpResponse"/>.
         /// </summary>
         public Func<HttpRequest, HttpResponse> Action { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.HttpMethod} => {this.Path}";
+        }
     }
 }

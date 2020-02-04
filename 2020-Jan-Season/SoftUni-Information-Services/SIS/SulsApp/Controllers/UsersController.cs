@@ -1,21 +1,28 @@
 ﻿using SIS.HTTP;
-using SIS.HTTP.Response;
 using SIS.MvcFramework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace SulsApp.Controllers
 {
-    class UsersController : Controller
+    public class UsersController : Controller
     {
-        public HttpResponse Login(HttpRequest request)
+        public HttpResponse Login()
         {
             return this.View();
         }
 
-        public HttpResponse Register(HttpRequest request)
+        [HttpPost("/Users/Login")]
+        public HttpResponse DoLogin()
+        {
+            return this.View();
+        }
+
+        public HttpResponse Register()
+        {
+            return this.View();
+        }
+
+        [HttpPost("/Users/Register")]
+        public HttpResponse DoRegister()
         {
             return this.View();
         }
