@@ -15,7 +15,6 @@ namespace SIS.MvcFramework
         {
             var routeTable = new List<Route>();
             application.ConfigureServices();
-            application.Configure(routeTable);
             AutoRegisterStaticFilesRoutes(routeTable);
             AutoRegisterActionRoutes(routeTable, application);
 
