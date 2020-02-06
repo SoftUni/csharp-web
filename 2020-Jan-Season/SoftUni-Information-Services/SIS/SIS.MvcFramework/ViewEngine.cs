@@ -16,7 +16,7 @@ namespace SIS.MvcFramework
         {
             var methodCode = PrepareCSharpCode(templateHtml);
 
-            Type modelType = model.GetType();
+            Type modelType = model?.GetType() ?? typeof(object);
             var typeName = modelType.FullName;
 
             if (modelType.IsGenericType)
@@ -36,6 +36,7 @@ namespace AppViewNamespace
         public string GetHtml(object model)
         {{
             var Model = model as {typeName};
+            object User = null;
             var html = new StringBuilder();
 
 {methodCode}
@@ -83,8 +84,12 @@ namespace AppViewNamespace
             var compilation = CSharpCompilation.Create("AppViewAssembly")
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location))
-                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
-                .AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
+                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+            if (model != null)
+            {
+                compilation = compilation.AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
+            }
+
             var libraries = Assembly.Load(new AssemblyName("netstandard")).GetReferencedAssemblies();
             foreach (var library in libraries)
             {
