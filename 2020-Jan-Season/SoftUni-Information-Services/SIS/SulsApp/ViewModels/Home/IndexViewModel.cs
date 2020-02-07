@@ -1,4 +1,4 @@
-﻿namespace SulsApp.ViewModels
+﻿namespace SulsApp.ViewModels.Home
 {
     public class IndexViewModel
     {

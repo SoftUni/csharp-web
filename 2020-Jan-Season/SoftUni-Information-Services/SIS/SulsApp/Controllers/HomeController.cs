@@ -3,7 +3,7 @@ using SIS.HTTP.Logging;
 using SIS.HTTP.Response;
 using SIS.MvcFramework;
 using SulsApp.Services;
-using SulsApp.ViewModels;
+using SulsApp.ViewModels.Home;
 using System;
 
 namespace SulsApp.Controllers
