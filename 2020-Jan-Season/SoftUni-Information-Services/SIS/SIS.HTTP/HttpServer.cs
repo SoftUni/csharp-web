@@ -7,17 +7,20 @@
     using System.Net.Sockets;
     using System.Threading.Tasks;
     using System.Collections.Generic;
+    using SIS.HTTP.Logging;
 
     public class HttpServer : IHttpServer
     {
         private readonly TcpListener tcpListener;
         private readonly IList<Route> routeTable;
+        private readonly ILogger logger;
         private readonly IDictionary<string, IDictionary<string, string>> sessions;
 
-        public HttpServer(int port, IList<Route> routeTable)
+        public HttpServer(int port, IList<Route> routeTable, ILogger logger)
         {
             this.tcpListener = new TcpListener(IPAddress.Loopback, port);
             this.routeTable = routeTable;
+            this.logger = logger;
             this.sessions = new Dictionary<string, IDictionary<string, string>>();
         }
 
@@ -82,7 +85,7 @@
                     request.SessionData = dictionary;
                 }
 
-                Console.WriteLine($"{request.Method} {request.Path}");
+                this.logger.Log($"{request.Method} {request.Path}");
 
                 var route = this.routeTable.FirstOrDefault(
                     x => x.HttpMethod == request.Method && string.Compare(x.Path, request.Path, true) == 0);
