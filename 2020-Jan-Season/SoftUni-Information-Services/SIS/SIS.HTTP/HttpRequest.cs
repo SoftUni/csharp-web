@@ -104,7 +104,7 @@
             this.Query = string.Empty;
             if (this.Path.Contains("?"))
             {
-                var parts = this.Path.Split(new char[] { '?' }, 2);
+                var parts = this.Path.Split(new char[] { '?', '#' });
                 this.Path = parts[0];
                 this.Query = parts[1];
             }
