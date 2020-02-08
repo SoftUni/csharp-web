@@ -23,7 +23,7 @@ namespace SIS.MvcFramework
             application.Configure(routeTable);
             AutoRegisterStaticFilesRoutes(routeTable);
             AutoRegisterActionRoutes(routeTable, application, serviceCollection);
-            
+
             var logger = serviceCollection.CreateInstance<ILogger>();
             logger.Log("Registered routes:");
             foreach (var route in routeTable)
@@ -81,7 +81,7 @@ namespace SIS.MvcFramework
             var actionParameters = actionMethod.GetParameters();
             foreach (var parameter in actionParameters)
             {
-                object value = 
+                object value =
                     Convert.ChangeType(
                         GetValueFromRequest(request, parameter.Name),
                         parameter.ParameterType);
@@ -95,6 +95,10 @@ namespace SIS.MvcFramework
                     }
 
                     actionParameterValues.Add(parameterValue);
+                }
+                else
+                {
+                    actionParameterValues.Add(value);
                 }
             }
 
