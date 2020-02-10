@@ -54,36 +54,22 @@ namespace SIS.MvcFramework.Tests
         public void TestGetHtmlWithGenericTemplateModel()
         {
             var viewModel = new Dictionary<string, Dictionary<string, int>>()
-            {
-                {
-                    "Pesho",
-                    new Dictionary<string, int>()
-                    {
-                        {
-                            "C# Basics",
-                            100
-                        },
-                        {
-                            "C# Web",
-                            75
-                        },
-                    }
-                },
-                {
-                    "Gosho",
-                    new Dictionary<string, int>()
-                    {
-                        {
-                            "JavaScript Advanced",
-                            30
-                        },
-                        {
-                            "PHP Web",
-                            50
-                        },
-                    }
-                }
-            };
+                                {
+                                    {
+                                        "Pesho",
+                                        new Dictionary<string, int>
+                                            {
+                                                { "C# Basics", 100 }, { "C# Web", 75 },
+                                            }
+                                    },
+                                    {
+                                        "Gosho",
+                                        new Dictionary<string, int>
+                                            {
+                                                { "JavaScript Advanced", 30 }, { "PHP Web", 50 },
+                                            }
+                                    }
+                                };
 
             var viewContent = @"
 @foreach (var student in Model)
@@ -109,7 +95,7 @@ namespace SIS.MvcFramework.Tests
 </ul>
 ";
             IViewEngine viewEngine = new ViewEngine();
-            var actualResult = viewEngine.GetHtml(viewContent, viewModel);
+            var actualResult = viewEngine.GetHtml(viewContent, viewModel, null);
 
             Assert.Equal(expectedResultContent, actualResult);
         }

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 namespace SIS.MvcFramework
 {
@@ -16,7 +15,7 @@ namespace SIS.MvcFramework
         {
             var methodCode = PrepareCSharpCode(templateHtml);
 
-            Type modelType = model?.GetType() ?? typeof(object);
+            var modelType = model?.GetType() ?? typeof(object);
             var typeName = modelType.FullName;
 
             if (modelType.IsGenericType)
@@ -53,19 +52,11 @@ namespace AppViewNamespace
 
         private string GetGenericTypeFullName(Type modelType)
         {
-            int argumentCountBegining = modelType.Name
-                .LastIndexOf('`');
-
-            string genericModelTypeName = modelType.Name
-                .Substring(0, argumentCountBegining);
-
-            string genericTypeFullName = $"{modelType.Namespace}.{genericModelTypeName}";
-
-            IEnumerable<string> genericTypeArguments = modelType.GenericTypeArguments
-                .Select(GetGenericTypeArgumentFullName);
-
-            string modelTypeName = $"{genericTypeFullName}<{string.Join(", ", genericTypeArguments)}>";
-
+            var argumentCountBeginning = modelType.Name.LastIndexOf('`');
+            var genericModelTypeName = modelType.Name.Substring(0, argumentCountBeginning);
+            var genericTypeFullName = $"{modelType.Namespace}.{genericModelTypeName}";
+            var genericTypeArguments = modelType.GenericTypeArguments.Select(GetGenericTypeArgumentFullName);
+            var modelTypeName = $"{genericTypeFullName}<{string.Join(", ", genericTypeArguments)}>";
             return modelTypeName;
         }
 
