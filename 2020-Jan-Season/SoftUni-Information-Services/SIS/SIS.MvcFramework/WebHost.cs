@@ -81,13 +81,10 @@ namespace SIS.MvcFramework
             var actionParameters = actionMethod.GetParameters();
             foreach (var parameter in actionParameters)
             {
-                object value = 
-                    Convert.ChangeType(
-                        GetValueFromRequest(request, parameter.Name),
-                        parameter.ParameterType);
-                if (value == null)
+                var value = Convert.ChangeType(GetValueFromRequest(request, parameter.Name), parameter.ParameterType);
+                if (value == null && parameter.ParameterType != typeof(string))
                 {
-                    var parameterValue = serviceCollection.CreateInstance(parameter.ParameterType);
+                    var parameterValue = Activator.CreateInstance(parameter.ParameterType);
                     foreach (var property in parameter.ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                     {
                         var propertyValue = GetValueFromRequest(request, property.Name);
@@ -95,6 +92,10 @@ namespace SIS.MvcFramework
                     }
 
                     actionParameterValues.Add(parameterValue);
+                }
+                else
+                {
+                    actionParameterValues.Add(value);
                 }
             }
 

@@ -16,6 +16,11 @@
         /// <param name="httpRequestAsString">HTTP Request string</param>
         public HttpRequest(string httpRequestAsString)
         {
+            if (string.IsNullOrWhiteSpace(httpRequestAsString))
+            {
+                return;
+            }
+
             this.Headers = new List<Header>();
             this.Cookies = new List<Cookie>();
 

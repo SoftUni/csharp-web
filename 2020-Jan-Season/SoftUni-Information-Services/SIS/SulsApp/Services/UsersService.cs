@@ -68,6 +68,11 @@ namespace SulsApp.Services
 
         private string Hash(string input)
         {
+            if (input == null)
+            {
+                return null;
+            }
+
             var crypt = new SHA256Managed();
             var hash = new StringBuilder();
             byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(input));
