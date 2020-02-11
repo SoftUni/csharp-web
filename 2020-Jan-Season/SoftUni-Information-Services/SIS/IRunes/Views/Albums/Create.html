@@ -1,0 +1,20 @@
+﻿<hr class="bg-success" style="height: 2px" />
+<main>
+    <h1 class="text-center text-success">Create Album</h1>
+    <hr class="bg-success w-50" style="height: 2px" />
+    <form action="/Albums/Create" class="w-50 mx-auto" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" id="name" name="name" placeholder="Name..." />
+        </div>
+        <div class="form-group">
+            <label for="cover">Cover</label>
+            <input class="form-control" type="text" id="cover" name="cover" placeholder="Cover..." />
+        </div>
+        <hr class="bg-success" style="height: 2px" />
+        <div class="d-flex justify-content-around mt-4">
+            <button class="btn bg-success text-white" type="submit">Create</button>
+            <a class="btn bg-success text-white" href="/Albums/All">Back To All</a>
+        </div>
+    </form>
+</main>

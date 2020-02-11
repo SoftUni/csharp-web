@@ -1,0 +1,26 @@
+﻿<hr class="bg-success" style="height: 2px" />
+<main>
+    <h1 class="text-center text-success">Create Track</h1>
+    <hr class="bg-success w-50" style="height: 2px" />
+    <form action="/Tracks/Create?albumId=@Model.AlbumId" class="w-50 mx-auto" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name..." />
+        </div>
+        <div class="row d-flex justify-content-between">
+            <div class="form-group col-md-5">
+                <label for="link">Link</label>
+                <input type="text" class="form-control" id="link" name="link" placeholder="Link..." />
+            </div>
+            <div class="form-group col-md-5">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" id="price" name="price" placeholder="Price..." />
+            </div>
+        </div>
+        <hr class="bg-success mt-5" style="height: 2px" />
+        <div class="d-flex justify-content-around mt-4">
+            <button type="submit" class="btn bg-success text-white">Create</button>
+            <a href="/Albums/Details?id=Id" class="btn bg-success text-white">Back To Album</a>
+        </div>
+    </form>
+</main>
