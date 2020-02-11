@@ -14,11 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\Albums\" />
-    <Folder Include="ViewModels\Tracks\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SIS.HTTP\SIS.HTTP.csproj" />
     <ProjectReference Include="..\SIS.MvcFramework\SIS.MvcFramework.csproj" />
   </ItemGroup>

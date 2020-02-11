@@ -5,8 +5,11 @@
     <a class="btn btn-success text-white" href="/Albums/Create">Create Album</a>
     <hr class="bg-success" style="height: 2px" />
     <div id="albums">
+        @foreach(var album in Model.Albums)
+        {
         <h3>
-            <a href="/Albums/Details?id=@album.Id">Name</a>
+            <a href="/Albums/Details?id=@album.Id">@album.Name</a>
         </h3>
+        }
     </div>
 </main>
