@@ -11,10 +11,12 @@
                 </tr>
             </thead>
             <tbody>
-            <tr class="row">
+                @foreach(var problem in Model.Problems)
+                {
+                <tr class="row">
                     <td class="col-lg-3 suls-text-color">@problem.Name</td>
                     <td class="col-lg-3 suls-text-color">@problem.Count</td>
-                <td class="col-lg-3 suls-text-color">
+                    <td class="col-lg-3 suls-text-color">
                         <div class="button-holder">
                             <a href="/Submissions/Create?id=@problem.Id" class="btn btn-warning">Submit</a>
                         </div>
@@ -25,6 +27,7 @@
                         </div>
                     </td>
                 </tr>
+                }
             </tbody>
         </table>
     </div>
