@@ -12,12 +12,12 @@ namespace SulsApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger logger;
-        private readonly ApplicationDbContext db;
+        private readonly IProblemsService problemsService;
 
-        public HomeController(ILogger logger, ApplicationDbContext db)
+        public HomeController(ILogger logger, IProblemsService problemsService)
         {
             this.logger = logger;
-            this.db = db;
+            this.problemsService = problemsService;
         }
 
         [HttpGet("/")]
@@ -25,12 +25,7 @@ namespace SulsApp.Controllers
         {
             if (this.IsUserLoggedIn())
             {
-                var problems = db.Problems.Select(x => new IndexProblemViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Count = x.Submissions.Count(),
-                }).ToList();
+                var problems = this.problemsService.GetProblems();
                 var loggedInViewModel = new LoggedInViewModel()
                 {
                     Problems = problems,

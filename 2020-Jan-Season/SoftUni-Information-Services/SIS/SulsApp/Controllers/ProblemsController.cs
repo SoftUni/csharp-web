@@ -9,12 +9,10 @@ namespace SulsApp.Controllers
     public class ProblemsController : Controller
     {
         private readonly IProblemsService problemsService;
-        private readonly ApplicationDbContext db;
 
-        public ProblemsController(IProblemsService problemsService, ApplicationDbContext db)
+        public ProblemsController(IProblemsService problemsService)
         {
             this.problemsService = problemsService;
-            this.db = db;
         }
 
         public HttpResponse Create()
@@ -56,20 +54,7 @@ namespace SulsApp.Controllers
                 return this.Redirect("/Users/Login");
             }
 
-            var viewModel = this.db.Problems.Where(x => x.Id == id).Select(
-                x => new DetailsViewModel
-                {
-                    Name = x.Name,
-                    Problems = x.Submissions.Select(s =>
-                    new ProblemDetailsSubmissionViewModel
-                    {
-                        CreatedOn = s.CreatedOn,
-                        AchievedResult = s.AchievedResult,
-                        SubmissionId = s.Id,
-                        MaxPoints = x.Points,
-                        Username = s.User.Username,
-                    })
-                }).FirstOrDefault();
+            var viewModel = this.problemsService.GetDetailsProblems(id);
 
             return this.View(viewModel);
         }
