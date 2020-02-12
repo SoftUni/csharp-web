@@ -51,6 +51,11 @@ namespace SulsApp.Controllers
 
         public HttpResponse Register()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Error("You are already registered.");
+            }
+
             return this.View();
         }
 
