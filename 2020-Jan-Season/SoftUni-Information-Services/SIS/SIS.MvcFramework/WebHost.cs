@@ -88,7 +88,16 @@ namespace SIS.MvcFramework
                     foreach (var property in parameter.ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                     {
                         var propertyValue = GetValueFromRequest(request, property.Name);
-                        property.SetValue(parameterValue, Convert.ChangeType(propertyValue, property.PropertyType));
+
+                        if (property.PropertyType.IsGenericType &&
+                            property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            property.SetValue(parameterValue, null);
+                        }
+                        else
+                        {
+                            property.SetValue(parameterValue, Convert.ChangeType(propertyValue, property.PropertyType));
+                        }
                     }
 
                     actionParameterValues.Add(parameterValue);
