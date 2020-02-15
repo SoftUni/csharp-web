@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SulsApp.ViewModels.Submissions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +10,7 @@ namespace SulsApp.Services
         void Create(string userId, string problemId, string code);
 
         void Delete(string id);
+
+        CreateFormViewModel GetProblem(string id);
     }
 }

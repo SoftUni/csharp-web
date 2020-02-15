@@ -12,12 +12,10 @@ namespace SulsApp.Controllers
 {
     public class SubmissionsController : Controller
     {
-        private readonly ApplicationDbContext db;
         private readonly ISubmissionsService submissionsService;
 
-        public SubmissionsController(ApplicationDbContext db, ISubmissionsService submissionsService)
+        public SubmissionsController(ISubmissionsService submissionsService)
         {
-            this.db = db;
             this.submissionsService = submissionsService;
         }
 
@@ -28,13 +26,7 @@ namespace SulsApp.Controllers
                 return this.Redirect("/Users/Login");
             }
 
-            var problem = this.db.Problems
-                .Where(x => x.Id == id)
-                .Select(x => new CreateFormViewModel
-                {
-                    Name = x.Name,
-                    ProblemId = x.Id,
-                }).FirstOrDefault();
+            var problem = this.submissionsService.GetProblem(id);
             if (problem == null)
             {
                 return this.Error("Problem not found!");
