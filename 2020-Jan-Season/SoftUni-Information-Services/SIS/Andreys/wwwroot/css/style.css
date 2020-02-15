@@ -1,0 +1,44 @@
+.w-15 {
+    width: 15%;
+}
+
+.bg-gray {
+    background-color: #e9ecef;
+}
+
+body {
+    background-image: url(/img/background.jpg);
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+textarea {
+    resize: none;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.img-thumb {
+    padding: .25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+}
+
+.bg-blur {
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    z-index: 2;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
