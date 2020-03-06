@@ -1,0 +1,51 @@
+﻿<h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Add Product</span></h1>
+<hr class="hr-3" />
+<form class="mx-auto w-50 bg-blur" action="/Products/Add" method="POST">
+    <div class="form-group">
+        <div class="text-white label-holder d-flex justify-content-center">
+            <label for="name" class="h4 mb-2">Name</label>
+        </div>
+        <input type="text" class="form-control" id="name" name="name" />
+    </div>
+    <div class="form-group">
+        <div class="text-white label-holder d-flex justify-content-center">
+            <label for="description" class="h4 mb-2">Description</label>
+        </div>
+        <input type="text" class="form-control" id="description" name="description" />
+    </div>
+    <div class="form-group">
+        <div class="text-white label-holder d-flex justify-content-center">
+            <label for="imageUrl" class="h4 mb-2">Image URL</label>
+        </div>
+        <input type="text" class="form-control" id="imageUrl" name="imageUrl" />
+    </div>
+    <div class="form-group">
+        <div class="text-white label-holder d-flex justify-content-center">
+            <label for="category" class="h4 mb-2">Category</label>
+        </div>
+        <select styleClass="browser-default custom-select" id="category" name="category">
+            <option value="Shirt">Shirt</option>
+            <option value="Denim">Denim</option>
+            <option value="Shorts">Shorts</option>
+            <option value="Jacket">Jacket</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="text-white label-holder d-flex justify-content-center">
+            <label for="gender" class="h4 mb-2">Gender</label>
+        </div>
+        <select styleClass="browser-default custom-select" id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="text-white label-holder d-flex justify-content-center">
+            <label for="price" class="h4 mb-2">Price</label>
+        </div>
+        <input type="number" class="form-control" id="price" name="price" />
+    </div>
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn btn-secondary text-white mb-3">Add Product</button>
+    </div>
+</form>
