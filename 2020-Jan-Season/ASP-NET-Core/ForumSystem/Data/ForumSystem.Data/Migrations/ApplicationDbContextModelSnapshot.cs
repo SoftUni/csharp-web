@@ -213,7 +213,7 @@ namespace ForumSystem.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("ForumSystem.Data.Models.Post", b =>
@@ -255,7 +255,7 @@ namespace ForumSystem.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("ForumSystem.Data.Models.Setting", b =>

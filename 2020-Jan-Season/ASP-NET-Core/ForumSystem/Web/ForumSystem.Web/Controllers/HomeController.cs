@@ -3,7 +3,12 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+
     using ForumSystem.Data;
+    using ForumSystem.Data.Common.Repositories;
+    using ForumSystem.Data.Models;
+    using ForumSystem.Services.Data;
+    using ForumSystem.Services.Mapping;
     using ForumSystem.Services.Messaging;
     using ForumSystem.Web.ViewModels;
     using ForumSystem.Web.ViewModels.Home;
@@ -11,25 +16,20 @@
 
     public class HomeController : BaseController
     {
-        private readonly ApplicationDbContext db;
+        private readonly ICategoriesService categoriesService;
 
-        public HomeController(ApplicationDbContext db)
+        public HomeController(ICategoriesService categoriesService)
         {
-            this.db = db;
+            this.categoriesService = categoriesService;
         }
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel();
-            var categories = this.db.Categories.Select(x => new IndexCategoryViewModel
+            var viewModel = new IndexViewModel
             {
-                Description = x.Description,
-                ImageUrl = x.ImageUrl,
-                Name = x.Name,
-                Title = x.Title,
-            }).ToList();
-            viewModel.Categories = categories;
-
+                Categories =
+                    this.categoriesService.GetAll<IndexCategoryViewModel>(),
+            };
             return this.View(viewModel);
         }
 
