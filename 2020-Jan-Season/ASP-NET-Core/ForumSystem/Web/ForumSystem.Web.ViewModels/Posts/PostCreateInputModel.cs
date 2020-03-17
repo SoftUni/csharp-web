@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using ForumSystem.Data.Models;
+using ForumSystem.Services.Mapping;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ForumSystem.Web.ViewModels.Posts
 {
-    public class PostCreateInputModel
+    public class PostCreateInputModel : IMapTo<Post>
     {
         [Required]
         public string Title { get; set; }

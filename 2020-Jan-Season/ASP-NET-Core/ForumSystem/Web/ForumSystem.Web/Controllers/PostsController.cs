@@ -53,6 +53,7 @@
         [Authorize]
         public async Task<IActionResult> Create(PostCreateInputModel input)
         {
+            var post = AutoMapperConfig.MapperInstance.Map<Post>(input);
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
