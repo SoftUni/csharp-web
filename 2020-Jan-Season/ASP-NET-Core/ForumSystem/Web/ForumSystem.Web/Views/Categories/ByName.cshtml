@@ -11,7 +11,7 @@
 @foreach (var post in Model.Posts)
 {
     <div class="media-body">
-        <h4 class="media-heading">@post.Title</h4>
+        <h4 class="media-heading"><a asp-controller="Posts" asp-action="ById" asp-route-id="@post.Id">@post.Title</a></h4>
         <p>@post.ShortContent</p>
         <ul class="list-inline list-unstyled text-right">
             <li class="list-inline-item">
