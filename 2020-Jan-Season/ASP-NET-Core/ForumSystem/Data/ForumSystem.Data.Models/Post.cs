@@ -15,6 +15,7 @@
 
         public string Content { get; set; }
 
+        // TODO: Required!
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
