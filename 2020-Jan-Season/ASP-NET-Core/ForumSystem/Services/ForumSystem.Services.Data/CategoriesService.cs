@@ -30,7 +30,7 @@
 
         public T GetByName<T>(string name)
         {
-            var category = this.categoriesRepository.All().Where(x => x.Name == name)
+            var category = this.categoriesRepository.All().Where(x => x.Name.Replace(' ', '-') == name)
                 .To<T>().FirstOrDefault();
             return category;
         }
