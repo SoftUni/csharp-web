@@ -6,6 +6,9 @@
 
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
+    <cache expires-after="TimeSpan.FromDays(10)" vary-by-query="id">
+        <h1 class="display-3">@DateTime.UtcNow</h1>
+    </cache>
 </div>
 
 <div class="row">
@@ -24,9 +27,3 @@
         </div>
     }
 </div>
-
-@section Scripts {
-    <script>
-        $("h1").html("Hello!");
-    </script>
-}
