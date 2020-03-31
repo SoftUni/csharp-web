@@ -53,13 +53,12 @@
         [Authorize]
         public async Task<IActionResult> Create(PostCreateInputModel input)
         {
-            var post = AutoMapperConfig.MapperInstance.Map<Post>(input);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
             var postId = await this.postsService.CreateAsync(input.Title, input.Content, input.CategoryId, user.Id);
             this.TempData["InfoMessage"] = "Forum post created!";
             return this.RedirectToAction(nameof(this.ById), new { id = postId });
