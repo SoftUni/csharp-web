@@ -25,7 +25,10 @@
                                         </div>
                                     </div>
                                     <div class="text-muted small ml-3">
-                                        <div class="px-4 pt-3"> <button type="button" class="btn btn-secondary" onclick="showAddCommentForm(@comment.Id)"><i class="fa fa-plus"></i>&nbsp; Answer</button> </div>
+                                        @if (this.User.Identity.IsAuthenticated)
+                                        {
+                                            <div class="px-4 pt-3"> <button type="button" class="btn btn-secondary" onclick="showAddCommentForm(@comment.Id)"><i class="fa fa-plus"></i>&nbsp; Answer</button> </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -84,10 +87,14 @@
                     <article>
                         @Html.Raw(Model.SanitizedContent)
                     </article>
-                    <div class="px-4 pt-3"> <button type="button" class="btn btn-primary float-right" onclick="showAddCommentForm(0)"><i class="fa fa-plus"></i>&nbsp; Comment</button> </div>
-                    <div class="clearfix"></div>
+
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <div class="px-4 pt-3"> <button type="button" class="btn btn-primary float-right" onclick="showAddCommentForm(0)"><i class="fa fa-plus"></i>&nbsp; Comment</button> </div>
+                        <div class="clearfix"></div>
+                    }
                     @{ DisplayComments(null); }
-                </div>
+                    </div>
             </div>
         </div>
     </div>
