@@ -25,6 +25,8 @@ namespace ForumSystem.Web.ViewModels.Posts
 
         public int VotesCount { get; set; }
 
+        public IEnumerable<PostCommentViewModel> Comments { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Post, PostViewModel>()

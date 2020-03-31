@@ -39,22 +39,77 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @Html.Raw(Model.SanitizedContent)
-                </div>
-                <div class="card-footer d-flex flex-wrap justify-content-between align-items-center px-0 pt-0 pb-3">
-                    <div class="px-4 pt-3">
-                        <i class="fa fa-heart text-danger"></i>&nbsp; <span class="align-middle">0</span> <span class="text-muted d-inline-flex align-items-center align-middle ml-4">
-                        <i class="fa fa-eye text-muted fsize-3"></i>&nbsp; <span class="align-middle">0</span> </span>
-                    </div>
-                    <div class="px-4 pt-3"> <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp; Reply</button> </div>
+                    <article>
+                        @Html.Raw(Model.SanitizedContent)
+                    </article>
+                    <div class="px-4 pt-3"> <button type="button" class="btn btn-primary float-right" onclick="showAddCommentForm(0)"><i class="fa fa-plus"></i>&nbsp; Comment</button> </div>
+                    <div class="clearfix"></div>
+                    @foreach (var comment in this.Model.Comments)
+                    {
+                        <div class="container-fluid mt-100">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <div class="media flex-wrap w-100 align-items-center">
+                                                <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583246/AAA/2.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                                                <div class="media-body ml-3">
+                                                    @comment.UserUserName
+                                                    <div class="text-muted small">@comment.CreatedOn</div>
+                                                </div>
+                                                <div class="text-muted small ml-3">
+                                                    <div class="px-4 pt-3"> <button type="button" class="btn btn-secondary" onclick="showAddCommentForm(@comment.Id)"><i class="fa fa-plus"></i>&nbsp; Answer</button> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <article>
+                                                @Html.Raw(comment.SanitizedContent)
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+<script src="/lib/tinymce/tinymce.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        plugins: ["image paste table link code media"]
+    });
+</script>
+<div>
+    <form asp-controller="Comments" asp-action="Create" method="post" id="AddCommentForm" style="display: none">
+        <input type="hidden" name="PostId" value="@this.Model.Id" />
+        <input type="hidden" name="ParentId" value="0" />
+        <div>
+            <label for="Content"></label>
+            <textarea name="Content" id="Content" class="form-control"></textarea>
+        </div>
+        <div>
+            <input type="submit" class="btn btn-primary" value="Add comment" />
+        </div>
+    </form>
+</div>
+
 @section Scripts {
     <script>
+        function showAddCommentForm(parentId) {
+            $("#AddCommentForm input[name='ParentId']").val(parentId);
+            $("#AddCommentForm").show();
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#AddCommentForm").offset().top
+            }, 1000);
+        }
+
         function sendVote(postId, isUpVote) {
             var token = $("#votesForm input[name=__RequestVerificationToken]").val();
             var json = { postId: postId, isUpVote: isUpVote };

@@ -8,7 +8,7 @@
     @Model.Description
 </div>
 
-@foreach (var post in Model.Posts)
+@foreach (var post in Model.ForumPosts)
 {
     <div class="media-body">
         <h4 class="media-heading"><a asp-controller="Posts" asp-action="ById" asp-route-id="@post.Id">@post.Title</a></h4>
@@ -26,3 +26,50 @@
         </ul>
     </div>
 }
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @if (this.Model.CurrentPage == 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   asp-route="forumCategory"
+                   asp-route-name="@this.Model.Title"
+                   asp-route-page="@(this.Model.CurrentPage - 1)">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= this.Model.PagesCount; i++)
+        {
+            var active = i == this.Model.CurrentPage ? "active" : string.Empty;
+            <li class="page-item @active">
+                <a class="page-link"
+                   asp-route="forumCategory"
+                   asp-route-name="@this.Model.Title"
+                   asp-route-page="@i">@i</a>
+            </li>
+        }
+
+        @if (this.Model.CurrentPage == this.Model.PagesCount)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   asp-route="forumCategory"
+                   asp-route-name="@this.Model.Title"
+                   asp-route-page="@(this.Model.CurrentPage + 1)">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
