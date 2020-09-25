@@ -19,6 +19,15 @@ namespace PrimeNumbersCounter
         {
             /*
              * 664580
+             * 00:00:11.2199496
+             */
+            Stopwatch sw = Stopwatch.StartNew();
+            PrintPrimeCount(1, 10_000_000);
+            Console.WriteLine(Count);
+            Console.WriteLine(sw.Elapsed);
+
+            /*
+             * 664580
              * 00:00:10.5438104
              */
 
@@ -38,18 +47,18 @@ namespace PrimeNumbersCounter
             // 
             //
 
-            Stopwatch sw2 = Stopwatch.StartNew();
-            List<Task> tasks = new List<Task>();
-            for (int i = 1; i <= 100; i++)
-            {
-                var task = Task.Run(() => DownloadAsync(i));
-                tasks.Add(task);
-            }
-
-            Task.WaitAll(tasks.ToArray());
-
-            Console.WriteLine(sw2.Elapsed);
-            Console.ReadLine();
+            //// Stopwatch sw2 = Stopwatch.StartNew();
+            //// List<Task> tasks = new List<Task>();
+            //// for (int i = 1; i <= 100; i++)
+            //// {
+            ////     var task = Task.Run(() => DownloadAsync(i));
+            ////     tasks.Add(task);
+            //// }
+            //// 
+            //// Task.WaitAll(tasks.ToArray());
+            //// 
+            //// Console.WriteLine(sw2.Elapsed);
+            //// Console.ReadLine();
 
             //return;
 
@@ -115,7 +124,8 @@ namespace PrimeNumbersCounter
 
         static void PrintPrimeCount(int min, int max)
         {
-            for (int i = min; i <= max; i++)
+            // for (int i = min; i < max + 1; i++)
+            Parallel.For(min, max + 1, i =>
             {
                 bool isPrime = true;
                 for (int j = 2; j <= Math.Sqrt(i); j++)
@@ -134,8 +144,7 @@ namespace PrimeNumbersCounter
                         Count++;
                     }
                 }
-            }
-
+            });
         }
     }
 }
