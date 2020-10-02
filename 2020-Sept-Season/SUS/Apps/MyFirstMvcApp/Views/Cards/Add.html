@@ -1,0 +1,55 @@
+﻿<h1 class="text-center mt-2">Create Card</h1>
+<div class="row mt-4 mb-4">
+    <div id="card" class="card col-6 col-lg-3 game-card h-100 m-auto">
+        <img id="card-image"
+             src="https://www.impact-media.be/wp-content/uploads/2019/09/placeholder-1-e1533569576673-960x960.png"
+             class="card-img-top img-fluid card-image">
+        <div class="card-body">
+            <h5 id="card-name" class="card-title text-center" data-toggle="tooltip" data-placement="bottom"
+                title="Description:<br>Placeholder.">
+                Placeholder
+            </h5>
+            <ul class="list-group list-group-flush">
+                <li id="card-keyword" class="list-group-item text-center">Placeholder</li>
+                <li class="list-group-item">
+                    <span id="card-attack" class="attack-stat">0</span><span id="card-health" class="health-stat">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <form class="col-6 col-lg-9" method="post">
+        <div class="form-group">
+            <label for="name-input">Name</label>
+            <input name="name" type="text" class="form-control" id="name-input">
+        </div>
+        <div class="form-group">
+            <label for="image-input">Image URL</label>
+            <input name="image" type="text" class="form-control" id="image-input">
+        </div>
+        <div class="form-group">
+            <label for="keyword-input">Keyword</label>
+            <select name="keyword" class="form-control" id="keyword-input">
+                <option value="Tough">Tough</option>
+                <option value="Challenger">Challenger</option>
+                <option value="Elusive">Elusive</option>
+                <option value="Overwhelm">Overwhelm</option>
+                <option value="Lifesteal">Lifesteal</option>
+                <option value="Ephemeral">Ephemeral</option>
+                <option value="Fearsome">Fearsome</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="attack-input">Attack</label>
+            <input name="attack" type="number" class="form-control" id="attack-input">
+        </div>
+        <div class="form-group">
+            <label for="health-input">Health</label>
+            <input name="health" type="number" class="form-control" id="health-input">
+        </div>
+        <div class="form-group">
+            <label for="description-input">Description</label>
+            <textarea name="description" class="form-control" id="description-input"></textarea>
+        </div>
+        <button type="submit" class="btn btn-block btn-primary">Create</button>
+    </form>
+</div>
