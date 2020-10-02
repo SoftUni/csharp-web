@@ -12,6 +12,7 @@ namespace MyFirstMvcApp
     {
         static async Task Main(string[] args)
         {
+            // TODO: {controller}/{action}/{id}
             IHttpServer server = new HttpServer();
             server.AddRoute("/", HomePage);
             server.AddRoute("/niki", (request) =>
