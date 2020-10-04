@@ -52,7 +52,8 @@ namespace SUS.HTTP
                     {
                         int count =
                             await stream.ReadAsync(buffer, position, buffer.Length);
-                        position += count;
+                        //Position always must be 0
+                        //position += count;
 
                         if (count < buffer.Length)
                         {
