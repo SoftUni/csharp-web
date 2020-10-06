@@ -7,21 +7,39 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SUS.MvcFramework.ViewEngine
 {
+    // RAZOR VIEW ENGINE
     public class SusViewEngine : IViewEngine
     {
         public string GetHtml(string templateCode, object viewModel)
         {
-            string csharpCode = GenerateCSharpFromTemplate(templateCode);
+            string csharpCode = GenerateCSharpFromTemplate(templateCode, viewModel);
             IView executableObject = GenerateExecutableCоde(csharpCode, viewModel);
             string html = executableObject.ExecuteTemplate(viewModel); // M
             return html;
         }
 
-        private string GenerateCSharpFromTemplate(string templateCode)
+        private string GenerateCSharpFromTemplate(string templateCode, object viewModel)
         {
+            string typeOfModel = "object";
+            if (viewModel != null)
+            {
+                if (viewModel.GetType().IsGenericType)
+                {
+                    var modelName = viewModel.GetType().FullName;
+                    var genericArguments = viewModel.GetType().GenericTypeArguments;
+                    typeOfModel = modelName.Substring(0, modelName.IndexOf('`'))
+                        + "<" + string.Join(",", genericArguments.Select(x => x.FullName)) +">";
+                }
+                else
+                {
+                    typeOfModel = viewModel.GetType().FullName;
+                }
+            }
+
             string csharpCode = @"
 using System;
 using System.Text;
@@ -35,6 +53,7 @@ namespace ViewNamespace
     {
         public string ExecuteTemplate(object viewModel)
         {
+            var Model = viewModel as " + typeOfModel + @";
             var html = new StringBuilder();
 
             " + GetMethodBody(templateCode) + @"
@@ -49,12 +68,14 @@ namespace ViewNamespace
 
         private string GetMethodBody(string templateCode)
         {
+            Regex csharpCodeRegex = new Regex(@"[^\""\s&\'\<]+");
+            var supportedOperators = new List<string> { "for", "while", "if", "else", "foreach" };
             StringBuilder csharpCode = new StringBuilder();
             StringReader sr = new StringReader(templateCode);
             string line;
             while ((line = sr.ReadLine()) != null)
             {
-                if (line.TrimStart().StartsWith("@"))
+                if (supportedOperators.Any(x => line.TrimStart().StartsWith("@" + x)))
                 {
                     var atSignLocation = line.IndexOf("@");
                     line = line.Remove(atSignLocation, 1);
@@ -67,7 +88,20 @@ namespace ViewNamespace
                 }
                 else
                 {
-                    csharpCode.AppendLine($"html.AppendLine(@\"{line.Replace("\"", "\"\"")}\");");
+                    csharpCode.Append($"html.AppendLine(@\"");
+   
+                    while (line.Contains("@"))
+                    {
+                        var atSignLocation = line.IndexOf("@");
+                        var htmlBeforeAtSign = line.Substring(0, atSignLocation);
+                        csharpCode.Append(htmlBeforeAtSign.Replace("\"", "\"\"") + "\" + ");
+                        var lineAfterAtSign = line.Substring(atSignLocation + 1);
+                        var code = csharpCodeRegex.Match(lineAfterAtSign).Value;
+                        csharpCode.Append(code + " + @\"");
+                        line = lineAfterAtSign.Substring(code.Length);
+                    }
+
+                    csharpCode.AppendLine(line.Replace("\"", "\"\"") + "\");");
                 }
             }
 
