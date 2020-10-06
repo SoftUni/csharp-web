@@ -2,9 +2,11 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace SUS.MvcFramework.ViewEngine
 {
@@ -20,7 +22,6 @@ namespace SUS.MvcFramework.ViewEngine
 
         private string GenerateCSharpFromTemplate(string templateCode)
         {
-            string methodBody = GetMethodBody(templateCode);
             string csharpCode = @"
 using System;
 using System.Text;
@@ -36,20 +37,41 @@ namespace ViewNamespace
         {
             var html = new StringBuilder();
 
-            " + methodBody + @"
+            " + GetMethodBody(templateCode) + @"
 
             return html.ToString();
         }
     }
 }
 ";
-
             return csharpCode;
         }
 
         private string GetMethodBody(string templateCode)
         {
-            return string.Empty;
+            StringBuilder csharpCode = new StringBuilder();
+            StringReader sr = new StringReader(templateCode);
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (line.TrimStart().StartsWith("@"))
+                {
+                    var atSignLocation = line.IndexOf("@");
+                    line = line.Remove(atSignLocation, 1);
+                    csharpCode.AppendLine(line);
+                }
+                else if (line.TrimStart().StartsWith("{") ||
+                    line.TrimStart().StartsWith("}"))
+                {
+                    csharpCode.AppendLine(line);
+                }
+                else
+                {
+                    csharpCode.AppendLine($"html.AppendLine(@\"{line.Replace("\"", "\"\"")}\");");
+                }
+            }
+
+            return csharpCode.ToString();
         }
 
         private IView GenerateExecutableCоde(string csharpCode, object viewModel)
@@ -74,24 +96,31 @@ namespace ViewNamespace
             }
 
             compileResult = compileResult.AddSyntaxTrees(SyntaxFactory.ParseSyntaxTree(csharpCode));
-
+             
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 EmitResult result = compileResult.Emit(memoryStream);
                 if (!result.Success)
                 {
-                    // Compile errors!!!!
                     return new ErrorView(result.Diagnostics
                         .Where(x => x.Severity == DiagnosticSeverity.Error)
                         .Select(x => x.GetMessage()), csharpCode);
                 }
 
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                var byteAssembly = memoryStream.ToArray();
-                var assembly = Assembly.Load(byteAssembly);
-                var viewType = assembly.GetType("ViewNamespace.ViewClass");
-                var instance = Activator.CreateInstance(viewType);
-                return instance as IView;
+                try
+                {
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    var byteAssembly = memoryStream.ToArray();
+                    var assembly = Assembly.Load(byteAssembly);
+                    var viewType = assembly.GetType("ViewNamespace.ViewClass");
+                    var instance = Activator.CreateInstance(viewType);
+                    return (instance as IView)
+                        ?? new ErrorView(new List<string> { "Instance is null!" }, csharpCode);
+                }
+                catch (Exception ex)
+                {
+                    return new ErrorView(new List<string> { ex.ToString() }, csharpCode);
+                }
             }
         }
     }
