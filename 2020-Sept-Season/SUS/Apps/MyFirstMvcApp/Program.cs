@@ -1,7 +1,7 @@
 ﻿using SUS.MvcFramework;
 using System.Threading.Tasks;
 
-namespace MyFirstMvcApp
+namespace BattleCards
 {
     public class Program
     {

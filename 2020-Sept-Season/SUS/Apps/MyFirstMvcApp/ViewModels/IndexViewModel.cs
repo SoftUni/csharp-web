@@ -1,4 +1,4 @@
-﻿namespace MyFirstMvcApp.ViewModels
+﻿namespace BattleCards.ViewModels
 {
     public class IndexViewModel
     {
