@@ -1,6 +1,7 @@
 ﻿using BattleCards.Data;
 using BattleCards.ViewModels;
 using BattleCards.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using SUS.HTTP;
 using SUS.MvcFramework;
 using System;
@@ -23,6 +24,11 @@ namespace BattleCards.Controllers
         {
             var dbContext = new ApplicationDbContext();
 
+            if (this.Request.FormData["name"].Length < 5)
+            {
+                return this.Error("Name should be at least 5 characters long.");
+            }
+
             dbContext.Cards.Add(new Card
             {
                 Attack = int.Parse(this.Request.FormData["attack"]),
@@ -32,7 +38,6 @@ namespace BattleCards.Controllers
                 ImageUrl = this.Request.FormData["image"],
                 Keyword = this.Request.FormData["keyword"],
             });
-
             dbContext.SaveChanges();
 
             return this.Redirect("/");
