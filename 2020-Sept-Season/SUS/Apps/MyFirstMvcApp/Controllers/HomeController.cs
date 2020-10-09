@@ -11,7 +11,7 @@ namespace MyFirstMvcApp.Controllers
     public class HomeController : Controller
     {
         [HttpGet("/")]
-        public HttpResponse Index(HttpRequest request)
+        public HttpResponse Index()
         {
             var viewModel = new IndexViewModel();
             viewModel.CurrentYear = DateTime.UtcNow.Year;
@@ -20,7 +20,7 @@ namespace MyFirstMvcApp.Controllers
         }
 
         // GET /home/about
-        public HttpResponse About(HttpRequest request)
+        public HttpResponse About()
         {
             return this.View();
         }

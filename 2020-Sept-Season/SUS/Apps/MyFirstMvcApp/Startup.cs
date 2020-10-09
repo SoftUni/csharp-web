@@ -1,4 +1,6 @@
-﻿using MyFirstMvcApp.Controllers;
+﻿using BattleCards.Data;
+using Microsoft.EntityFrameworkCore;
+using MyFirstMvcApp.Controllers;
 using SUS.HTTP;
 using SUS.MvcFramework;
 using System;
@@ -14,6 +16,7 @@ namespace MyFirstMvcApp
 
         public void Configure(List<Route> routeTable)
         {
+            new ApplicationDbContext().Database.Migrate();
         }
     }
 }
