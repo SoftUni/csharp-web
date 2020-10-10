@@ -116,8 +116,16 @@ namespace ViewNamespace
                 .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location));
             if (viewModel != null)
             {
-                compileResult = compileResult
+                if (viewModel.GetType().IsGenericType)
+                {
+                    compileResult = compileResult
+                   .AddReferences(MetadataReference.CreateFromFile(viewModel.GetType().GetGenericArguments().FirstOrDefault().Assembly.Location));
+                }
+                else
+                {
+                    compileResult = compileResult
                     .AddReferences(MetadataReference.CreateFromFile(viewModel.GetType().Assembly.Location));
+                }
             }
 
             var libraries = Assembly.Load(
