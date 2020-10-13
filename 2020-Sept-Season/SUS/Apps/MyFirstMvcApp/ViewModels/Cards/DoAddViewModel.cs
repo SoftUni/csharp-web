@@ -1,4 +1,4 @@
-﻿namespace BattleCards.ViewModels
+﻿namespace BattleCards.ViewModels.Cards
 {
     public class DoAddViewModel
     {
