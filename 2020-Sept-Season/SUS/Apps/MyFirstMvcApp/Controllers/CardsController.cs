@@ -1,6 +1,5 @@
 ﻿using BattleCards.Data;
 using BattleCards.ViewModels;
-using BattleCards.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using SUS.HTTP;
 using SUS.MvcFramework;
