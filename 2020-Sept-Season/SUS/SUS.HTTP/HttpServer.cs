@@ -79,7 +79,7 @@ namespace SUS.HTTP
                     }
 
                     response.Headers.Add(new Header("Server", "SUS Server 1.0"));
-                    
+
                     var sessionCookie = request.Cookies.FirstOrDefault(x => x.Name == HttpConstants.SessionCookieName);
                     if (sessionCookie != null)
                     {
@@ -90,7 +90,11 @@ namespace SUS.HTTP
 
                     var responseHeaderBytes = Encoding.UTF8.GetBytes(response.ToString());
                     await stream.WriteAsync(responseHeaderBytes, 0, responseHeaderBytes.Length);
-                    await stream.WriteAsync(response.Body, 0, response.Body.Length);
+
+                    if (response.Body != null)
+                    {
+                        await stream.WriteAsync(response.Body, 0, response.Body.Length);
+                    }
                 }
 
                 tcpClient.Close();
