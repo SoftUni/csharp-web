@@ -80,7 +80,9 @@ namespace SUS.MvcFramework
             {
                 var httpParamerValue = GetParameterFromRequest(request, parameter.Name);
                 var parameterValue = Convert.ChangeType(httpParamerValue, parameter.ParameterType);
-                if (parameterValue == null && parameter.ParameterType != typeof(string))
+                if (parameterValue == null && 
+                    parameter.ParameterType != typeof(string)
+                    && parameter.ParameterType != typeof(int?))
                 {
                     // complex type
                     parameterValue = Activator.CreateInstance(parameter.ParameterType);
