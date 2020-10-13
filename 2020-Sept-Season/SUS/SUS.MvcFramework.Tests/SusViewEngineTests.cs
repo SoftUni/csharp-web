@@ -28,7 +28,7 @@ namespace SUS.MvcFramework.Tests
             
             IViewEngine viewEngine = new SusViewEngine();
             var view = File.ReadAllText($"ViewTests/{fileName}.html");
-            var result = viewEngine.GetHtml(view, viewModel);
+            var result = viewEngine.GetHtml(view, viewModel, null);
             var expectedResult = File.ReadAllText($"ViewTests/{fileName}.Result.html");
             Assert.Equal(expectedResult, result);
         }
@@ -40,7 +40,7 @@ namespace SUS.MvcFramework.Tests
             var actualResult = viewEngine.GetHtml(@"@foreach(var num in Model)
 {
 <span>@num</span>
-}", new List<int> { 1, 2, 3 });
+}", new List<int> { 1, 2, 3 }, null);
             var expectedResult = @"<span>1</span>
 <span>2</span>
 <span>3</span>

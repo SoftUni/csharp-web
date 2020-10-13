@@ -22,21 +22,27 @@
                     <li class="nav-item">
                         <a class="nav-link text-white active h5" href="/">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white active h5" href="/Users/Login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white active h5" href="/Users/Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white active h5" href="/Cards/Add">Add Card</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white active h5" href="/Cards/Collection">My Collection</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-danger active h5" href="/Logout">Logout</a>
-                    </li>
+                    @if (User != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white active h5" href="/Cards/Collection">My Collection</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white active h5" href="/Cards/Add">Add Card</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger active h5" href="/Users/Logout">Logout</a>
+                        </li>
+                    }
+                    @else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white active h5" href="/Users/Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white active h5" href="/Users/Register">Register</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>

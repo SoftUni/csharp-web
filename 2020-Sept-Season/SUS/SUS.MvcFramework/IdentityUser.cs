@@ -2,9 +2,9 @@
 
 namespace SUS.MvcFramework
 {
-    public class UserIdentity
+    public class IdentityUser<T>
     {
-        public string Id { get; set; }
+        public T Id { get; set; }
 
         [Required]
         [MaxLength(20)]
@@ -15,5 +15,7 @@ namespace SUS.MvcFramework
 
         [Required]
         public string Password { get; set; }
+
+        public IdentityRole Role { get; set; }
     }
 }
