@@ -30,7 +30,7 @@ namespace BattleCards.Controllers
             return this.View();
         }
 
-        [HttpPost("/Cards/Add")]        
+        [HttpPost("/Cards/Add")]
         public HttpResponse DoAdd(AddCardInputModel model)
         {
             if (!this.IsUserSignedIn())
