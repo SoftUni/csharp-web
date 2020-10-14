@@ -65,7 +65,11 @@ namespace SUS.MvcFramework
                         url = attribute.Url;
                     }
 
-                    routeTable.Add(new Route(url, httpMethod, request => ExecuteAction(request, controllerType, method, serviceCollection)));
+                    var IsAuthorized = method.GetCustomAttributes(false)
+                       .Where(x => x.GetType() == typeof(AuthorizeAttribute))
+                       .FirstOrDefault();
+
+                    routeTable.Add(new Route(url, httpMethod, request => ExecuteAction(request, controllerType, method, serviceCollection), (IsAuthorized != null)));
                 }
             }
         }

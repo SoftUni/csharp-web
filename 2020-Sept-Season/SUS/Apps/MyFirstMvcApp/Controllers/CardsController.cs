@@ -58,13 +58,9 @@ namespace BattleCards.Controllers
         }
 
         // /cards/all
+        [Authorize]
         public HttpResponse All()
         {
-            if (!this.IsUserSignedIn())
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             var cardsViewModel = this.db.Cards.Select(x => new CardViewModel
             {
                 Name = x.Name,
