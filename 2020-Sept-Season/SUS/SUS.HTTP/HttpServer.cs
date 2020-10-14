@@ -70,7 +70,17 @@ namespace SUS.HTTP
                             && x.Method == request.Method);
                     if (route != null)
                     {
-                        response = route.Action(request);
+                        if (route.IsAuthorized == false ||
+                           (request.Session.ContainsKey(HttpConstants.UserIdSessionName) &&
+                            request.Session[HttpConstants.UserIdSessionName] != null))
+                            {
+                             response = route.Action(request);
+                            }
+                            else
+                            {
+                            response = new HttpResponse(HttpStatusCode.Found);
+                            response.Headers.Add(new Header("Location", "/Users/Login"));
+                            }
                     }
                     else
                     {

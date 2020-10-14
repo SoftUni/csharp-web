@@ -6,5 +6,6 @@
         public const string NewLine = "\r\n";
         public const string RequestCookieHeader = "Cookie";
         public const string SessionCookieName = "SUS_SID";
+        public const string UserIdSessionName = "UserId";
     }
 }

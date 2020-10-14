@@ -30,7 +30,7 @@ namespace BattleCards.Controllers
             return this.View();
         }
 
-        [HttpPost("/Cards/Add")]
+        [HttpPost("/Cards/Add")]        
         public HttpResponse DoAdd(AddCardInputModel model)
         {
             if (!this.IsUserSignedIn())
@@ -58,13 +58,9 @@ namespace BattleCards.Controllers
         }
 
         // /cards/all
+        [Authorize]
         public HttpResponse All()
         {
-            if (!this.IsUserSignedIn())
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             var cardsViewModel = this.db.Cards.Select(x => new CardViewModel
             {
                 Name = x.Name,

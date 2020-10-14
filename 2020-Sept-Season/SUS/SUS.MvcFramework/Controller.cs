@@ -7,7 +7,6 @@ namespace SUS.MvcFramework
 {
     public abstract class Controller
     {
-        private const string UserIdSessionName = "UserId";
         private SusViewEngine viewEngine;
 
         public Controller()
@@ -59,21 +58,21 @@ namespace SUS.MvcFramework
 
         protected void SignIn(string userId)
         {
-            this.Request.Session[UserIdSessionName] = userId;
+            this.Request.Session[HttpConstants.UserIdSessionName] = userId;
         }
 
         protected void SignOut()
         {
-            this.Request.Session[UserIdSessionName] = null;
+            this.Request.Session[HttpConstants.UserIdSessionName] = null;
         }
 
         protected bool IsUserSignedIn() =>
-            this.Request.Session.ContainsKey(UserIdSessionName) &&
-            this.Request.Session[UserIdSessionName] != null;
+            this.Request.Session.ContainsKey(HttpConstants.UserIdSessionName) &&
+            this.Request.Session[HttpConstants.UserIdSessionName] != null;
 
         protected string GetUserId() =>
-            this.Request.Session.ContainsKey(UserIdSessionName) ?
-            this.Request.Session[UserIdSessionName] : null;
+            this.Request.Session.ContainsKey(HttpConstants.UserIdSessionName) ?
+            this.Request.Session[HttpConstants.UserIdSessionName] : null;
 
         private string PutViewInLayout(string viewContent, object viewModel = null)
         {
