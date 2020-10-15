@@ -14,16 +14,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="row">
-                    <td class="col-lg-3 suls-text-color">@problem.Username</td>
-                    <td class="col-lg-3 suls-text-color">@problem.AchievedResult / @problem.MaxPoints</td>
-                    <td class="col-lg-3 suls-text-color">@problem.CreatedOn</td>
-                    <td class="col-lg-3 suls-text-color">
-                        <div class="button-holder">
-                            <a href="/Submissions/Delete?id=@problem.SubmissionId" class="btn btn-warning">Delete</a>
-                        </div>
-                    </td>
-                </tr>
+                @foreach (var submission in Model.Submissions)
+                {
+                    <tr class="row">
+                        <td class="col-lg-3 suls-text-color">@submission.Username</td>
+                        <td class="col-lg-3 suls-text-color">@submission.AchievedResult / @submission.MaxPoints (@submission.Percentage %)</td>
+                        <td class="col-lg-3 suls-text-color">@submission.CreatedOn.ToShortDateString()</td>
+                        <td class="col-lg-3 suls-text-color">
+                            <div class="button-holder">
+                                <a href="/Submissions/Delete?id=@submission.SubmissionId" class="btn btn-warning">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
