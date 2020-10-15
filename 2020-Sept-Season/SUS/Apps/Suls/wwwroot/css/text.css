@@ -1,0 +1,15 @@
+﻿body {
+    color: purple;
+}
+
+a {
+    color: blue;
+}
+
+.alignleft {
+    float: left;
+}
+
+.alignright {
+    float: right;
+}

@@ -1,0 +1,31 @@
+﻿<main class="mt-3">
+    <h1 class="text-center suls-text-color">All Problems</h1>
+    <div class="container-fluid ml-5">
+        <table class="table table-hover">
+            <thead>
+                <tr class="row">
+                    <th scope="col" class="col-lg-3 suls-text-color">Name</th>
+                    <th scope="col" class="col-lg-3 suls-text-color">Count</th>
+                    <th scope="col" class="col-lg-3 suls-text-color">Submit</th>
+                    <th scope="col" class="col-lg-3 suls-text-color">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                    <td class="col-lg-3 suls-text-color">@problem.Name</td>
+                    <td class="col-lg-3 suls-text-color">@problem.Count</td>
+                <td class="col-lg-3 suls-text-color">
+                        <div class="button-holder">
+                            <a href="/Submissions/Create?id=@problem.Id" class="btn btn-warning">Submit</a>
+                        </div>
+                    </td>
+                    <td class="col-lg-3">
+                        <div class="button-holder">
+                            <a href="/Problems/Details?id=@problem.Id" class="btn btn-warning">Details</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

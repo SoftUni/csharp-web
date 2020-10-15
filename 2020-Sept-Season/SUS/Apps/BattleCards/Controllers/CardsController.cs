@@ -1,5 +1,4 @@
-﻿using BattleCards.Data;
-using BattleCards.Services;
+﻿using BattleCards.Services;
 using BattleCards.ViewModels.Cards;
 using SUS.HTTP;
 using SUS.MvcFramework;
