@@ -80,28 +80,44 @@ namespace SUS.MvcFramework
             var parameters = action.GetParameters();
             foreach (var parameter in parameters)
             {
-                var httpParamerValue = GetParameterFromRequest(request, parameter.Name);
-                var parameterValue = Convert.ChangeType(httpParamerValue, parameter.ParameterType);
-                if (parameterValue == null && 
-                    parameter.ParameterType != typeof(string)
-                    && parameter.ParameterType != typeof(int?))
-                {
-                    // complex type
-                    parameterValue = Activator.CreateInstance(parameter.ParameterType);
-                    var properties = parameter.ParameterType.GetProperties();
-                    foreach (var property in properties)
-                    {
-                        var propertyHttpParamerValue = GetParameterFromRequest(request, property.Name);
-                        var propertyParameterValue = Convert.ChangeType(propertyHttpParamerValue, property.PropertyType);
-                        property.SetValue(parameterValue, propertyParameterValue);
-                    }
-                }
-                
+                object parameterValue = ChangeType(request, parameter.Name, parameter.ParameterType);
                 arguments.Add(parameterValue);
             }
 
             var response = action.Invoke(instance, arguments.ToArray()) as HttpResponse;
             return response;
+        }
+
+        private static object ChangeType(HttpRequest request, string parameterName, Type type)
+        {
+            var httpParamerValue = GetParameterFromRequest(request, parameterName);
+            object parameterValue;
+            try
+            {
+                parameterValue = Convert.ChangeType(httpParamerValue, type);
+                if (parameterValue == null &&
+                    (type != typeof(string) || type.IsValueType))
+                {
+                    // complex type
+                    parameterValue = Activator.CreateInstance(type);
+                    var properties = type.GetProperties();
+                    foreach (var property in properties)
+                    {
+                        var propertyValue = ChangeType(request, property.Name, property.PropertyType);
+                        property.SetValue(parameterValue, propertyValue);
+                    }
+                }
+            }
+            catch (Exception e)
+                when (e is FormatException ||
+                      e is ArgumentNullException ||
+                      e is InvalidCastException ||
+                      e is OverflowException)
+            {
+                parameterValue = default;
+            }
+
+            return parameterValue;
         }
 
         private static string GetParameterFromRequest(HttpRequest request, string parameterName)
