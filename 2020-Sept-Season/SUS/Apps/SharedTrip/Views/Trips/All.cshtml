@@ -1,0 +1,34 @@
+﻿<section class="py-5">
+    <div class="container">
+        <h1 style="margin: 2%; text-align: center;">All Trips</h1>
+        <div style="padding: 5%;">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">StartPoint</th>
+                        <th scope="col">EndPoint</th>
+                        <th scope="col">DepartureTime</th>
+                        <th scope="col">Seats</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trip in Model)
+                    {
+                        <tr>
+                            <th scope="row">@trip.StartPoint</th>
+                            <td>@trip.EndPoint</td>
+                            <td>@trip.DepartureTimeAsString</td>
+                            <td>@trip.AvailableSeats</td>
+                            <td>
+                                <div class="button-holder">
+                                    <a href="/Trips/Details?tripId=@trip.Id" class="btn btn-info text-uppercase">Info</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

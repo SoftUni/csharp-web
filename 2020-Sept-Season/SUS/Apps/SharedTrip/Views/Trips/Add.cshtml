@@ -1,0 +1,34 @@
+﻿<section class="py-5">
+    <div class="container">
+        <h1 style="margin: 2%; text-align: center;">Add Trip</h1>
+        <div style="padding: 5%;">
+            <form method="post">
+                <div class="form-group">
+                    <label for="startPoint">Starting Point</label>
+                    <input type="text" class="form-control" id="startPoint" name="startPoint" placeholder="Location name">
+                </div>
+                <div class="form-group">
+                    <label for="endPoint">End Point</label>
+                    <input type="text" class="form-control" id="endPoint" name="endPoint" placeholder="Location name">
+                </div>
+                <div class="form-group">
+                    <label for="departureTime">Departure Time</label>
+                    <input type="text" class="form-control" id="departureTime" name="departureTime" placeholder="dd.MM.yyyy HH:mm">
+                </div>
+                <div class="form-group">
+                    <label for="imagePath">Car Image</label>
+                    <input type="text" class="form-control" id="imagePath" name="imagePath" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="seats">Seats</label>
+                    <input min="2" max="6" type="number" class="form-control" id="seats" name="seats" placeholder="Number of free seats">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="...">
+                </div>
+                <button type="submit" class="btn btn-primary text-uppercase">Submit</button>
+            </form>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shared Trip Platform</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <style>
+        .alert { margin-top: 60px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">Shared Trip</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    @if (User == null)
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Users/Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Users/Register">Register</a>
+                        </li>
+                    }
+                    @else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Trips/All">Trips</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Trips/Add">Add</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Users/Logout">Logout</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="top-border-line primary-separator"></div>
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+    <div class="bottom-border-line primary-separator"></div>
+    <div class="container">
+        <footer id="sticky-footer" class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright © Shared Trip 2020</p>
+            </div>
+            <div></div>
+        </footer>
+    </div>
+</body>
+</html>

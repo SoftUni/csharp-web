@@ -1,0 +1,35 @@
+﻿<section class="py-5">
+    <div class="container">
+        <h1 style="margin: 2%; text-align: center;">Trip</h1>
+        <div>
+            <div class="form-group text-center">
+                <img src="@Model.ImagePath" class="img-fluid">
+            </div>
+            <div class="form-group">
+                <label for="startPoint">Starting Point</label>
+                <input type="text" readonly class="form-control" id="startPoint" name="StartPoint" value="@Model.StartPoint">
+            </div>
+            <div class="form-group">
+                <label for="endPoint">End Point</label>
+                <input type="text" readonly class="form-control" id="endPoint" name="EndPoint" value="@Model.EndPoint">
+            </div>
+            <div class="form-group">
+                <label for="departureTime">Departure Time</label>
+                <input type="datetime-local" readonly class="form-control" id="departureTime" value="@Model.DepartureTimeFormatted">
+            </div>
+            <div class="form-group">
+                <label for="seats">Seats</label>
+                <input type="number" readonly class="form-control" id="seats" name="Seats" value="@Model.AvailableSeats">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" readonly class="form-control" id="description" name="Description" value="@Model.Description">
+            </div>
+            <div class="form-group text-center">
+                <div class="button-holder">
+                    <a href="/Trips/AddUserToTrip?tripId=@Model.Id" class="btn btn-primary btn-block text-uppercase">Join</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
