@@ -1,0 +1,54 @@
+﻿@using System.Text
+@model IndexViewModel
+@inject IShortStringService ShortString
+@{
+    // Comment
+    ViewData["Title"] = "Welcome Page";
+}
+
+<vc:registered-users title="Registered users"></vc:registered-users>
+<vc:registered-users title="Registered users" />
+<vc:registered-users title="Registered users" />
+<partial name="_HomePageStart" model="Model" />
+
+<form asp-action="Index">
+    <textarea asp-for="Description"></textarea>
+    <input asp-for="Name" />
+    <input asp-for="Processors" />
+</form>
+
+<hr />
+
+<div class="text-center">
+    @if (User.Identity.IsAuthenticated)
+    {
+        // Comment
+        <h1 class="display-4">Welcome, @User.Identity.Name</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Welcome, @Model.Name</h1>
+    }
+    <h2>It @Model.Year year.</h2>
+    <p>@ShortString.GetShort(Model.Description, 200)</p>
+    <p>We have @Model.UsersCount users.</p>
+    @* Comment *@
+    <p>Processors: @Model.Processors</p>
+    <p>Time: @DateTime.Now</p>
+    <p>Id: @Model.Id</p>
+</div>
+<!-- HTML Comment -->
+
+
+<table bootstrap-table="" table-name="Digits table">
+    @for (int i = 0; i < 10; i++)
+    {
+        <tr><td>@i</td></tr>
+    }
+</table>
+
+@section Links {
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="https://google.com">Google</a>
+    </li>
+}
