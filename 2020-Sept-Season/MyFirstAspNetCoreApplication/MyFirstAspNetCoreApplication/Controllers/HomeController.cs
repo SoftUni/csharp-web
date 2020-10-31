@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyFirstAspNetCoreApplication.Data;
@@ -42,6 +43,24 @@ namespace MyFirstAspNetCoreApplication.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult ContactForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ContactForm(string title, string content)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
+            // TODO: Save title and content in DB...
+
+            return this.RedirectToAction(nameof(Index));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

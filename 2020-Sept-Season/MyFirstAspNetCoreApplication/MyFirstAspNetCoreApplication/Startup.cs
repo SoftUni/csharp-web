@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyFirstAspNetCoreApplication.Service;
+using System.Net.Http;
 
 namespace MyFirstAspNetCoreApplication
 {
@@ -67,6 +68,7 @@ namespace MyFirstAspNetCoreApplication
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
         }
     }
 }

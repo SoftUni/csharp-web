@@ -6,15 +6,17 @@
     ViewData["Title"] = "Welcome Page";
 }
 
+<input type="file" />
+
 <vc:registered-users title="Registered users"></vc:registered-users>
 <vc:registered-users title="Registered users" />
 <vc:registered-users title="Registered users" />
 <partial name="_HomePageStart" model="Model" />
 
 <form asp-action="Index">
-    <textarea asp-for="Description"></textarea>
-    <input asp-for="Name" />
-    <input asp-for="Processors" />
+    <textarea asp-for="Description"class="form-control col-md-3" ></textarea>
+    <input asp-for="Name" class="form-control col-md-3" />
+    <input asp-for="Processors"class="form-control col-md-3"  />
 </form>
 
 <hr />
