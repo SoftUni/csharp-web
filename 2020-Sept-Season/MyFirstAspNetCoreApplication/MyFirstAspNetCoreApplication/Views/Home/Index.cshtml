@@ -1,15 +1,17 @@
 ﻿@using System.Text
 @model IndexViewModel
 @inject IShortStringService ShortString
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebEnvironment
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject IInstanceCounter InstanceCounter
 @{
     // Comment
     ViewData["Title"] = "Welcome Page";
 }
 
-<input type="file" />
-
-<vc:registered-users title="Registered users"></vc:registered-users>
-<vc:registered-users title="Registered users" />
+<h1>Instances: @InstanceCounter.Instances</h1>
+<h1>@WebEnvironment.EnvironmentName</h1>
+<h2>@this.Configuration["HelloMessage"]</h2>
 <vc:registered-users title="Registered users" />
 <partial name="_HomePageStart" model="Model" />
 

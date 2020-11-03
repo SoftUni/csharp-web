@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyFirstAspNetCoreApplication.Service;
 using System.Net.Http;
+using MyFirstAspNetCoreApplication.Filters;
 
 namespace MyFirstAspNetCoreApplication
 {
@@ -34,14 +35,25 @@ namespace MyFirstAspNetCoreApplication
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(configure =>
+            {
+                configure.Filters.Add(new MyAuthFilter());
+                configure.Filters.Add(new MyResultFilterAttribute());
+                configure.Filters.Add(new MyExceptionFilter());
+                configure.Filters.Add(new MyResourceFilter());
+            });
             services.AddRazorPages();
+
+            // singleton / scoped / transient
+            services.AddTransient<IInstanceCounter, InstanceCounter>();
+            services.AddSingleton<AddHeaderActionFilterAttribute>();
             services.AddTransient<IShortStringService, ShortStringService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Action<HttpContext, RequestDelegate> RequestDelegate
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,6 +65,7 @@ namespace MyFirstAspNetCoreApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
