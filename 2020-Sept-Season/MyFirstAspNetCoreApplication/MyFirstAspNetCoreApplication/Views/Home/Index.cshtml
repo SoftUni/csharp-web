@@ -1,0 +1,58 @@
+﻿@using System.Text
+@model IndexViewModel
+@inject IShortStringService ShortString
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebEnvironment
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject IInstanceCounter InstanceCounter
+@{
+    // Comment
+    ViewData["Title"] = "Welcome Page";
+}
+
+<h1>Instances: @InstanceCounter.Instances</h1>
+<h1>@WebEnvironment.EnvironmentName</h1>
+<h2>@this.Configuration["HelloMessage"]</h2>
+<vc:registered-users title="Registered users" />
+<partial name="_HomePageStart" model="Model" />
+
+<form asp-action="Index">
+    <textarea asp-for="Description"class="form-control col-md-3" ></textarea>
+    <input asp-for="Name" class="form-control col-md-3" />
+    <input asp-for="Processors"class="form-control col-md-3"  />
+</form>
+
+<hr />
+
+<div class="text-center">
+    @if (User.Identity.IsAuthenticated)
+    {
+        // Comment
+        <h1 class="display-4">Welcome, @User.Identity.Name</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Welcome, @Model.Name</h1>
+    }
+    <h2>It @Model.Year year.</h2>
+    <p>@ShortString.GetShort(Model.Description, 200)</p>
+    <p>We have @Model.UsersCount users.</p>
+    @* Comment *@
+    <p>Processors: @Model.Processors</p>
+    <p>Time: @DateTime.Now</p>
+    <p>Id: @Model.Id</p>
+</div>
+<!-- HTML Comment -->
+
+
+<table bootstrap-table="" table-name="Digits table">
+    @for (int i = 0; i < 10; i++)
+    {
+        <tr><td>@i</td></tr>
+    }
+</table>
+
+@section Links {
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="https://google.com">Google</a>
+    </li>
+}
