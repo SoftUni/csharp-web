@@ -1,0 +1,56 @@
+﻿@using MyFirstAspNetCoreApplication.ViewModels.Recipes
+@model AddRecipeInputModel
+<h1>Add recipe</h1>
+
+<form method="post" class="row" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Description"></label>
+        <textarea rows="4" asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="FirstCooked"></label>
+        <input asp-for="FirstCooked" class="form-control" />
+        <span asp-validation-for="FirstCooked" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Type"></label>
+        <select asp-for="Type" class="form-control"
+                asp-items="@Html.GetEnumSelectList<RecipeType>()">
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Time.CookingTime"></label>
+        <input asp-for="Time.CookingTime" class="form-control" />
+        <span asp-validation-for="Time.CookingTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Time.PreparationTime"></label>
+        <input asp-for="Time.PreparationTime" class="form-control" />
+        <span asp-validation-for="Time.PreparationTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group col-md-6">
+        <label asp-for="Image"></label>
+        <input asp-for="Image" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <input type="submit" class="btn btn-primary" />
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

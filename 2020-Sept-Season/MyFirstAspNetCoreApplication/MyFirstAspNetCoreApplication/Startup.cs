@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using MyFirstAspNetCoreApplication.Service;
 using System.Net.Http;
 using MyFirstAspNetCoreApplication.Filters;
+using MyFirstAspNetCoreApplication.ModelBinders;
 
 namespace MyFirstAspNetCoreApplication
 {
@@ -41,6 +42,7 @@ namespace MyFirstAspNetCoreApplication
                 configure.Filters.Add(new MyResultFilterAttribute());
                 configure.Filters.Add(new MyExceptionFilter());
                 configure.Filters.Add(new MyResourceFilter());
+                configure.ModelBinderProviders.Insert(0, new ExtractYearModelBinderProvider());
             });
             services.AddRazorPages();
 
@@ -79,6 +81,9 @@ namespace MyFirstAspNetCoreApplication
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "blog",
+                    pattern: "blog/{year}/{month}/{day}");
                 endpoints.MapRazorPages();
             });
 
