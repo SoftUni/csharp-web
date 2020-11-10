@@ -50,7 +50,6 @@
             var sw = Stopwatch.StartNew();
 
             Console.WriteLine(DateTime.UtcNow.DayOfWeek);
-            Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
 
             Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);
