@@ -16,7 +16,6 @@
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Data.Repositories;
     using MoiteRecepti.Data.Seeding;
-    using MoiteRecepti.Services.Data;
     using MoiteRecepti.Services.Messaging;
 
     public static class Program
@@ -51,7 +50,6 @@
             var sw = Stopwatch.StartNew();
 
             Console.WriteLine(DateTime.UtcNow.DayOfWeek);
-            var settingsService = serviceProvider.GetService<ISettingsService>();
             Console.WriteLine($"Count of settings: {settingsService.GetCount()}");
 
             Console.WriteLine(sw.Elapsed);
@@ -80,7 +78,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
     }
 }

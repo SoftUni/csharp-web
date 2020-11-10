@@ -36,4 +36,8 @@
     <ProjectReference Include="..\MoiteRecepti.Web.Infrastructure\MoiteRecepti.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\MoiteRecepti.Web.ViewModels\MoiteRecepti.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Dashboard\" />
+  </ItemGroup>
 </Project>
