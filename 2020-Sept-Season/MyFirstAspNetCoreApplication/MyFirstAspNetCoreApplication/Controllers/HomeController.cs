@@ -39,7 +39,6 @@ namespace MyFirstAspNetCoreApplication.Controllers
             this.instanceCounter = instanceCounter;
         }
 
-        [Authorize]
         public IActionResult Index(int id, int year, int month)
         {
             Debug.WriteLine(this.hostingEnvironment.EnvironmentName);
