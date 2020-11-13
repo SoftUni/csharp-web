@@ -43,8 +43,9 @@ namespace MyFirstAspNetCoreApplication
                 configure.Filters.Add(new MyExceptionFilter());
                 configure.Filters.Add(new MyResourceFilter());
                 configure.ModelBinderProviders.Insert(0, new ExtractYearModelBinderProvider());
-            });
+            }).AddXmlSerializerFormatters();
             services.AddRazorPages();
+            services.AddCors();
 
             // singleton / scoped / transient
             services.AddTransient<IInstanceCounter, InstanceCounter>();
@@ -72,6 +73,8 @@ namespace MyFirstAspNetCoreApplication
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
