@@ -16,6 +16,7 @@
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Data.Repositories;
     using MoiteRecepti.Data.Seeding;
+    using MoiteRecepti.Services;
     using MoiteRecepti.Services.Data;
     using MoiteRecepti.Services.Mapping;
     using MoiteRecepti.Services.Messaging;
@@ -65,6 +66,7 @@
             services.AddTransient<IGetCountsService, GetCountsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IRecipesService, RecipesService>();
+            services.AddTransient<IGotvachBgScraperService, GotvachBgScraperService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
