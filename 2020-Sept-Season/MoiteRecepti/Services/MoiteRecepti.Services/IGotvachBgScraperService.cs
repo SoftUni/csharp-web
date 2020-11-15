@@ -4,6 +4,6 @@
 
     public interface IGotvachBgScraperService
     {
-        Task PopulateDbWithRecipesAsync(int recipesCount);
+        Task ImportRecipesAsync(int recipesCount);
     }
 }

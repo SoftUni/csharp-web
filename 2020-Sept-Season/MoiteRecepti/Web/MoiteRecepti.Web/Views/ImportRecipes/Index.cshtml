@@ -1,0 +1,15 @@
+﻿@model MoiteRecepti.Web.ViewModels.Recipes.ImportRecipesInputModel
+@{
+    this.ViewData["Title"] = "Gather Recipes Page";
+}
+
+<div class="justify-content-center">
+    <form asp-controller="ImportRecipes" asp-action="Add" method="post">
+        <div class="form-group">
+            <label asp-for="Count"></label>
+            <input asp-for="Count" class="form-control" />
+            <span asp-validation-for="Count" class="text-danger"></span>
+        </div>
+        <input type="submit" class="btn btn-primary" />
+    </form>
+</div>

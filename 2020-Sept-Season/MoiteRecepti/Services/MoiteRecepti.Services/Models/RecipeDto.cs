@@ -14,7 +14,7 @@
 
         public string RecipeName { get; set; }
 
-        public string Instrucitons { get; set; }
+        public string Instructions { get; set; }
 
         public TimeSpan PreparationTime { get; set; }
 
@@ -24,7 +24,7 @@
 
         public string OriginalUrl { get; set; }
 
-        public string Extension { get; set; }
+        public string ImageUrl { get; set; }
 
         public List<string> Ingredients { get; set; }
     }
