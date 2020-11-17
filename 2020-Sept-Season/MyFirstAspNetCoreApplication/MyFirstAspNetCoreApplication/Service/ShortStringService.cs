@@ -1,4 +1,6 @@
-﻿namespace MyFirstAspNetCoreApplication.Service
+﻿using Microsoft.AspNetCore.Http;
+
+namespace MyFirstAspNetCoreApplication.Service
 {
 
     public class OtherShortStringImplementation : IShortStringService

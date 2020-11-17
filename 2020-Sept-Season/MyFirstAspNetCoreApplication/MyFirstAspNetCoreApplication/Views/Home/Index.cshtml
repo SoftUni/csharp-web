@@ -4,10 +4,18 @@
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebEnvironment
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @inject IInstanceCounter InstanceCounter
+@inject System.Text.Encodings.Web.UrlEncoder UrlEncoder
+@inject System.Text.Encodings.Web.JavaScriptEncoder JsEncoder
 @{
     // Comment
     ViewData["Title"] = "Welcome Page";
+    var data = "\u003C\u0022123\u0022\u003E";
 }
+
+<form method="post" asp-action="GetData">
+    <input type="text" name="info" />
+    <input type="submit" value="Click me." />
+</form>
 
 <h1>Instances: @InstanceCounter.Instances</h1>
 <h1>@WebEnvironment.EnvironmentName</h1>
@@ -16,9 +24,9 @@
 <partial name="_HomePageStart" model="Model" />
 <img src="/img/user.png" />
 <form asp-action="Index">
-    <textarea asp-for="Description"class="form-control col-md-3" ></textarea>
+    <textarea asp-for="Description" class="form-control col-md-3"></textarea>
     <input asp-for="Name" class="form-control col-md-3" />
-    <input asp-for="Processors"class="form-control col-md-3"  />
+    <input asp-for="Processors" class="form-control col-md-3" />
 </form>
 
 <hr />

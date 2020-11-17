@@ -39,6 +39,11 @@ namespace MyFirstAspNetCoreApplication.Controllers
             this.instanceCounter = instanceCounter;
         }
 
+        public IActionResult GetData(string info)
+        {
+            return this.Content(info);
+        }
+
         public IActionResult Index(int id, int year, int month)
         {
             Debug.WriteLine(this.hostingEnvironment.EnvironmentName);
