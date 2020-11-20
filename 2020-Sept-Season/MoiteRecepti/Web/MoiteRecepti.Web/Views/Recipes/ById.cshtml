@@ -1,0 +1,154 @@
+﻿@model MoiteRecepti.Web.ViewModels.Recipes.SingleRecipeViewModel
+@{
+    this.ViewData["Title"] = Model.Name;
+}
+
+<div class="single-recipe-layout1">
+    <div class="ctg-name">@Model.CategoryName</div>
+    <h2 class="item-title">@this.ViewData["Title"]</h2>
+    <div class="row mb-4">
+        <div class="col-xl-9 col-12">
+            <ul class="entry-meta">
+                <li class="single-meta">
+                    <i class="far fa-calendar-alt"></i>
+                    @Model.CreatedOn.ToShortDateString()
+                </li>
+                <li class="single-meta">
+                    <i class="fas fa-user"></i> by
+                    @if (string.IsNullOrWhiteSpace(Model.AddedByUserEmail))
+                    {
+                        <a href="@Model.OriginalUrl" target="_blank">recepti.gotvach.bg</a>
+                    }
+                    else
+                    {
+                        <span>@Model.AddedByUserEmail</span>
+                    }
+                </li>
+                <li class="single-meta">
+                    <ul class="item-rating">
+                        <li class="star-fill" data-vote="1"><i class="fas fa-star"></i></li>
+                        <li class="star-fill" data-vote="2"><i class="fas fa-star"></i></li>
+                        <li class="star-fill" data-vote="3"><i class="fas fa-star"></i></li>
+                        <li class="star-fill" data-vote="4"><i class="fas fa-star"></i></li>
+                        <li class="star-fill" data-vote="5"><i class="fas fa-star"></i></li>
+                        <li><span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span><span> / 5</span> </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="item-figure">
+        <img class="img-fluid w-100" src="@Model.ImageUrl" alt="@Model.Name" />
+    </div>
+    <div class="item-feature">
+        <ul>
+            <li>
+                <div class="feature-wrap">
+                    <div class="media">
+                        <div class="feature-icon">
+                            <i class="far fa-clock"></i>
+                        </div>
+                        <div class="media-body space-sm">
+                            <div class="feature-title">PREP TIME</div>
+                            <div class="feature-sub-title">@Model.PreparationTime.TotalMinutes Mins</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="feature-wrap">
+                    <div class="media">
+                        <div class="feature-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="media-body space-sm">
+                            <div class="feature-title">COOK TIME</div>
+                            <div class="feature-sub-title">@Model.CookingTime.TotalMinutes Mins</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="feature-wrap">
+                    <div class="media">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="media-body space-sm">
+                            <div class="feature-title">SERVING</div>
+                            <div class="feature-sub-title">
+                                @Model.PortionsCount
+                                @if (Model.PortionsCount == 1)
+                                {
+                                    <span>Person</span>
+                                }
+                                else
+                                {
+                                    <span>People</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="feature-wrap">
+                    <div class="media">
+                        <div class="feature-icon">
+                            <i class="fa fa-list-ol"></i>
+                        </div>
+                        <div class="media-body space-sm">
+                            <div class="feature-title">CATEGORY RECIPES</div>
+                            <div class="feature-sub-title">@Model.CategoryRecipesCount</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="making-elements-wrap">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="item-description">
+                    @Model.Instructions
+                </p>
+            </div>
+            <div class="col-md-6">
+                <div class="ingridients-wrap">
+                    <h3 class="item-title"><i class="fas fa-list-ul"></i>Ingridients</h3>
+                    @foreach (var ingredient in Model.Ingredients)
+                    {
+                        <div class="checkbox checkbox-primary">
+                            <label for="checkbox1">@ingredient.Quantity @ingredient.IngredientName</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form method="post" id="antiForgeryForm"></form>
+@section Scripts {
+    <script>
+        $("li[data-vote]").each(function (el) {
+            $(this).click(function () {
+                var value = $(this).attr("data-vote");
+                var recipeId = @Model.Id;
+                var antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+                var data = { recipeId: recipeId, value: value };
+                $.ajax({
+                    type: "POST",
+                    url: "/api/Votes",
+                    data: JSON.stringify(data),
+                    headers: {
+                        'X-CSRF-TOKEN': antiForgeryToken
+                    },
+                    success: function (data) {
+                        $('#averageVoteValue').html(data.averageVote.toFixed(1));
+                    },
+                    contentType: 'application/json',
+                });
+            })
+        });
+    </script>
+}

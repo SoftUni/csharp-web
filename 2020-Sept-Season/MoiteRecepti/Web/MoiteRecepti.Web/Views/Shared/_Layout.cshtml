@@ -6,51 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/fontawesome/css/all.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="All">All Recipes</a>
-                        </li>
-                        @if (this.User.Identity.IsAuthenticated)
-                        {
+
+    <div id="wrapper" class="wrapper">
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="Create">Create Recipe</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                        }
-                    </ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="All">All Recipes</a>
+                            </li>
+                            @if (this.User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="Create">Create Recipe</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
 
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @this.RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <partial name="_CookieConsentPartial" />
+            <main role="main" class="pb-3">
+                @this.RenderBody()
+            </main>
         </div>
-    </footer>
 
+        <footer class="ranna-bg-dark">
+            <div class="container">
+                &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
