@@ -1,11 +1,13 @@
 ﻿namespace MoiteRecepti.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using MoiteRecepti.Data.Common.Repositories;
     using MoiteRecepti.Data.Models;
+    using MoiteRecepti.Services.Mapping;
     using MoiteRecepti.Web.ViewModels.Recipes;
 
     public class RecipesService : IRecipesService
@@ -21,7 +23,7 @@
             this.ingredientsRespository = ingredientsRespository;
         }
 
-        public async Task CreateAsync(CreateRecipeInputModel input)
+        public async Task CreateAsync(CreateRecipeInputModel input, string userId)
         {
             var recipe = new Recipe
             {
@@ -31,6 +33,7 @@
                 Name = input.Name,
                 PortionsCount = input.PortionsCount,
                 PreparationTime = TimeSpan.FromMinutes(input.PreparationTime),
+                AddedByUserId = userId,
             };
 
             foreach (var inputIngredient in input.Ingredients)
@@ -50,6 +53,20 @@
 
             await this.recipesRepository.AddAsync(recipe);
             await this.recipesRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<T> GetAll<T>(int page, int itemsPerPage = 12)
+        {
+            var recipes = this.recipesRepository.AllAsNoTracking()
+                .OrderByDescending(x => x.Id)
+                .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
+                .To<T>().ToList();
+            return recipes;
+        }
+
+        public int GetCount()
+        {
+            return this.recipesRepository.All().Count();
         }
     }
 }

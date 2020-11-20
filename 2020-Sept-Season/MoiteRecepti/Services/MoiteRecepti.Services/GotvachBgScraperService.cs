@@ -50,13 +50,14 @@
             {
                 var categoryId = await this.GetOrCreateCategoryAsync(recipe.CategoryName);
 
-                var recipeExists = this.recipesRepository
-                    .AllAsNoTracking()
-                    .Any(r => r.Name == recipe.RecipeName);
-
-                if (recipeExists)
+                if (recipe.CookingTime.Days >= 1)
                 {
-                    continue;
+                    recipe.CookingTime = new TimeSpan(23, 59, 59);
+                }
+
+                if (recipe.PreparationTime.Days >= 1)
+                {
+                    recipe.PreparationTime = new TimeSpan(23, 59, 59);
                 }
 
                 var newRecipe = new Recipe
@@ -97,7 +98,7 @@
                 };
                 await this.imagesRepository.AddAsync(image);
 
-                if (++addedCount % 200 == 0)
+                if (++addedCount % 1000 == 0)
                 {
                     await this.recipesRepository.SaveChangesAsync();
                     Console.WriteLine($"Saved count: {addedCount}");
