@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public class CreateRecipeInputModel
     {
         [Required]
@@ -26,6 +28,8 @@
         public int PortionsCount { get; set; }
 
         public int CategoryId { get; set; }
+
+        public IEnumerable<IFormFile> Images { get; set; }
 
         public IEnumerable<RecipeIngredientInputModel> Ingredients { get; set; }
 
