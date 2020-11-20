@@ -43,8 +43,9 @@
         public async Task ImportRecipesAsync(int fromId = 1, int toId = 10000)
         {
             var concurrentBag = this.ScrapeRecipes(fromId, toId);
+            Console.WriteLine($"Scraped recipes: {concurrentBag.Count}");
 
-            int count = 0;
+            int addedCount = 0;
             foreach (var recipe in concurrentBag)
             {
                 var categoryId = await this.GetOrCreateCategoryAsync(recipe.CategoryName);
@@ -96,21 +97,20 @@
                 };
                 await this.imagesRepository.AddAsync(image);
 
-                if (++count % 200 == 0)
+                if (++addedCount % 200 == 0)
                 {
                     await this.recipesRepository.SaveChangesAsync();
-                    Console.WriteLine($"Saved count: {count}");
+                    Console.WriteLine($"Saved count: {addedCount}");
                 }
             }
 
             await this.recipesRepository.SaveChangesAsync();
-            Console.WriteLine($"Count: {count}");
+            Console.WriteLine($"Count: {addedCount}");
         }
 
         private ConcurrentBag<RecipeDto> ScrapeRecipes(int fromId, int toId)
         {
             var concurrentBag = new ConcurrentBag<RecipeDto>();
-
             Parallel.For(fromId, toId + 1, i =>
             {
                 try
@@ -123,7 +123,6 @@
                     // ignored
                 }
             });
-
             return concurrentBag;
         }
 
