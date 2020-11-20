@@ -1,8 +1,6 @@
 ﻿namespace MoiteRecepti.Data.Models
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     using MoiteRecepti.Data.Common.Models;
 
@@ -20,6 +18,8 @@
         public string Extension { get; set; }
 
         //// The contents of the image is in the file system
+
+        public string RemoteImageUrl { get; set; }
 
         public string AddedByUserId { get; set; }
 

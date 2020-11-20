@@ -2,21 +2,21 @@
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 
-    public partial class OriginalUrlRecipe : Migration
+    public partial class AddRemoteImageUrl : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "OriginalUrl",
-                table: "Recipes",
+                name: "RemoteImageUrl",
+                table: "Images",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "OriginalUrl",
-                table: "Recipes");
+                name: "RemoteImageUrl",
+                table: "Images");
         }
     }
 }

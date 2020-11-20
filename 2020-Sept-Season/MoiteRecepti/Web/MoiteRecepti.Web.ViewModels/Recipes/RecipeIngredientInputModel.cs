@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MoiteRecepti.Web.ViewModels.Recipes
+﻿namespace MoiteRecepti.Web.ViewModels.Recipes
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class RecipeIngredientInputModel
     {
         [Required]

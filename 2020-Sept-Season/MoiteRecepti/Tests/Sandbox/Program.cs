@@ -16,6 +16,7 @@
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Data.Repositories;
     using MoiteRecepti.Data.Seeding;
+    using MoiteRecepti.Services;
     using MoiteRecepti.Services.Messaging;
 
     public static class Program
@@ -49,7 +50,8 @@
         {
             var sw = Stopwatch.StartNew();
 
-            Console.WriteLine(DateTime.UtcNow.DayOfWeek);
+            var recipesImporter = serviceProvider.GetService<IGotvachBgScraperService>();
+            await recipesImporter.ImportRecipesAsync(1, 10000);
 
             Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);
@@ -77,6 +79,7 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IGotvachBgScraperService, GotvachBgScraperService>();
         }
     }
 }

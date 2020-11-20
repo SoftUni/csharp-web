@@ -1,11 +1,11 @@
-﻿using MoiteRecepti.Data.Common.Repositories;
-using MoiteRecepti.Data.Models;
-using MoiteRecepti.Services.Data.Models;
-using MoiteRecepti.Web.ViewModels.Home;
-using System.Linq;
-
-namespace MoiteRecepti.Services.Data
+﻿namespace MoiteRecepti.Services.Data
 {
+    using System.Linq;
+
+    using MoiteRecepti.Data.Common.Repositories;
+    using MoiteRecepti.Data.Models;
+    using MoiteRecepti.Services.Data.Models;
+
     public class GetCountsService : IGetCountsService
     {
         private readonly IDeletableEntityRepository<Category> categoriesRepository;

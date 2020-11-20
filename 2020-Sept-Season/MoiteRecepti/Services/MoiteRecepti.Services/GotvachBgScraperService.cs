@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Globalization;
     using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
 
     using AngleSharp;
@@ -18,9 +16,7 @@
     {
         private const string BaseUrl = "https://recepti.gotvach.bg/r-{0}";
 
-        private readonly IConfiguration config;
         private readonly IBrowsingContext context;
-
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
         private readonly IDeletableEntityRepository<Ingredient> ingredientsRepository;
         private readonly IDeletableEntityRepository<Recipe> recipesRepository;
@@ -40,14 +36,15 @@
             this.recipeIngredientsRepository = recipeIngredientsRepository;
             this.imagesRepository = imagesRepository;
 
-            this.config = Configuration.Default.WithDefaultLoader();
-            this.context = BrowsingContext.New(this.config);
+            var config = Configuration.Default.WithDefaultLoader();
+            this.context = BrowsingContext.New(config);
         }
 
-        public async Task ImportRecipesAsync(int recipesCount)
+        public async Task ImportRecipesAsync(int fromId = 1, int toId = 10000)
         {
-            var concurrentBag = this.ScrapeRecipes(recipesCount);
+            var concurrentBag = this.ScrapeRecipes(fromId, toId);
 
+            int count = 0;
             foreach (var recipe in concurrentBag)
             {
                 var categoryId = await this.GetOrCreateCategoryAsync(recipe.CategoryName);
@@ -71,9 +68,7 @@
                     OriginalUrl = recipe.OriginalUrl,
                     CategoryId = categoryId,
                 };
-
                 await this.recipesRepository.AddAsync(newRecipe);
-                await this.recipesRepository.SaveChangesAsync();
 
                 var ingredients = recipe.Ingredients
                     .Select(i => i.Split(" - ", 2))
@@ -88,30 +83,35 @@
                     var recipeIngredient = new RecipeIngredient
                     {
                         IngredientId = ingredientId,
-                        RecipeId = newRecipe.Id,
+                        Recipe = newRecipe,
                         Quantity = quantity,
                     };
-
                     await this.recipeIngredientsRepository.AddAsync(recipeIngredient);
-                    await this.recipeIngredientsRepository.SaveChangesAsync();
                 }
 
                 var image = new Image
                 {
-                    Extension = recipe.ImageUrl,
-                    RecipeId = newRecipe.Id,
+                    RemoteImageUrl = recipe.ImageUrl,
+                    Recipe = newRecipe,
                 };
-
                 await this.imagesRepository.AddAsync(image);
-                await this.imagesRepository.SaveChangesAsync();
+
+                if (++count % 200 == 0)
+                {
+                    await this.recipesRepository.SaveChangesAsync();
+                    Console.WriteLine($"Saved count: {count}");
+                }
             }
+
+            await this.recipesRepository.SaveChangesAsync();
+            Console.WriteLine($"Count: {count}");
         }
 
-        private ConcurrentBag<RecipeDto> ScrapeRecipes(int recipesCount)
+        private ConcurrentBag<RecipeDto> ScrapeRecipes(int fromId, int toId)
         {
             var concurrentBag = new ConcurrentBag<RecipeDto>();
 
-            Parallel.For(1, recipesCount, i =>
+            Parallel.For(fromId, toId + 1, i =>
             {
                 try
                 {
@@ -218,6 +218,7 @@
             // Get image url
             recipe.OriginalUrl = url;
 
+            Console.WriteLine(id);
             return recipe;
         }
 
