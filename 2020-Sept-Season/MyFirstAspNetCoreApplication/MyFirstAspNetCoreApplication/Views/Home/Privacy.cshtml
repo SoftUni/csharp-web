@@ -16,6 +16,10 @@
 <div id="mapdiv" style="width: 300px; height: 300px;"></div>
 
 @section Scripts {
+    <script>
+        document.getElementsByTagName("h1")[0].remove();
+    </script>
+
     <script src="https://openlayers.org/api/OpenLayers.js"></script>
     <script>
         map = new OpenLayers.Map("mapdiv");

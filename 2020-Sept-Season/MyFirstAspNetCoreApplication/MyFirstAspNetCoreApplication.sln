@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFirstAspNetCoreApplication", "MyFirstAspNetCoreApplication\MyFirstAspNetCoreApplication.csproj", "{CEE73649-FF06-4B98-8C08-210AB72B7E23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{00FC220F-60A7-49A8-BC80-5DB0C9D8B78D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{00FC220F-60A7-49A8-BC80-5DB0C9D8B78D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Tests", "MyApp.Tests\MyApp.Tests.csproj", "{DF4C91EB-B72A-4215-9617-AD90237C6A94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{00FC220F-60A7-49A8-BC80-5DB0C9D8B78D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00FC220F-60A7-49A8-BC80-5DB0C9D8B78D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00FC220F-60A7-49A8-BC80-5DB0C9D8B78D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF4C91EB-B72A-4215-9617-AD90237C6A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4C91EB-B72A-4215-9617-AD90237C6A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4C91EB-B72A-4215-9617-AD90237C6A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4C91EB-B72A-4215-9617-AD90237C6A94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
