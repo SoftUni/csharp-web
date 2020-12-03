@@ -1,4 +1,5 @@
-﻿@model MoiteRecepti.Web.ViewModels.Recipes.SingleRecipeViewModel
+﻿@using MoiteRecepti.Common
+@model MoiteRecepti.Web.ViewModels.Recipes.SingleRecipeViewModel
 @{
     this.ViewData["Title"] = Model.Name;
 }
@@ -34,6 +35,12 @@
                         <li><span id="averageVoteValue">@Model.AverageVote.ToString("0.0")</span><span> / 5</span> </li>
                     </ul>
                 </li>
+                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                {
+                    <li class="single-meta">
+                        <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>

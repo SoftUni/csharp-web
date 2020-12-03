@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using MoiteRecepti.Common;
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Services.Data;
     using MoiteRecepti.Web.ViewModels.Recipes;
@@ -29,6 +30,28 @@
             this.recipesService = recipesService;
             this.userManager = userManager;
             this.environment = environment;
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public IActionResult Edit(int id)
+        {
+            var inputModel = this.recipesService.GetById<EditRecipeInputModel>(id);
+            inputModel.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+            return this.View(inputModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> Edit(int id, EditRecipeInputModel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                input.CategoriesItems = this.categoriesService.GetAllAsKeyValuePairs();
+                return this.View(input);
+            }
+
+            await this.recipesService.UpdateAsync(id, input);
+            return this.RedirectToAction(nameof(this.ById), new { id });
         }
 
         [Authorize]

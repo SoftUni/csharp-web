@@ -1,0 +1,43 @@
+﻿@model MoiteRecepti.Web.ViewModels.Recipes.EditRecipeInputModel
+@{ 
+    ViewData["Title"] = "Edit recipe";
+    var categoryItems = this.Model.CategoriesItems.Select(x => new SelectListItem(x.Value, x.Key));
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Instructions"></label>
+        <textarea asp-for="Instructions" class="form-control"></textarea>
+        <span asp-validation-for="Instructions" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CookingTime"></label>
+        <input asp-for="CookingTime" class="form-control" />
+        <span asp-validation-for="CookingTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PreparationTime"></label>
+        <input asp-for="PreparationTime" class="form-control" />
+        <span asp-validation-for="PreparationTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PortionsCount"></label>
+        <input asp-for="PortionsCount" class="form-control" />
+        <span asp-validation-for="PortionsCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="categoryItems" class="form-control"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <hr />
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" class="btn btn-success" value="Save changes" />
+</form>
