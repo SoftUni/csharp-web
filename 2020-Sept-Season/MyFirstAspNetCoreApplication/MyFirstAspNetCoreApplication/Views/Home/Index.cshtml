@@ -12,15 +12,21 @@
     var data = "\u003C\u0022123\u0022\u003E";
 }
 
+
 <form method="post" asp-action="GetData">
     <input type="text" name="info" />
     <input type="submit" value="Click me." />
 </form>
 
+<h1>Been on privacy page: @Model.ReadPrivacy</h1>
+
 <h1>Instances: @InstanceCounter.Instances</h1>
 <h1>@WebEnvironment.EnvironmentName</h1>
 <h2>@this.Configuration["HelloMessage"]</h2>
-<vc:registered-users title="Registered users" />
+<cache expires-after="TimeSpan.FromMinutes(10)">
+    <vc:registered-users title="Registered users" />
+</cache>
+
 <partial name="_HomePageStart" model="Model" />
 <img src="/img/user.png" />
 <form asp-action="Index">

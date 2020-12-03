@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -51,6 +52,7 @@ namespace MyFirstAspNetCoreApplication.Controllers
             {
                 Id = id,
                 Name = "Anonymous",
+                ReadPrivacy = this.HttpContext.Session.Keys.Contains("ReadPrivacy"),
                 Year = DateTime.UtcNow.Year,
                 Processors = Environment.ProcessorCount,
                 UsersCount = this.dbContext.Users.Count(),
@@ -66,6 +68,7 @@ namespace MyFirstAspNetCoreApplication.Controllers
 
         public IActionResult Privacy()
         {
+            this.HttpContext.Session.SetString("ReadPrivacy", "true");
             return View();
         }
 
@@ -79,6 +82,7 @@ namespace MyFirstAspNetCoreApplication.Controllers
             return this.View();
         }
 
+        [ResponseCache(Duration = 24 * 60 * 60, Location = ResponseCacheLocation.Client)]
         public IActionResult AjaxDemoData()
         {
             return this.Json(new[] {

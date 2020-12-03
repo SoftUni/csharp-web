@@ -46,6 +46,19 @@ namespace MyFirstAspNetCoreApplication
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddMemoryCache();
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.SchemaName = "dbo";
+                options.TableName = "CacheRecords";
+            });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = new TimeSpan(365, 0, 0, 0);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             // Configure JWT authentication
             var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
@@ -145,6 +158,7 @@ namespace MyFirstAspNetCoreApplication
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
             app.UseRouting();
 
             app.UseCors();
@@ -154,6 +168,9 @@ namespace MyFirstAspNetCoreApplication
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    "areaRoute",
+                    "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

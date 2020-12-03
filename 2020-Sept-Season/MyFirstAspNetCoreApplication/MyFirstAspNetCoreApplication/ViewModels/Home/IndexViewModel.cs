@@ -17,5 +17,6 @@ namespace MyFirstAspNetCoreApplication.ViewModels.Home
         public int Id { get; set; }
 
         public string Name { get; set; }
+        public bool ReadPrivacy { get; internal set; }
     }
 }

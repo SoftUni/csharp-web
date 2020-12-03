@@ -38,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Forum\" />
     <Folder Include="Areas\Administration\Views\Dashboard\" />
+    <Folder Include="Areas\Blog\" />
   </ItemGroup>
 </Project>

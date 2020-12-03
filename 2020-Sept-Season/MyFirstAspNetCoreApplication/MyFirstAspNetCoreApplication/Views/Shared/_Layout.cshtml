@@ -48,7 +48,9 @@
         <div class="container">
             &copy; 2020 - MyFirstAspNetCoreApplication - 
             <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> -
-            <vc:registered-users title="Registered users"></vc:registered-users>
+            <cache expires-after="TimeSpan.FromMinutes(10)">
+                <vc:registered-users title="Registered users"></vc:registered-users>
+            </cache>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -3,6 +3,11 @@
     this.ViewData["Title"] = "All Recipes, page " + Model.PageNumber;
 }
 
+@if (this.TempData.ContainsKey("Message"))
+{
+    <div class="alert alert-success">@this.TempData["Message"]</div>
+}
+
 <h1>@this.ViewData["Title"]</h1>
 <hr />
 <div class="row">
