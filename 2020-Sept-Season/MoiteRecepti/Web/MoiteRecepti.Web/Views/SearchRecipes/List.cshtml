@@ -6,16 +6,23 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    @foreach (var recipe in this.Model.Recipes)
-    {
-        <div class="card col-md-3">
-            <img class="card-img-top" src="@recipe.ImageUrl" alt="@recipe.Name">
-            <div class="card-body">
-                <h5 class="card-title">@recipe.Name</h5>
-                <p class="card-text">@recipe.CategoryName</p>
-                <a asp-controller="Recipes" asp-action="ById" asp-route-id="@recipe.Id" class="btn btn-primary">Go to recipe</a>
+@if (!Model.Recipes.Any())
+{
+    <p>Nothing found.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var recipe in this.Model.Recipes)
+        {
+            <div class="card col-md-3">
+                <img class="card-img-top" src="@recipe.ImageUrl" alt="@recipe.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@recipe.Name</h5>
+                    <p class="card-text">@recipe.CategoryName</p>
+                    <a asp-controller="Recipes" asp-action="ById" asp-route-id="@recipe.Id" class="btn btn-primary">Go to recipe</a>
+                </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}

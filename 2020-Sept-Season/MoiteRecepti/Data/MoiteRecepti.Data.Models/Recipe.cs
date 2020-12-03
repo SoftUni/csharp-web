@@ -32,6 +32,8 @@
 
         public int CategoryId { get; set; }
 
+        //// public bool IsApproved { get; set; }
+
         public virtual Category Category { get; set; }
 
         public virtual ICollection<RecipeIngredient> Ingredients { get; set; }

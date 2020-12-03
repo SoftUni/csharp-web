@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+
     using MoiteRecepti.Data.Common.Repositories;
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Services.Mapping;
@@ -75,6 +76,13 @@
             }
 
             await this.recipesRepository.AddAsync(recipe);
+            await this.recipesRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var recipe = this.recipesRepository.All().FirstOrDefault(x => x.Id == id);
+            this.recipesRepository.Delete(recipe);
             await this.recipesRepository.SaveChangesAsync();
         }
 

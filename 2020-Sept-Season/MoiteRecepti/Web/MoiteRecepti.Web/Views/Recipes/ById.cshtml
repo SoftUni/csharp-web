@@ -40,6 +40,19 @@
                     <li class="single-meta">
                         <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
                     </li>
+                    <li class="single-meta">
+                        <form method="post" asp-action="Delete" id="deleteForm" asp-route-id="@Model.Id">
+                        </form>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    </li>
+                    <li class="single-meta">
+                        <form method="post" asp-action="SendToEmail" asp-route-id="@Model.Id">
+                            <button class="btn btn-warning">Send to my email</button>
+                        </form>
+                    </li>
+                    <li class="single-meta">
+                        <button class="btn btn-warning" onclick="window.print()">Print</button>
+                    </li>
                 }
             </ul>
         </div>
@@ -159,3 +172,17 @@
         });
     </script>
 }
+
+<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Do you want to delete "@Model.Name"?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="deleteForm.submit()">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
