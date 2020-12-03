@@ -30,6 +30,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="All">All Recipes</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="SearchRecipes" asp-action="Index">Search</a>
+                            </li>
                             @if (this.User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">

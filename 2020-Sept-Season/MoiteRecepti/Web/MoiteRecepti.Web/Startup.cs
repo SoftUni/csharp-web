@@ -72,6 +72,7 @@
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IRecipesService, RecipesService>();
             services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IIngredientsService, IngredientsService>();
             services.AddTransient<IGotvachBgScraperService, GotvachBgScraperService>();
         }
 

@@ -1,0 +1,24 @@
+﻿@model MoiteRecepti.Web.ViewModels.SearchRecipes.SearchIndexViewModel
+@{
+    ViewData["Title"] = "Search recipes by ingredient";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="List" method="get">
+    <div class="row">
+        @foreach (var ingredient in Model.Ingredients)
+        {
+            <div class="col-1 text-center">
+                <input id="ingredient_@ingredient.Id"
+                       type="checkbox"
+                       name="Ingredients"
+                       value="@ingredient.Id"
+                       class="form-control" />
+                <label for="ingredient_@ingredient.Id">@ingredient.Name</label>
+            </div>
+        }
+    </div>
+
+    <button class="btn btn-primary">Search</button>
+</form>
