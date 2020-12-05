@@ -58,6 +58,14 @@
         "css/all.css",
         "css/all.min.css"
       ]
+    },
+    {
+      "library": "datatables@1.10.18",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "media/css/jquery.dataTables.min.css",
+        "media/js/jquery.dataTables.min.js"
+      ]
     }
   ]
 }

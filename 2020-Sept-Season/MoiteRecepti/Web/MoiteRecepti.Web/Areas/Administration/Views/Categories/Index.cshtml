@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table table-bordered table-hover table-striped">
+<table id="DataTable">
     <thead>
         <tr>
             <th>
@@ -53,3 +53,12 @@
         }
     </tbody>
 </table>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#DataTable').DataTable();
+        });
+    </script>
+}

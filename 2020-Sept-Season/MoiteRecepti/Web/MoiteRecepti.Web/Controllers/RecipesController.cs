@@ -10,6 +10,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using MoiteRecepti.Common;
+    using MoiteRecepti.Data;
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Services.Data;
     using MoiteRecepti.Services.Messaging;
@@ -17,6 +18,7 @@
 
     public class RecipesController : Controller
     {
+        private readonly ApplicationDbContext db;
         private readonly ICategoriesService categoriesService;
         private readonly IRecipesService recipesService;
         private readonly UserManager<ApplicationUser> userManager;

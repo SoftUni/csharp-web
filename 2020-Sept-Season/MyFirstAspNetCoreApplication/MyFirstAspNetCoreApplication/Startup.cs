@@ -22,6 +22,7 @@ using MyFirstAspNetCoreApplication.Settings;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 
 namespace MyFirstAspNetCoreApplication
 {
@@ -45,6 +46,13 @@ namespace MyFirstAspNetCoreApplication
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
 
             services.AddMemoryCache();
             services.AddDistributedSqlServerCache(options =>
@@ -157,6 +165,7 @@ namespace MyFirstAspNetCoreApplication
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseSession();
             app.UseRouting();
