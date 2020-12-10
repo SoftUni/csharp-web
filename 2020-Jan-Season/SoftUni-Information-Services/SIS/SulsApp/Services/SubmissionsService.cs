@@ -1,4 +1,5 @@
 ﻿using SulsApp.Models;
+using SulsApp.ViewModels.Submissions;
 using System;
 using System.Linq;
 
@@ -36,6 +37,19 @@ namespace SulsApp.Services
             var submission = this.db.Submissions.Find(id);
             this.db.Remove(submission);
             this.db.SaveChanges();
+        }
+
+        public CreateFormViewModel GetProblem(string id)
+        {
+            var problem = this.db.Problems
+                .Where(x => x.Id == id)
+                .Select(x => new CreateFormViewModel
+                {
+                    Name = x.Name,
+                    ProblemId = x.Id
+                }).FirstOrDefault();
+
+            return problem;
         }
     }
 }
