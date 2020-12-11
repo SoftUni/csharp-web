@@ -19,5 +19,7 @@
         public int RecipesCount { get; set; }
 
         public int ItemsPerPage { get; set; }
+
+        public string Search { get; set; }
     }
 }

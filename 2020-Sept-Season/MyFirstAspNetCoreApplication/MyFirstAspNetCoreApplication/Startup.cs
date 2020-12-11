@@ -139,16 +139,16 @@ namespace MyFirstAspNetCoreApplication
             var userManager = 
                 app.ApplicationServices.CreateScope()
                     .ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            if (!userManager.Users.Any(x => x.UserName == "kostov@nikolay.it"))
-            {
-                userManager.CreateAsync(new ApplicationUser
-                {
-                    UserName = "kostov@nikolay.it",
-                    Email = "kostov@nikolay.it",
-                    DateOfBirth = DateTime.UtcNow,
-                    EmailConfirmed = true,
-                }, "kostov@nikolay.it").GetAwaiter().GetResult();
-            }
+            //if (!userManager.Users.Any(x => x.UserName == "kostov@nikolay.it"))
+            //{
+            //    userManager.CreateAsync(new ApplicationUser
+            //    {
+            //        UserName = "kostov@nikolay.it",
+            //        Email = "kostov@nikolay.it",
+            //        DateOfBirth = DateTime.UtcNow,
+            //        EmailConfirmed = true,
+            //    }, "kostov@nikolay.it").GetAwaiter().GetResult();
+            //}
 
             // Action<HttpContext, RequestDelegate> RequestDelegate
             if (env.IsDevelopment())

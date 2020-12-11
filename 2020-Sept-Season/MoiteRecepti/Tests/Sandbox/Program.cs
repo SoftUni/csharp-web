@@ -51,7 +51,7 @@
             var sw = Stopwatch.StartNew();
 
             var recipesImporter = serviceProvider.GetService<IGotvachBgScraperService>();
-            await recipesImporter.ImportRecipesAsync(1, 161000);
+            await recipesImporter.ImportRecipesAsync(1, 100); // 161000
 
             Console.WriteLine(sw.Elapsed);
             return await Task.FromResult(0);

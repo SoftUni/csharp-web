@@ -10,6 +10,16 @@
 
 <h1>@this.ViewData["Title"]</h1>
 <hr />
+
+<form method="get" asp-controller="Recipes" asp-action="All" asp-route-page="1">
+    <div class="input-group mb-4">
+        <input type="search" name="search" class="form-control" value="@this.Model.Search" placeholder="Търси..." />
+        <div class="input-group-append">
+            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</form>
+
 <div class="row">
     @foreach (var recipe in this.Model.Recipes)
     {

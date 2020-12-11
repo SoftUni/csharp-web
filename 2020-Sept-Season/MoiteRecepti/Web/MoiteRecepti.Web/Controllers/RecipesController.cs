@@ -1,6 +1,7 @@
 ﻿namespace MoiteRecepti.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
@@ -9,8 +10,10 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using MoiteRecepti.Common;
     using MoiteRecepti.Data;
+    using MoiteRecepti.Data.Common.Repositories;
     using MoiteRecepti.Data.Models;
     using MoiteRecepti.Services.Data;
     using MoiteRecepti.Services.Messaging;
@@ -24,19 +27,22 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IWebHostEnvironment environment;
         private readonly IEmailSender emailSender;
+        private readonly IDeletableEntityRepository<Recipe> recipesRepository;
 
         public RecipesController(
             ICategoriesService categoriesService,
             IRecipesService recipesService,
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment environment,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IDeletableEntityRepository<Recipe> recipesRepository)
         {
             this.categoriesService = categoriesService;
             this.recipesService = recipesService;
             this.userManager = userManager;
             this.environment = environment;
             this.emailSender = emailSender;
+            this.recipesRepository = recipesRepository;
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
@@ -100,7 +106,7 @@
         }
 
         // Recipes/All/8
-        public IActionResult All(int id = 1)
+        public IActionResult All(string search, int id = 1)
         {
             if (id <= 0)
             {
@@ -108,12 +114,28 @@
             }
 
             const int ItemsPerPage = 12;
+
+            var query = this.recipesRepository.AllAsNoTracking();
+            var words = search?.Split(" ").Select(x => x.Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x) && x.Length >= 2).ToList();
+
+            if (words != null)
+            {
+                foreach (var word in words)
+                {
+                    query = query.Where(c => EF.Functions.FreeText(c.SearchText, word));
+                }
+            }
+
+            var recipes = this.recipesService.GetAll<RecipeInListViewModel>(query, id, ItemsPerPage);
+
             var viewModel = new RecipesListViewModel
             {
                 ItemsPerPage = ItemsPerPage,
                 PageNumber = id,
-                RecipesCount = this.recipesService.GetCount(),
-                Recipes = this.recipesService.GetAll<RecipeInListViewModel>(id, ItemsPerPage),
+                RecipesCount = recipes.Count(),
+                Recipes = recipes,
+                Search = search,
             };
             return this.View(viewModel);
         }

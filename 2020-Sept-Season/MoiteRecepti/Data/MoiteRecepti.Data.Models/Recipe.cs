@@ -36,6 +36,8 @@
 
         public virtual Category Category { get; set; }
 
+        public string SearchText { get; set; }
+
         public virtual ICollection<RecipeIngredient> Ingredients { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }

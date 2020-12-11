@@ -69,6 +69,7 @@
                     PortionsCount = recipe.PortionsCount,
                     OriginalUrl = recipe.OriginalUrl,
                     CategoryId = categoryId,
+                    SearchText = recipe.RecipeName,
                 };
                 await this.recipesRepository.AddAsync(newRecipe);
 

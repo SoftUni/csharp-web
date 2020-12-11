@@ -86,9 +86,9 @@
             await this.recipesRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAll<T>(int page, int itemsPerPage = 12)
+        public IEnumerable<T> GetAll<T>(IQueryable<Recipe> query, int page, int itemsPerPage = 12)
         {
-            var recipes = this.recipesRepository.AllAsNoTracking()
+            var recipes = query
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
                 .To<T>().ToList();
@@ -113,11 +113,6 @@
             }
 
             return query.To<T>().ToList();
-        }
-
-        public int GetCount()
-        {
-            return this.recipesRepository.All().Count();
         }
 
         public IEnumerable<T> GetRandom<T>(int count)
